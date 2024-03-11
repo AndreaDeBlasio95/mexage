@@ -8,54 +8,101 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int? themeColorSelected;     // 0 for light, 1 for dark
+  int? themeColorSelected; // 0 for light, 1 for dark
 
   @override
   void initState() {
     super.initState();
-    checkTheme(); // set the theme color
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
   }
 
   void checkTheme() {
     if (themeColorSelected == null) {
-      themeColorSelected = 1;
+      setState(() {
+        themeColorSelected = 1;
+      });
       Provider.of<CustomThemes>(context, listen: false).setTheme(1);
     } else {
+      setState(() {
+        themeColorSelected = 0;
+      });
       Provider.of<CustomThemes>(context, listen: false).setTheme(0);
     }
   }
 
+  void setTheme(int _value) {
+      setState(() {
+        themeColorSelected = _value;
+      });
+      Provider.of<CustomThemes>(context, listen: false).setTheme(_value);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeColor = Provider.of<CustomThemes>(context, listen: false);
+    final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
     return Container(
-      color: themeColor.cBackGround,
+      color: themeProvider.cBackGround,
       child: DefaultTabController(
         length: 2, // The number of tabs / views.
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: themeColor.cBackGround,
-            title: const Text('Tab View Example', ),
-            bottom: const TabBar(
+            backgroundColor: themeProvider.cBackGround,
+            title: Row(
+              children: [
+                Text(
+                  'Mexage',
+                  style: themeProvider.tTextAppBar,
+                ),
+                Image.asset(
+                  'assets/images/icon-mexage-white.png',
+                  height: 40,
+                  width: 40,
+                ),
+              ],
+            ),
+            bottom: TabBar(
+              indicatorColor: themeProvider.cTextTabBar,
               tabs: [
-                Tab(icon: Icon(Icons.chat), text: 'Chat'),
-                Tab(icon: Icon(Icons.settings), text: 'Settings'),
+                Tab(
+                  child: Text(
+                    'Inbox',
+                    style: themeProvider.tTextTabBar,
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Sent',
+                    style: themeProvider.tTextTabBar,
+                  ),
+                ),
               ],
             ),
           ),
           body: Container(
-            color: themeColor.cBackGround,
+            color: themeProvider.cBackGround,
             child: TabBarView(
               children: [
                 // The views for each tab.
-                const Center(child: Text('Chat')),
-                const Center(child: Text('Settings')),
+                Center(child: Text('Received', style: themeProvider.tTextBold)),
+                Center(child: Text('Sent', style: themeProvider.tTextBold)),
               ],
             ),
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              int currentTheme = themeProvider.currentTheme;
+              if (currentTheme == 0) {
+                setTheme(1);
+              } else {
+                setTheme(0);
+              }
+            },
+            child: const Icon(Icons.add),
+          ),
         ),
       ),
+
     );
   }
 }
