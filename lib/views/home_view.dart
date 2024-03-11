@@ -55,15 +55,15 @@ class _HomeViewState extends State<HomeView> {
                   'Mexage',
                   style: themeProvider.tTextAppBar,
                 ),
-                SizedBox(width: 4),
-                themeColorSelected == 1 ? Container(
+                const SizedBox(width: 4),
+                themeColorSelected == 1 ? SizedBox(
                   height: 20,
                   width: 20,
                   child: Image.asset(
                     'images/icon-mexage-white.png',
                     fit: BoxFit.fitHeight,
                   ),
-                ) : Container(
+                ) : SizedBox(
                   height: 20,
                   width: 20,
                   child: Image.asset(
@@ -75,6 +75,7 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
             bottom: TabBar(
+              dividerColor: Colors.transparent,
               indicatorColor: themeProvider.cTextTabBar,
               tabs: [
                 Tab(
