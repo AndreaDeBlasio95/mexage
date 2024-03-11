@@ -49,15 +49,28 @@ class _HomeViewState extends State<HomeView> {
           appBar: AppBar(
             backgroundColor: themeProvider.cBackGround,
             title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Mexage',
                   style: themeProvider.tTextAppBar,
                 ),
-                Image.asset(
-                  'assets/images/icon-mexage-white.png',
-                  height: 40,
-                  width: 40,
+                SizedBox(width: 4),
+                themeColorSelected == 1 ? Container(
+                  height: 20,
+                  width: 20,
+                  child: Image.asset(
+                    'images/icon-mexage-white.png',
+                    fit: BoxFit.fitHeight,
+                  ),
+                ) : Container(
+                  height: 20,
+                  width: 20,
+                  child: Image.asset(
+                    'images/icon-mexage-white.png',
+                    fit: BoxFit.fitHeight,
+                    color: themeProvider.cTextNormal,
+                  ),
                 ),
               ],
             ),
