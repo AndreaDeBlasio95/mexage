@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mexage/theme/custom_themes.dart';
 import 'package:provider/provider.dart';
 
+import '../models/message_model.dart';
+import 'inbox_view.dart';
+
 class HomeView extends StatefulWidget {
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -31,10 +34,10 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void setTheme(int _value) {
-      setState(() {
-        themeColorSelected = _value;
-      });
-      Provider.of<CustomThemes>(context, listen: false).setTheme(_value);
+    setState(() {
+      themeColorSelected = _value;
+    });
+    Provider.of<CustomThemes>(context, listen: false).setTheme(_value);
   }
 
   @override
@@ -56,22 +59,24 @@ class _HomeViewState extends State<HomeView> {
                   style: themeProvider.tTextAppBar,
                 ),
                 const SizedBox(width: 4),
-                themeColorSelected == 1 ? SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: Image.asset(
-                    'images/icon-mexage-white.png',
-                    fit: BoxFit.fitHeight,
-                  ),
-                ) : SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: Image.asset(
-                    'images/icon-mexage-white.png',
-                    fit: BoxFit.fitHeight,
-                    color: themeProvider.cTextNormal,
-                  ),
-                ),
+                themeColorSelected == 1
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(
+                          'images/icon-mexage-white.png',
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )
+                    : SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Image.asset(
+                          'images/icon-mexage-white.png',
+                          fit: BoxFit.fitHeight,
+                          color: themeProvider.cTextNormal,
+                        ),
+                      ),
               ],
             ),
             bottom: TabBar(
@@ -98,7 +103,31 @@ class _HomeViewState extends State<HomeView> {
             child: TabBarView(
               children: [
                 // The views for each tab.
-                Center(child: Text('Received', style: themeProvider.tTextBold)),
+                InboxView(
+                  messages: [
+                    Message(
+                      id: "1",
+                      content: 'Hello, how are you?',
+                      rank: 1,
+                      ranked: false,
+                      thumbUp: 0,
+                    ),
+                    Message(
+                      id: "2",
+                      content: 'I am doing well, thank you! This is a long message',
+                      rank: 2,
+                      ranked: true,
+                      thumbUp: 1,
+                    ),
+                    Message(
+                      id: "3",
+                      content: 'Short message',
+                      rank: 2,
+                      ranked: true,
+                      thumbUp: 2,
+                    ),
+                  ],
+                ),
                 Center(child: Text('Sent', style: themeProvider.tTextBold)),
               ],
             ),
@@ -116,7 +145,6 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       ),
-
     );
   }
 }

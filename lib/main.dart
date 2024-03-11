@@ -4,13 +4,9 @@ import 'package:mexage/views/home_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => CustomThemes()),
-    ],
-      child: const MyApp()
-  )
-  );
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => CustomThemes()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
