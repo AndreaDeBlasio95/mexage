@@ -25,15 +25,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     themeColorSelected = Provider.of<CustomThemes>(context, listen: false).currentTheme;
 
     if (themeColorSelected == null) {
-      setState(() {
-        themeColorSelected = 1;
-      });
-      Provider.of<CustomThemes>(context, listen: false).setTheme(1);
-    } else {
-      setState(() {
-        themeColorSelected = 0;
-      });
-      Provider.of<CustomThemes>(context, listen: false).setTheme(0);
+      setTheme(0);
     }
   }
 

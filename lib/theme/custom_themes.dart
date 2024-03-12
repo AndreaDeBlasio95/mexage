@@ -79,6 +79,7 @@ class CustomThemes with ChangeNotifier {
     }
     setTextStyles(value);
     notifyListeners();
+    print('Theme: $currentTheme');
   }
 
   // Set Text Style
