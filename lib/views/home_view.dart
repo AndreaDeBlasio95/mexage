@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mexage/theme/custom_themes.dart';
 import 'package:provider/provider.dart';
 
+import '../custom_widgets/home_drawer.dart';
 import '../models/message_model.dart';
 import 'inbox_view.dart';
 
@@ -49,7 +50,11 @@ class _HomeViewState extends State<HomeView> {
       child: DefaultTabController(
         length: 2, // The number of tabs / views.
         child: Scaffold(
+          drawer: CustomDrawer(), // Use the custom drawer here
           appBar: AppBar(
+            iconTheme: IconThemeData(
+              color: themeProvider.cTextNormal,
+            ),
             backgroundColor: themeProvider.cBackGround,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +69,7 @@ class _HomeViewState extends State<HomeView> {
                         height: 20,
                         width: 20,
                         child: Image.asset(
-                          'images/icon-mexage-white.png',
+                          'images/icon-mexage.png',
                           fit: BoxFit.fitHeight,
                         ),
                       )
@@ -72,11 +77,12 @@ class _HomeViewState extends State<HomeView> {
                         height: 20,
                         width: 20,
                         child: Image.asset(
-                          'images/icon-mexage-white.png',
+                          'images/icon-mexage.png',
                           fit: BoxFit.fitHeight,
                           color: themeProvider.cTextNormal,
                         ),
                       ),
+                const SizedBox(width: 50),
               ],
             ),
             bottom: TabBar(

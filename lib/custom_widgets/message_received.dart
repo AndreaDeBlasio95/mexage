@@ -15,13 +15,13 @@ class MessageCard extends StatelessWidget {
     return Card(
       elevation: 0,
       color: themeProvider.cCardMessageInbox,
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: ListTile(
         title: Text(message.content,
             style: themeProvider.tTextNormal, overflow: TextOverflow.ellipsis),
         trailing: Container(
-          padding: EdgeInsets.all(8),
-          margin: EdgeInsets.only(top: 8, bottom: 8),
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.only(top: 8, bottom: 8),
           decoration: BoxDecoration(
             color: themeProvider.cCardMessageInbox,
             borderRadius: BorderRadius.circular(8),
@@ -45,13 +45,13 @@ class MessageCard extends StatelessWidget {
 
   Widget _buildTrailingWidget() {
     if (message.thumbUp == 0) {
-      return Icon(Icons.thumb_up_alt_outlined, color: Colors.grey.shade500);
+      return Icon(Icons.thumb_up_alt_outlined, color: Colors.grey.shade500, size: 20,);
     }
     if (message.thumbUp == 1) {
-      return Icon(Icons.thumb_up_alt_rounded, color: Colors.grey.shade500);
+      return Icon(Icons.thumb_up_alt_rounded, color: Colors.grey.shade500, size: 20);
     }
     if (message.thumbUp == 2) {
-      return Icon(Icons.thumb_down, color: Colors.grey.shade500);
+      return Icon(Icons.thumb_down, color: Colors.grey.shade500, size: 20);
     }
     return const SizedBox();
   }

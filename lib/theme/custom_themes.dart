@@ -14,6 +14,7 @@ class CustomThemes with ChangeNotifier {
   Color cTextNormal = Colors.black;
   Color cTextSmall = Colors.black;
   Color cTextTabBar = Colors.black;
+  Color cIcons = Colors.black;
   Color cCardMessageInbox = Colors.black;
 
   // --- TEXT STYLES ---
@@ -42,6 +43,11 @@ class CustomThemes with ChangeNotifier {
     fontWeight: FontWeight.w600,
     fontSize: 16,
   );
+  TextStyle tTextTitleDrawer = const TextStyle(
+    color: Colors.black,
+    fontWeight: FontWeight.w600,
+    fontSize: 22,
+  );
 
   int get currentTheme => _theme;
 
@@ -53,11 +59,12 @@ class CustomThemes with ChangeNotifier {
       cBackGround = Colors.white;
       cTextAppBar = const Color(0xFF121212);
       cTextTitle = Colors.blue;
-      cTextBold = Colors.blue;
+      cTextBold = const Color(0xFF121212);
       cTextNormal = const Color(0xFF121212);
       cTextSmall = Colors.grey.shade600;
       cTextTabBar = const Color(0xFF7699D4); // vista blue
-      cCardMessageInbox = const Color(0xFF03F7EB).withOpacity(0.1); // light grey
+      cIcons = const Color(0xFF1F1F1F).withOpacity(0.4); // light grey
+      cCardMessageInbox = const Color(0xFF03F7EB).withOpacity(0.2); // light grey
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF121212);
@@ -67,6 +74,7 @@ class CustomThemes with ChangeNotifier {
       cTextNormal = Colors.white;
       cTextSmall = Colors.grey.shade400;
       cTextTabBar = const Color(0xFF90FCF9); // ice blue
+      cIcons = Colors.grey.shade500; // dark grey
       cCardMessageInbox = const Color(0xFF1F1F1F); // dark grey
     }
     setTextStyles(value);
@@ -99,6 +107,11 @@ class CustomThemes with ChangeNotifier {
       color: cTextTabBar,
       fontWeight: FontWeight.w600,
       fontSize: 16,
+    );
+    tTextTitleDrawer = TextStyle(
+      color: cTextNormal,
+      fontWeight: FontWeight.w600,
+      fontSize: 22,
     );
   }
 }
