@@ -21,6 +21,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void checkTheme() {
+    themeColorSelected = Provider.of<CustomThemes>(context, listen: false).currentTheme;
+
     if (themeColorSelected == null) {
       setState(() {
         themeColorSelected = 1;
@@ -41,6 +43,13 @@ class _HomeViewState extends State<HomeView> {
     Provider.of<CustomThemes>(context, listen: false).setTheme(_value);
   }
 
+  void updateTheme(int value) {
+    setState(() {
+      themeColorSelected = value; // Update the theme or state based on value
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
@@ -50,7 +59,8 @@ class _HomeViewState extends State<HomeView> {
       child: DefaultTabController(
         length: 2, // The number of tabs / views.
         child: Scaffold(
-          drawer: CustomDrawer(), // Use the custom drawer here
+          backgroundColor: themeProvider.cBackGround,
+          drawer: CustomDrawer(onThemeChange: updateTheme), // Use the custom drawer here
           appBar: AppBar(
             iconTheme: IconThemeData(
               color: themeProvider.cTextNormal,
@@ -63,6 +73,7 @@ class _HomeViewState extends State<HomeView> {
                   'Mexage',
                   style: themeProvider.tTextAppBar,
                 ),
+
                 const SizedBox(width: 4),
                 themeColorSelected == 1
                     ? SizedBox(
@@ -138,6 +149,8 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
+          // Floating action button
+          /*
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               int currentTheme = themeProvider.currentTheme;
@@ -149,6 +162,7 @@ class _HomeViewState extends State<HomeView> {
             },
             child: const Icon(Icons.add),
           ),
+           */
         ),
       ),
     );

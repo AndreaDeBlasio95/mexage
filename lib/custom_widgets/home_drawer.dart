@@ -1,15 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../theme/custom_themes.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
+  final Function(int) onThemeChange;
+
+  const CustomDrawer({super.key, required this.onThemeChange});
+
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+
+  int? themeColorSelected; // Default theme index
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
+  }
+
+  void checkTheme() {
+    themeColorSelected = Provider.of<CustomThemes>(context, listen: false).currentTheme;
+
+    if (themeColorSelected == null) {
+      setState(() {
+        themeColorSelected = 1;
+      });
+      Provider.of<CustomThemes>(context, listen: false).setTheme(1);
+    } else {
+      setState(() {
+        themeColorSelected = 0;
+      });
+      Provider.of<CustomThemes>(context, listen: false).setTheme(0);
+    }
+  }
+
+  void setTheme(int _value) {
+    setState(() {
+      themeColorSelected = _value;
+    });
+    Provider.of<CustomThemes>(context, listen: false).setTheme(_value);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
     return Drawer(
-
       backgroundColor: themeProvider.cBackGround,
       child: ListView(
         padding: const EdgeInsets.all(12.0),
@@ -89,6 +129,32 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           // end settings
+          // Theme
+          const SizedBox(height: 24),
+          Container(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text("Theme", style: themeProvider.tTextTitleDrawer)
+          ),
+          const SizedBox(height: 12),
+          Card(
+            elevation: 0,
+            color: themeProvider.cCardMessageInbox,
+            child: ListTile(
+              leading: themeColorSelected == 0 ? Icon(Icons.light_mode, color: themeProvider.cIcons) : Icon(Icons.dark_mode, color: themeProvider.cIcons),
+              title: Text('Switch Theme', style: themeProvider.tTextNormal),
+              onTap: () {
+                // Handle the tap
+                if (themeColorSelected == 0) {
+                  setTheme(1);
+                  widget.onThemeChange(1); // Use the callback with the new theme value
+                } else {
+                  setTheme(0);
+                  widget.onThemeChange(0); // Use the callback with the new theme value
+                }
+              },
+            ),
+          ),
+          // end theme
         ],
       ),
     );
