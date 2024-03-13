@@ -13,9 +13,11 @@ class CustomThemes with ChangeNotifier {
   Color cTextBold = Colors.black;
   Color cTextNormal = Colors.black;
   Color cTextSmall = Colors.black;
+  Color cTextMessageCard = Colors.black;
   Color cTextTabBar = Colors.black;
   Color cIcons = Colors.black;
   Color cCardMessageInbox = Colors.black;
+  Color cTabOptions = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextAppBar = const TextStyle(
@@ -48,6 +50,16 @@ class CustomThemes with ChangeNotifier {
     fontWeight: FontWeight.w600,
     fontSize: 22,
   );
+  TextStyle tTextMessageCard = const TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+  );
+  TextStyle tTextTabOption = const TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+  );
 
   int get currentTheme => _theme;
 
@@ -57,25 +69,29 @@ class CustomThemes with ChangeNotifier {
     if (value == 0) {
       // --- LIGHT ---
       cBackGround = Colors.white;
-      cTextAppBar = const Color(0xFF121212);
-      cTextTitle = Colors.blue;
+      cTextAppBar = const Color(0xFF7368F5); // Medium slate blue
+      cTextTitle = const Color(0xFF7368F5); // Medium slate blue
       cTextBold = const Color(0xFF121212);
       cTextNormal = const Color(0xFF121212);
       cTextSmall = Colors.grey.shade600;
       cTextTabBar = const Color(0xFF7699D4); // vista blue
-      cIcons = const Color(0xFF1F1F1F).withOpacity(0.4); // light grey
-      cCardMessageInbox = const Color(0xFF03F7EB).withOpacity(0.2); // light grey
+      cIcons = const Color(0xFFDCD9FC); // tropical indigo
+      cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
+      cTextMessageCard = Colors.white;
+      cTabOptions = const Color(0xFF7CC944);
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF121212);
-      cTextAppBar = Colors.white;
-      cTextTitle = Colors.white;
+      cTextAppBar = const Color(0xFF7368F5); // Medium slate blue
+      cTextTitle = const Color(0xFF7368F5); // Medium slate blue
       cTextBold = Colors.white;
       cTextNormal = Colors.white;
       cTextSmall = Colors.grey.shade400;
       cTextTabBar = const Color(0xFF90FCF9); // ice blue
-      cIcons = Colors.grey.shade500; // dark grey
-      cCardMessageInbox = const Color(0xFF1F1F1F); // dark grey
+      cIcons = const Color(0xFFDCD9FC); // tropical indigo
+      cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
+      cTextMessageCard = Colors.white;
+      cTabOptions = const Color(0xFF7CC944);
     }
     setTextStyles(value);
     notifyListeners();
@@ -112,7 +128,17 @@ class CustomThemes with ChangeNotifier {
     tTextTitleDrawer = TextStyle(
       color: cTextNormal,
       fontWeight: FontWeight.w600,
-      fontSize: 22,
+      fontSize: 18,
+    );
+    tTextMessageCard = TextStyle(
+      color: cTextMessageCard,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
+    );
+    tTextTabBar = TextStyle(
+      color: cTabOptions,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
     );
   }
 }

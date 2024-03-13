@@ -12,46 +12,53 @@ class MessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
-    return Card(
-      elevation: 0,
-      color: themeProvider.cCardMessageInbox,
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-      child: ListTile(
-        title: Text(message.content,
-            style: themeProvider.tTextNormal, overflow: TextOverflow.ellipsis),
-        trailing: Container(
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.only(top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: themeProvider.cCardMessageInbox,
-            borderRadius: BorderRadius.circular(8),
+    return Container(
+      margin: EdgeInsets.only(left: 12, right: 12, top: 8),
+      decoration: BoxDecoration(
+        color: themeProvider.cCardMessageInbox,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Card(
+        elevation: 0,
+        color: Colors.transparent,
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+        child: ListTile(
+          title: Text(message.content,
+              style: themeProvider.tTextMessageCard, overflow: TextOverflow.ellipsis),
+          trailing: Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(top: 8, bottom: 8),
+            decoration: BoxDecoration(
+              color: themeProvider.cCardMessageInbox,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            width: 50,
+            height: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildTrailingWidget(),
+              ],
+            ),
           ),
-          width: 50,
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildTrailingWidget(),
-            ],
-          ),
+          onTap: () {
+            // Handle tapping on the message card
+            // For example, navigate to a detailed view
+          },
         ),
-        onTap: () {
-          // Handle tapping on the message card
-          // For example, navigate to a detailed view
-        },
       ),
     );
   }
 
   Widget _buildTrailingWidget() {
     if (message.thumbUp == 0) {
-      return Icon(Icons.thumb_up_alt_outlined, color: Colors.grey.shade500, size: 20,);
+      return Icon(Icons.thumb_up_alt_outlined, color: Colors.grey.shade200, size: 20,);
     }
     if (message.thumbUp == 1) {
-      return Icon(Icons.thumb_up_alt_rounded, color: Colors.grey.shade500, size: 20);
+      return Icon(Icons.thumb_up_alt_rounded, color: Colors.grey.shade200, size: 20);
     }
     if (message.thumbUp == 2) {
-      return Icon(Icons.thumb_down, color: Colors.grey.shade500, size: 20);
+      return Icon(Icons.thumb_down, color: Colors.grey.shade200, size: 20);
     }
     return const SizedBox();
   }

@@ -70,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Mexage',
+                  'SeaNotes',
                   style: themeProvider.tTextAppBar,
                 ),
 
@@ -90,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
                         child: Image.asset(
                           'images/icon-mexage.png',
                           fit: BoxFit.fitHeight,
-                          color: themeProvider.cTextNormal,
+                          color: themeProvider.cTextTitle,
                         ),
                       ),
                 const SizedBox(width: 50),
@@ -98,7 +98,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             bottom: TabBar(
               dividerColor: Colors.transparent,
-              indicatorColor: themeProvider.cTextTabBar,
+              indicatorColor: themeProvider.cTabOptions,
               tabs: [
                 Tab(
                   child: Text(
