@@ -70,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'SeaNotes',
+                  'SeaBottle',
                   style: themeProvider.tTextAppBar,
                 ),
 
