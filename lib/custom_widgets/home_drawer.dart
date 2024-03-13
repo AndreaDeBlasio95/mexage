@@ -4,8 +4,9 @@ import '../theme/custom_themes.dart';
 
 class CustomDrawer extends StatefulWidget {
   final Function(int) onThemeChange;
+  final int? themeColorSelected;
 
-  const CustomDrawer({super.key, required this.onThemeChange});
+  const CustomDrawer({super.key, required this.onThemeChange, required this.themeColorSelected});
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -22,8 +23,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   void checkTheme() {
-    themeColorSelected = Provider.of<CustomThemes>(context, listen: false).currentTheme;
-
+    themeColorSelected = widget.themeColorSelected;
     if (themeColorSelected == null) {
       setTheme(0);
     }
@@ -40,7 +40,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
-
+    themeColorSelected ??= widget.themeColorSelected;
+    
     return Drawer(
       backgroundColor: themeProvider.cBackGround,
       child: ListView(
@@ -120,7 +121,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
               },
             ),
           ),
-          // end settings
           // Theme
           const SizedBox(height: 24),
           Container(

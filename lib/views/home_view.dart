@@ -60,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
         length: 2, // The number of tabs / views.
         child: Scaffold(
           backgroundColor: themeProvider.cBackGround,
-          drawer: CustomDrawer(onThemeChange: updateTheme), // Use the custom drawer here
+          drawer: CustomDrawer(onThemeChange: updateTheme, themeColorSelected: themeColorSelected,), // Use the custom drawer here
           appBar: AppBar(
             iconTheme: IconThemeData(
               color: themeProvider.cTextNormal,
