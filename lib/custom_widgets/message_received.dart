@@ -13,38 +13,45 @@ class MessageCard extends StatelessWidget {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
     return Container(
-      margin: EdgeInsets.only(left: 12, right: 12, top: 8),
+      margin: EdgeInsets.only(left: 16, right: 16, bottom: 8),
       decoration: BoxDecoration(
-        color: themeProvider.cCardMessageInbox,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Card(
-        elevation: 0,
-        color: Colors.transparent,
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-        child: ListTile(
-          title: Text(message.content,
-              style: themeProvider.tTextMessageCard, overflow: TextOverflow.ellipsis),
-          trailing: Container(
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.only(top: 8, bottom: 8),
-            decoration: BoxDecoration(
-              color: themeProvider.cCardMessageInbox,
-              borderRadius: BorderRadius.circular(24),
+      color: themeProvider.cCardShadow,
+      borderRadius: BorderRadius.circular(24),
+    ),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 6),
+        decoration: BoxDecoration(
+          color: themeProvider.cCardMessageInbox,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Card(
+          elevation: 0,
+          color: Colors.transparent,
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          child: ListTile(
+            title: Text(message.content,
+                style: themeProvider.tTextMessageCard, overflow: TextOverflow.ellipsis),
+            trailing: Container(
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(top: 8, bottom: 8),
+              decoration: BoxDecoration(
+                color: themeProvider.cCardMessageInbox,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              width: 50,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildTrailingWidget(),
+                ],
+              ),
             ),
-            width: 50,
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildTrailingWidget(),
-              ],
-            ),
+            onTap: () {
+              // Handle tapping on the message card
+              // For example, navigate to a detailed view
+            },
           ),
-          onTap: () {
-            // Handle tapping on the message card
-            // For example, navigate to a detailed view
-          },
         ),
       ),
     );

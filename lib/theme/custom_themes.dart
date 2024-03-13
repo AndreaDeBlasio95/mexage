@@ -18,6 +18,7 @@ class CustomThemes with ChangeNotifier {
   Color cIcons = Colors.black;
   Color cCardMessageInbox = Colors.black;
   Color cTabOptions = Colors.black;
+  Color cCardShadow = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextAppBar = const TextStyle(
@@ -79,6 +80,7 @@ class CustomThemes with ChangeNotifier {
       cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
       cTextMessageCard = Colors.white;
       cTabOptions = const Color(0xFF7CC944);
+      cCardShadow = const Color(0xFF137DCD);
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF121212);
@@ -92,6 +94,7 @@ class CustomThemes with ChangeNotifier {
       cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
       cTextMessageCard = Colors.white;
       cTabOptions = const Color(0xFF7CC944);
+      cCardShadow = const Color(0xFF137DCD);
     }
     setTextStyles(value);
     notifyListeners();
