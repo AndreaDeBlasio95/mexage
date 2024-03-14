@@ -13,6 +13,8 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> {
   int? themeColorSelected; // 0 for light, 1 for dark
+  double marginValueOpenBottle = 6;
+  double marginValueRegisterNow = 6;
 
   @override
   void initState() {
@@ -86,60 +88,93 @@ class _WelcomeViewState extends State<WelcomeView> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.11,
               ),
-              Container(
-                margin: EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                decoration: BoxDecoration(
-                  color: themeProvider.cCardShadow,
-                  borderRadius: BorderRadius.circular(24),
-                ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    marginValueOpenBottle = 0;
+                  });
+                  Navigator.pushNamed(context, '/home');
+                },
+                onLongPressStart: (_) {
+                  setState(() {
+                    marginValueOpenBottle = 0;
+                  });
+                },
+                onLongPressEnd: (_) {
+                  setState(() {
+                    marginValueOpenBottle = 6;
+                  });
+                },
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 6),
+                  margin: marginValueOpenBottle > 0 ? const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 0) : const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 6),
                   decoration: BoxDecoration(
-                    color: themeProvider.cCardMessageInbox,
-                    borderRadius: BorderRadius.circular(22),
+                    color: themeProvider.cCardShadow,
+                    borderRadius: BorderRadius.circular(24),
                   ),
-                  child: Card(
-                    elevation: 0,
-                    color: Colors.transparent,
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                    child: ListTile(
-                      title: Text("Open a Bottle!",
-                          style: themeProvider.tTextBoldMedium, textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/home');
-                      },
+                  child: Container(
+                    margin: marginValueOpenBottle > 0 ? const EdgeInsets.only(bottom: 6) : const EdgeInsets.only(bottom: 0),
+                    decoration: BoxDecoration(
+                      color: themeProvider.cCardMessageInbox,
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Card(
+                      elevation: 0,
+                      color: Colors.transparent,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 16),
+                      child: ListTile(
+                        title: Text("Open a Bottle!",
+                            style: themeProvider.tTextBoldMedium,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis),
+                      ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                decoration: BoxDecoration(
-                  color:themeProvider.cCardMessageInbox,
-                  borderRadius: BorderRadius.circular(24),
-                ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    marginValueRegisterNow = 0;
+                  });
+                },
+                onLongPressStart: (_) {
+                  setState(() {
+                    marginValueRegisterNow = 0;
+                  });
+                },
+                onLongPressEnd: (_) {
+                  setState(() {
+                    marginValueRegisterNow = 6;
+                  });
+                },
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 6, left: 2, right: 2, top: 1),
+                  margin: marginValueRegisterNow > 0 ? const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 0) : const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 6),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(22),
+                    color: themeProvider.cCardMessageInbox,
+                    borderRadius: BorderRadius.circular(24),
                   ),
-                  child: Card(
-                    elevation: 0,
-                    color: Colors.transparent,
-                    margin:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                    child: ListTile(
-                      title: Text("Register Now",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: themeProvider.cCardMessageInbox), textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis),
-                      onTap: () {
-                        // Handle tapping on the message card
-                        // For example, navigate to a detailed view
-                      },
+                  child: Container(
+                    margin: marginValueRegisterNow > 0 ? const EdgeInsets.only(left: 2, right: 2, top: 1, bottom: 6) : const EdgeInsets.only(bottom: 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Card(
+                      elevation: 0,
+                      color: Colors.transparent,
+                      margin: const EdgeInsets.only(
+                              top: 4, bottom: 4, left: 16, right: 16),
+                      child: ListTile(
+                        title: Text("Register Now",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: themeProvider.cCardMessageInbox),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis),
+                      ),
                     ),
                   ),
                 ),
