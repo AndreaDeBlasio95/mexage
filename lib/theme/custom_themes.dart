@@ -83,8 +83,8 @@ class CustomThemes with ChangeNotifier {
     if (value == 0) {
       // --- LIGHT ---
       cBackGround = Colors.white;
-      cTextAppBar = const Color(0xFF7D53DE); // Medium slate blue
-      cTextTitle = const Color(0xFF7D53DE); // Medium slate blue
+      cTextAppBar = const Color(0xFF4259F0); // Zaffre blue
+      cTextTitle = const Color(0xFF4259F0); // Medium slate blue
       cTextBold = const Color(0xFF00120B);
       cTextNormal = const Color(0xFF00120B);
       cTextSmall = Colors.grey.shade600;
@@ -100,12 +100,12 @@ class CustomThemes with ChangeNotifier {
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF141F25);
-      cTextAppBar = const Color(0xFF7D53DE); // Medium slate blue
-      cTextTitle = const Color(0xFF7D53DE); // Medium slate blue
+      cTextAppBar = const Color(0xFF7B8BF4); // RISD blue
+      cTextTitle = const Color(0xFF7B8BF4); // RISD blue
       cTextBold = Colors.white;
       cTextNormal = Colors.white;
       cTextSmall = Colors.grey.shade400;
-      cTextTabBar = const Color(0xFF90FCF9); // ice blue
+      cTextTabBar = const Color(0xFFF9F4F5); // ice blue
       cTextDisabled = const Color(0xFF505B63); // Payne's grey
       cIcons = const Color(0xFFDCD9FC); // tropical indigo
       cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
@@ -154,11 +154,6 @@ class CustomThemes with ChangeNotifier {
     );
     tTextMessageCard = TextStyle(
       color: cTextMessageCard,
-      fontWeight: FontWeight.w600,
-      fontSize: 16,
-    );
-    tTextTabBar = TextStyle(
-      color: cTabOptions,
       fontWeight: FontWeight.w600,
       fontSize: 16,
     );

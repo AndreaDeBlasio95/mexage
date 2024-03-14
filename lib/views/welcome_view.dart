@@ -65,14 +65,13 @@ class _WelcomeViewState extends State<WelcomeView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.25,
+                height: MediaQuery.of(context).size.height * 0.2,
               ),
               Container(
                 child: Image.asset(
-                  'images/icon-mexage.png',
+                  'images/icon-sea-bottle.png',
                   height: 200,
                   width: 200,
-                  color: themeProvider.cTextAppBar,
                 ),
               ),
               const SizedBox(height: 12),
@@ -86,7 +85,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                 style: themeProvider.tTextTitleDrawer,
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.11,
+                height: MediaQuery.of(context).size.height * 0.15  ,
               ),
               GestureDetector(
                 onTap: () {

@@ -80,15 +80,16 @@ class _HomeViewState extends State<HomeView> {
                         height: 20,
                         width: 20,
                         child: Image.asset(
-                          'images/icon-mexage.png',
+                          'images/icon-sea-bottle-2.png',
                           fit: BoxFit.fitHeight,
+                          color: themeProvider.cTextTitle,
                         ),
                       )
                     : SizedBox(
                         height: 20,
                         width: 20,
                         child: Image.asset(
-                          'images/icon-mexage.png',
+                          'images/icon-sea-bottle-2.png',
                           fit: BoxFit.fitHeight,
                           color: themeProvider.cTextTitle,
                         ),
@@ -98,7 +99,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             bottom: TabBar(
               dividerColor: Colors.transparent,
-              indicatorColor: themeProvider.cTabOptions,
+              indicatorColor: themeProvider.cTextTabBar,
               tabs: [
                 Tab(
                   child: Text(
