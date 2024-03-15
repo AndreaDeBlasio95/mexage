@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import '../theme/custom_themes.dart';
@@ -15,12 +17,84 @@ class _WelcomeViewState extends State<WelcomeView> {
   double marginValueOpenBottle = 6;
   double marginValueRegisterNow = 6;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
+
+    // Listen to the auth state changes
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        // Perform actions if the user is signed out
+      } else {
+        print('User is signed in!');
+        Navigator.pushNamed(context, '/home');
+        // Perform actions if the user is signed in, such as redirecting to a home screen
+      }
+    });
   }
 
+
+  Future<User?> _handleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        final UserCredential authResult = await _auth.signInWithCredential(credential);
+        final User? user = authResult.user;
+
+
+        setState(() {
+          marginValueRegisterNow = 6;
+          marginValueOpenBottle = 6;
+        });
+        print("User Name: ${user!.displayName}");
+
+        return user;
+      } else {
+
+        setState(() {
+          marginValueRegisterNow = 6;
+          marginValueOpenBottle = 6;
+        });
+        print("User cancelled the login");
+
+        return null;
+      }
+    } catch (error) {
+
+      setState(() {
+        marginValueRegisterNow = 6;
+        marginValueOpenBottle = 6;
+      });
+      print("Error signing in with Google: $error");
+      return null;
+    }
+  }
+
+
+  Future<void> _handleSignOut() async {
+    try {
+      await googleSignIn.signOut();
+      await _auth.signOut();
+      print("User signed out successfully");
+    } catch (error) {
+      print("Error signing out: $error");
+    }
+  }
+
+
+  // theme ---
   void checkTheme() {
     themeColorSelected =
         Provider.of<CustomThemes>(context, listen: false).currentTheme;
@@ -50,7 +124,7 @@ class _WelcomeViewState extends State<WelcomeView> {
       themeColorSelected = value; // Update the theme or state based on value
     });
   }
-
+  // end theme ---
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
@@ -86,6 +160,8 @@ class _WelcomeViewState extends State<WelcomeView> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.15  ,
               ),
+              // Login
+              /*
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -130,11 +206,18 @@ class _WelcomeViewState extends State<WelcomeView> {
                   ),
                 ),
               ),
+
+               */
               const SizedBox(height: 8),
+              // Sign In With Google -----
               GestureDetector(
-                onTap: () {
-                  setState(() {
+                onTap: () async {
+                  setState(() async {
                     marginValueRegisterNow = 0;
+                    User? _user = await _handleSignIn();
+                    if (mounted && _user != null) {
+                      Navigator.pushNamed(context, '/home');
+                    }
                   });
                 },
                 onLongPressStart: (_) {
@@ -165,7 +248,12 @@ class _WelcomeViewState extends State<WelcomeView> {
                       margin: const EdgeInsets.only(
                               top: 4, bottom: 4, left: 16, right: 16),
                       child: ListTile(
-                        title: Text("Register Now",
+                        leading: Image.asset(
+                          'images/icon-google.png',
+                          height: 28,
+                          width: 28,
+                        ),
+                        title: Text("Sign in with Google!",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -177,6 +265,48 @@ class _WelcomeViewState extends State<WelcomeView> {
                   ),
                 ),
               ),
+              // Sign Out -----
+              /*
+              GestureDetector(
+                onTap: () {
+                  _handleSignOut();
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 6),
+                  decoration: BoxDecoration(
+                    color: themeProvider.cCardMessageInbox,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 2, right: 2, top: 1, bottom: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Card(
+                      elevation: 0,
+                      color: Colors.transparent,
+                      margin: const EdgeInsets.only(
+                          top: 4, bottom: 4, left: 16, right: 16),
+                      child: ListTile(
+                        leading: Image.asset(
+                          'images/icon-google.png',
+                          height: 28,
+                          width: 28,
+                        ),
+                        title: Text("Sign out",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: themeProvider.cCardMessageInbox),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+               */
             ],
           ),
         ),
