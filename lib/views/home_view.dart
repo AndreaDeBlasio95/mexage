@@ -132,7 +132,7 @@ class _HomeViewState extends State<HomeView> {
           ],
           iconSize: 24,
           selectedIconTheme: IconThemeData(
-            size: 28\,
+            size: 28,
           ),
           selectedItemColor: themeProvider.cTextNavigationSelected,
           unselectedItemColor: themeProvider.cTextNavigationNotSelected,
