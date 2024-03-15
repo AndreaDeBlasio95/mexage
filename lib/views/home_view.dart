@@ -13,6 +13,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  bool _isLoading = true;
   int? themeColorSelected; // 0 for light, 1 for dark
   int _selectedIndex = 0;
 
@@ -34,20 +35,20 @@ class _HomeViewState extends State<HomeView> {
     WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
   }
 
-  void checkTheme() {
-    themeColorSelected =
-        Provider.of<CustomThemes>(context, listen: false).currentTheme;
+  Future<void> checkTheme() async {
+    if (mounted) {
+      themeColorSelected =
+          Provider.of<CustomThemes>(context, listen: false).currentTheme;
 
-    if (themeColorSelected == null) {
+      if (themeColorSelected == null) {
+        Provider.of<CustomThemes>(context, listen: false).setTheme(1);
+      } else {
+        Provider.of<CustomThemes>(context, listen: false).setTheme(0);
+      }
+
       setState(() {
-        themeColorSelected = 1;
+        _isLoading = false; // Data has finished loading
       });
-      Provider.of<CustomThemes>(context, listen: false).setTheme(1);
-    } else {
-      setState(() {
-        themeColorSelected = 0;
-      });
-      Provider.of<CustomThemes>(context, listen: false).setTheme(0);
     }
   }
 
@@ -149,7 +150,9 @@ class _HomeViewState extends State<HomeView> {
           onTap: _onItemTapped,
         ),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _widgetOptions.elementAt(_selectedIndex),
     );
   }
 }
