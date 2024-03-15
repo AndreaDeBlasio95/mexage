@@ -3,8 +3,16 @@ import 'package:mexage/theme/custom_themes.dart';
 import 'package:mexage/views/home_view.dart';
 import 'package:mexage/views/welcome_view.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  /*
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+   */
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => CustomThemes()),
   ], child: const MyApp()));

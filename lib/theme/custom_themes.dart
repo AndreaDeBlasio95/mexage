@@ -22,6 +22,8 @@ class CustomThemes with ChangeNotifier {
   Color cTabOptions = Colors.black;
   Color cCardShadow = Colors.black;
   Color cTextWelcomeTitle = Colors.black;
+  Color cTextNavigationSelected = Colors.black;
+  Color cTextNavigationNotSelected = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextAppBar = const TextStyle(
@@ -74,6 +76,16 @@ class CustomThemes with ChangeNotifier {
     fontWeight: FontWeight.w700,
     fontSize: 48,
   );
+  TextStyle tTextNavigationSelected = const TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.w700,
+    fontSize: 14,
+  );
+  TextStyle tTextNavigationNotSelected = const TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.w700,
+    fontSize: 14,
+  );
 
   int get currentTheme => _theme;
 
@@ -97,6 +109,8 @@ class CustomThemes with ChangeNotifier {
       cCardShadow = const Color(0xFF137DCD);
       cTextWelcomeTitle = const Color(0xFF7D53DE); // Medium slate blue
       cTextBoldMedium = Colors.white;
+      cTextNavigationSelected = const Color(0xFF137DCD);
+      cTextNavigationNotSelected = const Color(0xFF505B63);
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF141F25);
@@ -114,6 +128,8 @@ class CustomThemes with ChangeNotifier {
       cCardShadow = const Color(0xFF137DCD);
       cTextWelcomeTitle = const Color(0xFF7D53DE); // Medium slate blue
       cTextBoldMedium = const Color(0xFF141F25);
+      cTextNavigationSelected = Colors.white;
+      cTextNavigationNotSelected = const Color(0xFF505B63);
     }
     setTextStyles(value);
     notifyListeners();
@@ -166,6 +182,16 @@ class CustomThemes with ChangeNotifier {
       color: cTextBoldMedium,
       fontWeight: FontWeight.bold,
       fontSize: 22,
+    );
+    tTextNavigationSelected = TextStyle(
+      color: cTextNavigationSelected,
+      fontWeight: FontWeight.w800,
+      fontSize: 14,
+    );
+    tTextNavigationNotSelected = TextStyle(
+      color: cTextNavigationNotSelected,
+      fontWeight: FontWeight.w500,
+      fontSize: 14,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mexage/theme/custom_themes.dart';
+import 'package:mexage/views/board_view.dart';
 import 'package:provider/provider.dart';
 
 import '../custom_widgets/home_drawer.dart';
@@ -13,6 +14,19 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int? themeColorSelected; // 0 for light, 1 for dark
+  int _selectedIndex = 0;
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    BoardView(),
+    Text('Search Page'),
+    Text('Profile Page'),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -21,7 +35,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void checkTheme() {
-    themeColorSelected = Provider.of<CustomThemes>(context, listen: false).currentTheme;
+    themeColorSelected =
+        Provider.of<CustomThemes>(context, listen: false).currentTheme;
 
     if (themeColorSelected == null) {
       setState(() {
@@ -49,123 +64,92 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
-    return Container(
-      color: themeProvider.cBackGround,
-      child: DefaultTabController(
-        length: 2, // The number of tabs / views.
-        child: Scaffold(
-          backgroundColor: themeProvider.cBackGround,
-          drawer: CustomDrawer(onThemeChange: updateTheme, themeColorSelected: themeColorSelected,), // Use the custom drawer here
-          appBar: AppBar(
-            iconTheme: IconThemeData(
-              color: themeProvider.cTextNormal,
+    return Scaffold(
+      backgroundColor: themeProvider.cBackGround,
+      drawer: CustomDrawer(
+        onThemeChange: updateTheme,
+        themeColorSelected: themeColorSelected,
+      ),
+      // Use the custom drawer here
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: themeProvider.cTextNormal,
+        ),
+        backgroundColor: themeProvider.cBackGround,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'SeaBottle',
+              style: themeProvider.tTextAppBar,
             ),
-            backgroundColor: themeProvider.cBackGround,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'SeaBottle',
-                  style: themeProvider.tTextAppBar,
-                ),
-
-                const SizedBox(width: 4),
-                themeColorSelected == 1
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Image.asset(
-                          'images/icon-sea-bottle-2.png',
-                          fit: BoxFit.fitHeight,
-                          color: themeProvider.cTextTitle,
-                        ),
-                      )
-                    : SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Image.asset(
-                          'images/icon-sea-bottle-2.png',
-                          fit: BoxFit.fitHeight,
-                          color: themeProvider.cTextTitle,
-                        ),
-                      ),
-                const SizedBox(width: 50),
-              ],
-            ),
-            bottom: TabBar(
-              dividerColor: Colors.transparent,
-              indicatorColor: themeProvider.cTextTabBar,
-              tabs: [
-                Tab(
-                  child: Text(
-                    'Inbox',
-                    style: themeProvider.tTextTabBar,
+            const SizedBox(width: 4),
+            themeColorSelected == 1
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: Image.asset(
+                      'images/icon-sea-bottle-2.png',
+                      fit: BoxFit.fitHeight,
+                      color: themeProvider.cTextTitle,
+                    ),
+                  )
+                : SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: Image.asset(
+                      'images/icon-sea-bottle-2.png',
+                      fit: BoxFit.fitHeight,
+                      color: themeProvider.cTextTitle,
+                    ),
                   ),
-                ),
-                Tab(
-                  child: Text(
-                    'Sent',
-                    style: themeProvider.tTextTabBar,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          body: Container(
-            color: themeProvider.cBackGround,
-            child: TabBarView(
-              children: [
-                // The views for each tab.
-                InboxView(
-                  messages: [
-                    Message(
-                      id: "1",
-                      content: 'Hello, how are you?',
-                      rank: 1,
-                      ranked: false,
-                      thumbUp: 0,
-                    ),
-                    Message(
-                      id: "2",
-                      content: 'I am doing well, thank you! This is a long message',
-                      rank: 2,
-                      ranked: true,
-                      thumbUp: 1,
-                    ),
-                    Message(
-                      id: "3",
-                      content: 'Short message',
-                      rank: 2,
-                      ranked: true,
-                      thumbUp: 2,
-                    ),
-                  ],
-                ),
-                Center(child: Text('Sent', style: themeProvider.tTextBold)),
-              ],
-            ),
-          ),
-          // Floating action button
-          /*
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              int currentTheme = themeProvider.currentTheme;
-              if (currentTheme == 0) {
-                setTheme(1);
-              } else {
-                setTheme(0);
-              }
-            },
-            child: const Icon(Icons.add),
-          ),
-           */
+            const SizedBox(width: 50),
+          ],
         ),
       ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.only(bottom: 4),
+        child: BottomNavigationBar(
+          elevation: 0,
+          backgroundColor: themeProvider.cBackGround,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard),
+              label: 'Dashboard',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_rounded),
+              label: 'Received',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          iconSize: 24,
+          selectedIconTheme: IconThemeData(
+            size: 28\,
+          ),
+          selectedItemColor: themeProvider.cTextNavigationSelected,
+          unselectedItemColor: themeProvider.cTextNavigationNotSelected,
+          selectedLabelStyle: TextStyle(
+            // Customize the style of the selected label here
+            fontWeight: FontWeight.bold, // for example, make it bold
+            fontSize: 14, // for example, increase font size
+          ),
+          unselectedLabelStyle: TextStyle(
+            // Customize the style of the unselected label here
+            fontSize: 12, // for example, decrease font size
+          ),
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
+      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
     );
   }
 }

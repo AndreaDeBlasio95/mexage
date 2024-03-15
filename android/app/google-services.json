@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "226164912442",
+    "project_id": "seabottle-e8d11",
+    "storage_bucket": "seabottle-e8d11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226164912442:android:36d0cd70ea599f9d08e003",
+        "android_client_info": {
+          "package_name": "com.andreadeblasio.mexage.mexage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4ndSBR_fhyV6JysIethnC37RmcWixaFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

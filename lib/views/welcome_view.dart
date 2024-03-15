@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mexage/views/home_view.dart';
 import 'package:provider/provider.dart';
 
 import '../theme/custom_themes.dart';
