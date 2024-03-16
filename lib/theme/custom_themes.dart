@@ -24,6 +24,8 @@ class CustomThemes with ChangeNotifier {
   Color cTextWelcomeTitle = Colors.black;
   Color cTextNavigationSelected = Colors.black;
   Color cTextNavigationNotSelected = Colors.black;
+  Color cRed = Colors.black;
+  Color cOutline = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextAppBar = const TextStyle(
@@ -111,6 +113,8 @@ class CustomThemes with ChangeNotifier {
       cTextBoldMedium = Colors.white;
       cTextNavigationSelected = const Color(0xFF137DCD);
       cTextNavigationNotSelected = const Color(0xFF505B63);
+      cRed = const Color(0xFFD32F2F);
+      cOutline = const Color(0xFF505B63);
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF141F25);
@@ -130,6 +134,8 @@ class CustomThemes with ChangeNotifier {
       cTextBoldMedium = const Color(0xFF141F25);
       cTextNavigationSelected = Colors.white;
       cTextNavigationNotSelected = const Color(0xFF505B63);
+      cRed = const Color(0xFFD32F2F);
+      cOutline = Colors.grey.shade300;
     }
     setTextStyles(value);
     notifyListeners();
@@ -155,7 +161,7 @@ class CustomThemes with ChangeNotifier {
     );
     tTextBold = TextStyle(
       color: cTextBold,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w700,
       fontSize: 24,
     );
     tTextTabBar = TextStyle(

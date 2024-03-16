@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -41,6 +42,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
     themeColorSelected ??= widget.themeColorSelected;
+    final SignInProvider _signInProvider = Provider.of<SignInProvider>(context, listen: false);
 
     return Drawer(
       backgroundColor: themeProvider.cBackGround,
@@ -142,6 +144,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 } else {
                   setTheme(0);
                   widget.onThemeChange(0); // Use the callback with the new theme value
+                }
+              },
+            ),
+          ),
+          // end theme
+          // Logout
+          const SizedBox(height: 24),
+          Container(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text("Logout", style: themeProvider.tTextTitleDrawer)
+          ),
+          const SizedBox(height: 12),
+          Card(
+            elevation: 0,
+            color: themeProvider.cRed,
+            child: ListTile(
+              leading: themeColorSelected == 0 ? Icon(Icons.logout_rounded, color: Colors.white) : Icon(Icons.logout_rounded, color: Colors.white),
+              title: Text('Logout', style: themeProvider.tTextMessageCard),
+              onTap: () async {
+                await _signInProvider.handleSignOut();
+                if (mounted){
+                  Navigator.pushReplacementNamed(context, '/login');
                 }
               },
             ),

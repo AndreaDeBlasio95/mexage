@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../theme/custom_themes.dart';
@@ -18,13 +19,11 @@ class _WelcomeViewState extends State<WelcomeView> {
   double marginValueOpenBottle = 6;
   double marginValueRegisterNow = 6;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-
   @override
   void initState() {
     super.initState();
-
+    isUserLogged();
+    /*
     // Listen to the auth state changes
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
@@ -37,9 +36,25 @@ class _WelcomeViewState extends State<WelcomeView> {
       }
     });
 
+     */
+
     //WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
   }
-
+  Future<void> isUserLogged () async {
+    final SignInProvider _signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    bool isLogged = await _signInProvider.isUserLoggedIn();
+    if (isLogged) {
+      if (mounted) {
+        Navigator.pushNamed(context, '/home');
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        checkTheme();
+      });
+    }
+  }
+  /*
   Future<User?> _handleSignIn() async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
@@ -82,17 +97,7 @@ class _WelcomeViewState extends State<WelcomeView> {
       return null;
     }
   }
-
-  Future<void> _handleSignOut() async {
-    try {
-      await googleSignIn.signOut();
-      await _auth.signOut();
-      print("User signed out successfully");
-    } catch (error) {
-      print("Error signing out: $error");
-    }
-  }
-
+*/
   // theme ---
   void checkTheme() {
     themeColorSelected =
@@ -111,23 +116,11 @@ class _WelcomeViewState extends State<WelcomeView> {
     }
   }
 
-  void setTheme(int _value) {
-    setState(() {
-      themeColorSelected = _value;
-    });
-    Provider.of<CustomThemes>(context, listen: false).setTheme(_value);
-  }
-
-  void updateTheme(int value) {
-    setState(() {
-      themeColorSelected = value; // Update the theme or state based on value
-    });
-  }
-
   // end theme ---
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
+    final SignInProvider _signInProvider = Provider.of<SignInProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -216,9 +209,9 @@ class _WelcomeViewState extends State<WelcomeView> {
                       onTap: () async {
                         setState(() async {
                           marginValueRegisterNow = 0;
-                          User? _user = await _handleSignIn();
+                          User? _user = await _signInProvider.handleSignIn();
                           if (mounted && _user != null) {
-                            Navigator.pushNamed(context, '/home');
+                            Navigator.pushReplacementNamed(context, '/home');
                           }
                         });
                       },

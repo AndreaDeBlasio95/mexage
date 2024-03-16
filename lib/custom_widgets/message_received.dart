@@ -14,7 +14,7 @@ class MessageCard extends StatelessWidget {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
     return Container(
-      margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: themeProvider.cCardShadow,
         borderRadius: BorderRadius.circular(24),

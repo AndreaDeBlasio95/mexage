@@ -132,26 +132,24 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
           iconSize: 24,
-          selectedIconTheme: IconThemeData(
+          selectedIconTheme: const IconThemeData(
             size: 28,
           ),
           selectedItemColor: themeProvider.cTextNavigationSelected,
           unselectedItemColor: themeProvider.cTextNavigationNotSelected,
-          selectedLabelStyle: TextStyle(
-            // Customize the style of the selected label here
-            fontWeight: FontWeight.bold, // for example, make it bold
-            fontSize: 14, // for example, increase font size
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
           ),
-          unselectedLabelStyle: TextStyle(
-            // Customize the style of the unselected label here
-            fontSize: 12, // for example, decrease font size
+          unselectedLabelStyle: const TextStyle(
+            fontSize: 12,
           ),
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
         ),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _widgetOptions.elementAt(_selectedIndex),
     );
   }
