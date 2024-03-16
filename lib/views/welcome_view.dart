@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
+import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../theme/custom_themes.dart';
@@ -210,6 +211,10 @@ class _WelcomeViewState extends State<WelcomeView> {
                         setState(() async {
                           marginValueRegisterNow = 0;
                           User? _user = await _signInProvider.handleSignIn();
+                          UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
+                          if (_user != null) {
+                            _userProvider.registerOrGetUser(context);
+                          }
                           if (mounted && _user != null) {
                             Navigator.pushReplacementNamed(context, '/home');
                           }
