@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/sign_in_provider.dart';
+import '../providers/user_provider.dart';
 import '../theme/custom_themes.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -60,7 +61,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.person, color: themeProvider.cIcons),
-              title: Text('Nickname', style: themeProvider.tTextMessageCardDrawer),
+              title: Text('castaway-52018147629', style: themeProvider.tTextMessageCardDrawer, overflow: TextOverflow.ellipsis,),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
@@ -72,7 +73,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.email, color: themeProvider.cIcons),
-              title: Text('Email', style: themeProvider.tTextMessageCardDrawer),
+              title: Text('${_signInProvider.currentUser!.email}', style: themeProvider.tTextMessageCardDrawer, overflow: TextOverflow.ellipsis,),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
@@ -87,18 +88,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
               child: Text("Settings", style: themeProvider.tTextTitleDrawer)
           ),
           const SizedBox(height: 12),
-          Card(
-            elevation: 0,
-            color: themeProvider.cCardMessageInbox,
-            child: ListTile(
-              leading: Icon(Icons.settings, color: themeProvider.cIcons),
-              title: Text('Theme', style: themeProvider.tTextMessageCardDrawer),
-              onTap: () {
-                // Handle the tap
-                Navigator.pop(context); // Close the drawer
-              },
-            ),
-          ),
           Card(
             elevation: 0,
             color: themeProvider.cCardMessageInbox,
@@ -123,13 +112,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
               },
             ),
           ),
-          // Theme
-          const SizedBox(height: 24),
-          Container(
-              padding: const EdgeInsets.only(left: 8),
-              child: Text("Theme", style: themeProvider.tTextTitleDrawer)
-          ),
-          const SizedBox(height: 12),
           Card(
             elevation: 0,
             color: themeProvider.cCardMessageInbox,
@@ -149,6 +131,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           // end theme
+          SizedBox(height: MediaQuery.of(context).size.height * 0.2),
           // Logout
           const SizedBox(height: 24),
           Container(

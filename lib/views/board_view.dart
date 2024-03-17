@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mexage/utils/utils.dart';
 import 'package:provider/provider.dart';
 import '../custom_widgets/outline_text.dart';
 import '../models/message_model.dart';

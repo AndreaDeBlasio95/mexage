@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
   static const List<Widget> _widgetOptions = <Widget>[
     BoardView(),
     Text('Search Page'),
-    Text('Profile Page'),
+    Text('Sent Page'),
   ];
 
   void _onItemTapped(int index) {
@@ -125,12 +125,12 @@ class _HomeViewState extends State<HomeView> {
               label: 'Board',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_rounded),
+              icon: Icon(Icons.all_inbox_rounded),
               label: 'Received',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.send_rounded),
+              label: 'Sent',
             ),
           ],
           iconSize: 24,
