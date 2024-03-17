@@ -74,6 +74,7 @@ class CustomThemes with ChangeNotifier {
     fontSize: 14,
   );
   TextStyle tTextWelcomeTitle = const TextStyle(
+    fontFamily: 'nunito',
     color: Colors.white,
     fontWeight: FontWeight.w700,
     fontSize: 48,
@@ -145,56 +146,67 @@ class CustomThemes with ChangeNotifier {
   // Set Text Style
   void setTextStyles (int value) {
     tTextAppBar = TextStyle(
+      fontFamily: 'nunito',
       color: cTextAppBar,
       fontWeight: FontWeight.w700,
       fontSize: 22,
     );
     tTextNormal = TextStyle(
+      fontFamily: 'nunito',
       color: cTextNormal,
-      fontWeight: FontWeight.normal,
+      fontWeight: FontWeight.w500,
       fontSize: 16,
     );
     tTextSmall = TextStyle(
+      fontFamily: 'nunito',
       color: cTextSmall,
       fontWeight: FontWeight.w600,
       fontSize: 10,
     );
     tTextBold = TextStyle(
+      fontFamily: 'nunito',
       color: cTextBold,
       fontWeight: FontWeight.w700,
       fontSize: 24,
     );
     tTextTabBar = TextStyle(
+      fontFamily: 'nunito',
       color: cTextTabBar,
       fontWeight: FontWeight.w600,
       fontSize: 16,
     );
     tTextTitleDrawer = TextStyle(
+      fontFamily: 'nunito',
       color: cTextNormal,
       fontWeight: FontWeight.w600,
       fontSize: 18,
     );
     tTextMessageCard = TextStyle(
+      fontFamily: 'nunito',
       color: cTextMessageCard,
       fontWeight: FontWeight.w600,
       fontSize: 16,
     );
     tTextWelcomeTitle = TextStyle(
+      fontFamily: 'madami',
       color: cTextWelcomeTitle,
       fontWeight: FontWeight.w800,
       fontSize: 36,
     );
     tTextBoldMedium = TextStyle(
+      fontFamily: 'nunito',
       color: cTextBoldMedium,
       fontWeight: FontWeight.bold,
       fontSize: 22,
     );
     tTextNavigationSelected = TextStyle(
+      fontFamily: 'nunito',
       color: cTextNavigationSelected,
       fontWeight: FontWeight.w800,
       fontSize: 14,
     );
     tTextNavigationNotSelected = TextStyle(
+      fontFamily: 'nunito',
       color: cTextNavigationNotSelected,
       fontWeight: FontWeight.w500,
       fontSize: 14,
