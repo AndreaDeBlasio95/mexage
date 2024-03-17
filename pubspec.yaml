@@ -83,8 +83,7 @@ flutter:
      - family: nunito
        fonts:
          - asset: fonts/nunito/Nunito-VariableFont_wght.ttf
-         - asset: fonts/nunito/Nunito-Italic-VariableFont_wght.ttf
-           style: italic
+           style: normal
      - family: madami
        fonts:
          - asset: fonts/madami/MadimiOne-Regular.ttf

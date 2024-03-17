@@ -1,4 +1,6 @@
 // Light Theme
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class CustomThemes with ChangeNotifier {
@@ -26,10 +28,16 @@ class CustomThemes with ChangeNotifier {
   Color cTextNavigationNotSelected = Colors.black;
   Color cRed = Colors.black;
   Color cOutline = Colors.black;
+  Color cOutlineBlue = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextAppBar = const TextStyle(
     color: Colors.blue,
+    fontWeight: FontWeight.w700,
+    fontSize: 22,
+  );
+  TextStyle tTextMedium = const TextStyle(
+    color: Colors.black,
     fontWeight: FontWeight.w700,
     fontSize: 22,
   );
@@ -115,7 +123,8 @@ class CustomThemes with ChangeNotifier {
       cTextNavigationSelected = const Color(0xFF137DCD);
       cTextNavigationNotSelected = const Color(0xFF505B63);
       cRed = const Color(0xFFD32F2F);
-      cOutline = const Color(0xFF505B63);
+      cOutlineBlue = const Color(0xFFA7D6FF);
+      cOutline = const Color(0xFFE5E5E5);
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF141F25);
@@ -136,7 +145,8 @@ class CustomThemes with ChangeNotifier {
       cTextNavigationSelected = Colors.white;
       cTextNavigationNotSelected = const Color(0xFF505B63);
       cRed = const Color(0xFFD32F2F);
-      cOutline = Colors.grey.shade300;
+      cOutlineBlue = const Color(0xFFA7D6FF);
+      cOutline = const Color(0xFFE5E5E5);
     }
     setTextStyles(value);
     notifyListeners();
@@ -156,11 +166,25 @@ class CustomThemes with ChangeNotifier {
       color: cTextNormal,
       fontWeight: FontWeight.w500,
       fontSize: 16,
+      fontVariations: const [
+        FontVariation('wght', 500),
+        FontVariation('wght', 500)
+      ],
+    );
+    tTextMedium = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextNormal,
+      fontWeight: FontWeight.w900,
+      fontSize: 20,
+      fontVariations: const [
+        FontVariation('wght', 700),
+        FontVariation('wght', 700)
+      ],
     );
     tTextSmall = TextStyle(
       fontFamily: 'nunito',
       color: cTextSmall,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       fontSize: 10,
     );
     tTextBold = TextStyle(
@@ -168,6 +192,10 @@ class CustomThemes with ChangeNotifier {
       color: cTextBold,
       fontWeight: FontWeight.w700,
       fontSize: 24,
+      fontVariations: const [
+        FontVariation('wght', 700),
+        FontVariation('wght', 700)
+      ],
     );
     tTextTabBar = TextStyle(
       fontFamily: 'nunito',

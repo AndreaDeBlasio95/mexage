@@ -151,7 +151,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                     const SizedBox(height: 20),
                     Text(
                       'Send and receive messages in a bottle.',
-                      style: themeProvider.tTextTitleDrawer,
+                      style: themeProvider.tTextMedium,
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.15,
@@ -237,7 +237,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                             : const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 8, top: 6),
                         decoration: BoxDecoration(
-                          color: themeProvider.cCardMessageInbox,
+                          color: themeProvider.cOutlineBlue,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Container(
