@@ -60,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.person, color: themeProvider.cIcons),
-              title: Text('Nickname', style: themeProvider.tTextMessageCard),
+              title: Text('Nickname', style: themeProvider.tTextMessageCardDrawer),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
@@ -72,7 +72,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.email, color: themeProvider.cIcons),
-              title: Text('Email', style: themeProvider.tTextMessageCard),
+              title: Text('Email', style: themeProvider.tTextMessageCardDrawer),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
@@ -92,7 +92,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.settings, color: themeProvider.cIcons),
-              title: Text('Theme', style: themeProvider.tTextMessageCard),
+              title: Text('Theme', style: themeProvider.tTextMessageCardDrawer),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
@@ -104,7 +104,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.notifications, color: themeProvider.cIcons),
-              title: Text('Notifications', style: themeProvider.tTextMessageCard),
+              title: Text('Notifications', style: themeProvider.tTextMessageCardDrawer),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
@@ -116,7 +116,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.security, color: themeProvider.cIcons),
-              title: Text('Security', style: themeProvider.tTextMessageCard),
+              title: Text('Security', style: themeProvider.tTextMessageCardDrawer),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
@@ -135,7 +135,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: themeColorSelected == 0 ? Icon(Icons.light_mode, color: themeProvider.cIcons) : Icon(Icons.dark_mode, color: themeProvider.cIcons),
-              title: Text('Switch Theme', style: themeProvider.tTextMessageCard),
+              title: Text('Switch Theme', style: themeProvider.tTextMessageCardDrawer),
               onTap: () {
                 // Handle the tap
                 if (themeColorSelected == 0) {
@@ -161,7 +161,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cRed,
             child: ListTile(
               leading: themeColorSelected == 0 ? Icon(Icons.logout_rounded, color: Colors.white) : Icon(Icons.logout_rounded, color: Colors.white),
-              title: Text('Logout', style: themeProvider.tTextMessageCard),
+              title: Text('Logout', style: themeProvider.tTextMessageCardDrawer),
               onTap: () async {
                 await _signInProvider.handleSignOut();
                 if (mounted){

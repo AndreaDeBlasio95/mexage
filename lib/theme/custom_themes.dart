@@ -18,6 +18,7 @@ class CustomThemes with ChangeNotifier {
   Color cTextNormal = Colors.black;
   Color cTextSmall = Colors.black;
   Color cTextMessageCard = Colors.black;
+  Color cTextMessageCardDrawer = Colors.black;
   Color cTextTabBar = Colors.black;
   Color cTextDisabled = Colors.black;
   Color cIcons = Colors.black;
@@ -83,6 +84,11 @@ class CustomThemes with ChangeNotifier {
     fontWeight: FontWeight.w600,
     fontSize: 16,
   );
+  TextStyle tTextMessageCardDrawer = const TextStyle(
+    fontFamily: 'nunito',
+    color: Colors.blue,
+    fontSize: 16,
+  );
   TextStyle tTextTabOption = const TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.w600,
@@ -124,8 +130,9 @@ class CustomThemes with ChangeNotifier {
       cIcons = const Color(0xFFDCD9FC); // tropical indigo
       cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
       cTextMessageCard = Colors.white;
+      cTextMessageCardDrawer = Colors.white;
       cTabOptions = const Color(0xFF7CC944);
-      cCardShadow = const Color(0xFF137DCD);
+      cCardShadow = const Color(0xFF329BEC);
       cTextWelcomeTitle = const Color(0xFF7D53DE); // Medium slate blue
       cTextBoldMedium = Colors.white;
       cTextNavigationSelected = const Color(0xFF137DCD);
@@ -147,8 +154,9 @@ class CustomThemes with ChangeNotifier {
       cIcons = const Color(0xFFDCD9FC); // tropical indigo
       cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
       cTextMessageCard = Colors.white;
+      cTextMessageCardDrawer = Colors.white;
       cTabOptions = const Color(0xFF7CC944);
-      cCardShadow = const Color(0xFF137DCD);
+      cCardShadow = const Color(0xFF329BEC);
       cTextWelcomeTitle = const Color(0xFF7D53DE); // Medium slate blue
       cTextBoldMedium = const Color(0xFF141F25);
       cTextNavigationSelected = Colors.white;
@@ -231,8 +239,18 @@ class CustomThemes with ChangeNotifier {
     tTextMessageCard = TextStyle(
       fontFamily: 'nunito',
       color: cTextMessageCard,
-      fontWeight: FontWeight.w600,
+      fontSize: 18,
+      fontVariations: const [
+        FontVariation('wght', 600),
+      ],
+    );
+     tTextMessageCardDrawer = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextMessageCardDrawer,
       fontSize: 16,
+      fontVariations: const [
+        FontVariation('wght', 500),
+      ],
     );
     tTextWelcomeTitle = TextStyle(
       fontFamily: 'madami',

@@ -20,7 +20,7 @@ class _BoardViewState extends State<BoardView> {
     return Consumer<CustomThemes>(
       builder: (context, themeProvider, _) {
         return Container(
-          padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
+          padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,9 +33,9 @@ class _BoardViewState extends State<BoardView> {
                     Message(
                       trending: false,
                       id: "1",
-                      content: 'Hello, how are you?',
+                      content: 'Hello, how are you? this is a very long message that will be cut off',
                       rank: 1,
-                      likes: 0,
+                      likes: 15283019,
                       dislikes: 0,
                       timestamp: Timestamp.now(),
                     ),

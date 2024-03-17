@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mexage/theme/custom_themes.dart';
 import 'package:mexage/views/board_view.dart';
@@ -120,7 +122,7 @@ class _HomeViewState extends State<HomeView> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.dashboard),
-              label: 'Dashboard',
+              label: 'Board',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.receipt_rounded),
@@ -138,11 +140,20 @@ class _HomeViewState extends State<HomeView> {
           selectedItemColor: themeProvider.cTextNavigationSelected,
           unselectedItemColor: themeProvider.cTextNavigationNotSelected,
           selectedLabelStyle: const TextStyle(
+            fontFamily: 'nunito',
             fontWeight: FontWeight.bold,
             fontSize: 14,
+            fontVariations: [
+              FontVariation('wght', 600),
+            ],
           ),
           unselectedLabelStyle: const TextStyle(
+            fontFamily: 'nunito',
+            fontWeight: FontWeight.normal,
             fontSize: 12,
+            fontVariations: [
+              FontVariation('wght', 500),
+            ],
           ),
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
