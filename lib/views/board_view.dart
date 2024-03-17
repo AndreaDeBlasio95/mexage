@@ -33,6 +33,7 @@ class _BoardViewState extends State<BoardView> {
                     Message(
                       trending: false,
                       id: "1",
+                      userId: "1",
                       content: 'Hello, how are you? this is a very long message that will be cut off',
                       rank: 1,
                       likes: 15283019,

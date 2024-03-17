@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Message {
   bool trending;
   final String id;
+  final String userId;
   final String content;
+  String country;
   int rank;
   int likes;
   int dislikes;
@@ -12,7 +14,9 @@ class Message {
   Message({
     this.trending = false,
     required this.id,
+    required this.userId,
     required this.content,
+    this.country = 'none',
     required this.rank,
     this.likes = 0,
     this.dislikes = 0,
@@ -23,7 +27,9 @@ class Message {
     return Message(
       trending: json['trending'] as bool,
       id: json['id'] as String,
+      userId: json['userId'] as String,
       content: json['content'] as String,
+      country: json['country'] as String,
       rank: json['rank'] as int,
       likes: json['likes'] as int,
       dislikes: json['dislikes'] as int,
@@ -36,7 +42,9 @@ class Message {
     return {
       'trending': trending,
       'id': id,
+      'userId': userId,
       'content': content,
+      'country': country,
       'rank': rank,
       'likes': likes,
       'dislikes': dislikes,
