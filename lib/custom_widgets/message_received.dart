@@ -79,18 +79,18 @@ class MessageCard extends StatelessWidget {
   }
 
   Widget _buildTrailingWidget() {
-    if (message.thumbUp == 0) {
+    if (message.likes == 0) {
       return Icon(
         Icons.thumb_up_alt_outlined,
         color: Colors.grey.shade200,
         size: 20,
       );
     }
-    if (message.thumbUp == 1) {
+    if (message.likes == 1) {
       return Icon(Icons.thumb_up_alt_rounded,
           color: Colors.grey.shade200, size: 20);
     }
-    if (message.thumbUp == 2) {
+    if (message.likes == 2) {
       return Icon(Icons.thumb_down, color: Colors.grey.shade200, size: 20);
     }
     return const SizedBox();

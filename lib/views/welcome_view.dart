@@ -149,12 +149,16 @@ class _WelcomeViewState extends State<WelcomeView> {
                       style: themeProvider.tTextWelcomeTitle,
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      'Send and receive messages in a bottle.',
-                      style: themeProvider.tTextMedium,
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 42),
+                      child: Text(
+                        'Send and receive messages in a bottle.',
+                        style: themeProvider.tTextMedium,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.13,
                     ),
                     // Login
                     /*

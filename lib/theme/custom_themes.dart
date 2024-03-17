@@ -12,6 +12,7 @@ class CustomThemes with ChangeNotifier {
   Color cBackGround = Colors.black;
   Color cTextAppBar = Colors.black;
   Color cTextTitle = Colors.black;
+  Color cTextGrey = Colors.black;
   Color cTextBold = Colors.black;
   Color cTextBoldMedium = Colors.black;
   Color cTextNormal = Colors.black;
@@ -30,10 +31,16 @@ class CustomThemes with ChangeNotifier {
   Color cOutline = Colors.black;
   Color cOutlineBlue = Colors.black;
 
+
   // --- TEXT STYLES ---
-  TextStyle tTextAppBar = const TextStyle(
+  TextStyle tTextHomeTitle = const TextStyle(
+    fontFamily: 'nunito',
     color: Colors.blue,
-    fontWeight: FontWeight.w700,
+    fontSize: 22,
+  );
+  TextStyle tTextAppBar = const TextStyle(
+    fontFamily: 'nunito',
+    color: Colors.blue,
     fontSize: 22,
   );
   TextStyle tTextMedium = const TextStyle(
@@ -108,6 +115,7 @@ class CustomThemes with ChangeNotifier {
       cBackGround = Colors.white;
       cTextAppBar = const Color(0xFF4259F0); // Zaffre blue
       cTextTitle = const Color(0xFF4259F0); // Medium slate blue
+      cTextGrey = const Color(0xFF4B4B4B);
       cTextBold = const Color(0xFF00120B);
       cTextNormal = const Color(0xFF00120B);
       cTextSmall = Colors.grey.shade600;
@@ -130,6 +138,7 @@ class CustomThemes with ChangeNotifier {
       cBackGround = const Color(0xFF141F25);
       cTextAppBar = const Color(0xFF7B8BF4); // RISD blue
       cTextTitle = const Color(0xFF7B8BF4); // RISD blue
+      cTextGrey = Colors.grey.shade400;
       cTextBold = Colors.white;
       cTextNormal = Colors.white;
       cTextSmall = Colors.grey.shade400;
@@ -155,11 +164,22 @@ class CustomThemes with ChangeNotifier {
 
   // Set Text Style
   void setTextStyles (int value) {
+    tTextHomeTitle = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextTitle,
+      fontSize: 22,
+      fontVariations: const [
+        FontVariation('wght', 700),
+      ],
+    );
     tTextAppBar = TextStyle(
       fontFamily: 'nunito',
       color: cTextAppBar,
       fontWeight: FontWeight.w700,
       fontSize: 22,
+      fontVariations: const [
+        FontVariation('wght', 800),
+      ],
     );
     tTextNormal = TextStyle(
       fontFamily: 'nunito',
@@ -168,33 +188,30 @@ class CustomThemes with ChangeNotifier {
       fontSize: 16,
       fontVariations: const [
         FontVariation('wght', 500),
-        FontVariation('wght', 500)
       ],
     );
     tTextMedium = TextStyle(
       fontFamily: 'nunito',
-      color: cTextNormal,
-      fontWeight: FontWeight.w900,
+      color: cTextGrey,
       fontSize: 20,
       fontVariations: const [
         FontVariation('wght', 700),
-        FontVariation('wght', 700)
       ],
     );
     tTextSmall = TextStyle(
       fontFamily: 'nunito',
       color: cTextSmall,
-      fontWeight: FontWeight.w500,
       fontSize: 10,
+      fontVariations: const [
+        FontVariation('wght', 500),
+      ],
     );
     tTextBold = TextStyle(
       fontFamily: 'nunito',
       color: cTextBold,
-      fontWeight: FontWeight.w700,
       fontSize: 24,
       fontVariations: const [
         FontVariation('wght', 700),
-        FontVariation('wght', 700)
       ],
     );
     tTextTabBar = TextStyle(
@@ -205,9 +222,11 @@ class CustomThemes with ChangeNotifier {
     );
     tTextTitleDrawer = TextStyle(
       fontFamily: 'nunito',
-      color: cTextNormal,
-      fontWeight: FontWeight.w600,
-      fontSize: 18,
+      color: cTextGrey,
+      fontSize: 20,
+      fontVariations: const [
+        FontVariation('wght', 700),
+      ],
     );
     tTextMessageCard = TextStyle(
       fontFamily: 'nunito',
@@ -223,9 +242,12 @@ class CustomThemes with ChangeNotifier {
     );
     tTextBoldMedium = TextStyle(
       fontFamily: 'nunito',
-      color: cTextBoldMedium,
+      color: cTextGrey,
       fontWeight: FontWeight.bold,
       fontSize: 22,
+      fontVariations: const [
+        FontVariation('wght', 700),
+      ],
     );
     tTextNavigationSelected = TextStyle(
       fontFamily: 'nunito',

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../custom_widgets/outline_text.dart';
@@ -15,7 +16,6 @@ class BoardView extends StatefulWidget {
 class _BoardViewState extends State<BoardView> {
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
     return Consumer<CustomThemes>(
       builder: (context, themeProvider, _) {
@@ -24,54 +24,20 @@ class _BoardViewState extends State<BoardView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 4),
-                  padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Colors.grey.shade400,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: OutlinedText(
-                    text: 'Trending',
-                    textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: themeProvider.cBackGround, letterSpacing: 2.0),
-                    outlineColor: themeProvider.cOutline,
-                    outlineWidth: 3.0,
-                  ),
-                ),
+              Text(
+                'Trending', style: themeProvider.tTextBoldMedium,
               ),
               Expanded(
                 child: InboxView(
                   messages: [
                     Message(
+                      trending: false,
                       id: "1",
                       content: 'Hello, how are you?',
                       rank: 1,
-                      ranked: false,
-                      thumbUp: 0,
-                    ),
-                    Message(
-                      id: "2",
-                      content:
-                          'I am doing well, thank you! This is a long message',
-                      rank: 2,
-                      ranked: true,
-                      thumbUp: 1,
-                    ),
-                    Message(
-                      id: "3",
-                      content: 'Short message',
-                      rank: 2,
-                      ranked: true,
-                      thumbUp: 2,
+                      likes: 0,
+                      dislikes: 0,
+                      timestamp: Timestamp.now(),
                     ),
                   ],
                 ),
