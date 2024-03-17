@@ -1,7 +1,8 @@
 class UserModel {
   final String uid;
-  String displayName;
+  final String displayName;
   final String email;
+  String userName;
   int rank;
   int subscriptionType;
   int likes;
@@ -10,6 +11,7 @@ class UserModel {
     required this.uid,
     required this.displayName,
     required this.email,
+    this.userName = '',
     required this.rank,
     required this.subscriptionType,
     this.likes = 0,
@@ -20,6 +22,7 @@ class UserModel {
       uid: json['uid'] as String,
       displayName: json['displayName'] as String,
       email: json['email'] as String,
+      userName: json['userName'] as String,
       rank: json['rank'] as int,
       subscriptionType: json['subscriptionType'] as int,
       likes: json['likes'] as int,
@@ -31,9 +34,10 @@ class UserModel {
       'uid': uid,
       'displayName': displayName,
       'email': email,
+      'userName': userName,
       'rank': rank,
       'subscriptionType': subscriptionType,
-      'thumbUp': likes,
+      'likes': likes,
     };
   }
 }

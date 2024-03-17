@@ -41,8 +41,10 @@ class _WelcomeViewState extends State<WelcomeView> {
 
     //WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
   }
-  Future<void> isUserLogged () async {
-    final SignInProvider _signInProvider = Provider.of<SignInProvider>(context, listen: false);
+
+  Future<void> isUserLogged() async {
+    final SignInProvider _signInProvider =
+        Provider.of<SignInProvider>(context, listen: false);
     bool isLogged = await _signInProvider.isUserLoggedIn();
     if (isLogged) {
       if (mounted) {
@@ -55,6 +57,7 @@ class _WelcomeViewState extends State<WelcomeView> {
       });
     }
   }
+
   /*
   Future<User?> _handleSignIn() async {
     try {
@@ -121,7 +124,8 @@ class _WelcomeViewState extends State<WelcomeView> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
-    final SignInProvider _signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    final SignInProvider _signInProvider =
+        Provider.of<SignInProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -212,17 +216,16 @@ class _WelcomeViewState extends State<WelcomeView> {
                     // Sign In With Google -----
                     GestureDetector(
                       onTap: () async {
-                        setState(() async {
-                          marginValueRegisterNow = 0;
-                          User? _user = await _signInProvider.handleSignIn();
-                          UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
-                          if (_user != null) {
-                            _userProvider.registerOrGetUser(context);
-                          }
-                          if (mounted && _user != null) {
-                            Navigator.pushReplacementNamed(context, '/home');
-                          }
-                        });
+                        marginValueRegisterNow = 0;
+                        User? _user = await _signInProvider.handleSignIn();
+                        UserProvider _userProvider =
+                            Provider.of<UserProvider>(context, listen: false);
+                        if (_user != null) {
+                          _userProvider.registerOrGetUser(context);
+                        }
+                        if (mounted && _user != null) {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        }
                       },
                       onLongPressStart: (_) {
                         setState(() {

@@ -17,11 +17,13 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
 
   int? themeColorSelected; // Default theme index
+  String? userName = "";
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
+    //getUserName();
   }
 
   void checkTheme() {
@@ -38,12 +40,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
     Provider.of<CustomThemes>(context, listen: false).setTheme(_value);
   }
 
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
     themeColorSelected ??= widget.themeColorSelected;
     final SignInProvider _signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    final UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return Drawer(
       backgroundColor: themeProvider.cBackGround,
@@ -61,7 +63,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cCardMessageInbox,
             child: ListTile(
               leading: Icon(Icons.person, color: themeProvider.cIcons),
-              title: Text('castaway-52018147629', style: themeProvider.tTextMessageCardDrawer, overflow: TextOverflow.ellipsis,),
+              title: Text(_userProvider.userName, style: themeProvider.tTextMessageCardDrawer, overflow: TextOverflow.ellipsis,),
               onTap: () {
                 // Handle the tap
                 Navigator.pop(context); // Close the drawer
