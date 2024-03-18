@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../custom_widgets/home_drawer.dart';
 import '../models/message_model.dart';
-import 'inbox_view.dart';
+import '../custom_widgets/board_messages.dart';
 
 class HomeView extends StatefulWidget {
   @override

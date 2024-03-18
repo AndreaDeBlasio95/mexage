@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mexage/providers/message_provider.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:mexage/theme/custom_themes.dart';
@@ -17,6 +18,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => CustomThemes()),
     ChangeNotifierProvider(create: (_) => SignInProvider()),
     ChangeNotifierProvider(create: (_) => UserProvider()),
+    ChangeNotifierProvider(create: (_) => MessageProvider()),
   ], child: const MyApp()));
 }
 

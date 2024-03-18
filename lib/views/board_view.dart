@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mexage/utils/utils.dart';
 import 'package:provider/provider.dart';
-import '../custom_widgets/outline_text.dart';
-import '../models/message_model.dart';
+import '../providers/message_provider.dart';
+import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
-import 'inbox_view.dart';
+import '../custom_widgets/board_messages.dart';
 
 class BoardView extends StatefulWidget {
   const BoardView({super.key});
@@ -17,34 +16,33 @@ class BoardView extends StatefulWidget {
 class _BoardViewState extends State<BoardView> {
   @override
   Widget build(BuildContext context) {
-
     return Consumer<CustomThemes>(
       builder: (context, themeProvider, _) {
-        return Container(
-          padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Trending', style: themeProvider.tTextBoldMedium,
-              ),
-              Expanded(
-                child: InboxView(
-                  messages: [
-                    Message(
-                      trending: false,
-                      id: "1",
-                      userId: "1",
-                      content: 'Hello, how are you? this is a very long message that will be cut off',
-                      rank: 1,
-                      likes: 15283019,
-                      dislikes: 0,
-                      timestamp: Timestamp.now(),
-                    ),
-                  ],
+        return Scaffold(
+          backgroundColor: themeProvider.cBackGround,
+          body: Container(
+            padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Trending',
+                  style: themeProvider.tTextBoldMedium,
                 ),
-              ),
-            ],
+                SizedBox(height: 8),
+                const Expanded(
+                  child: BoardMessages(),
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+              final messageProvider = Provider.of<MessageProvider>(context, listen: false);
+              messageProvider.addMessage(signInProvider.currentUser!.uid, 'content', Timestamp.now());
+            },
+            child: const Icon(Icons.add),
           ),
         );
       },

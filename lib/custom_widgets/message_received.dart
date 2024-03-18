@@ -10,7 +10,7 @@ import '../views/message_view.dart';
 class MessageCard extends StatelessWidget {
   final Message message;
 
-  const MessageCard({Key? key, required this.message}) : super(key: key);
+  const MessageCard({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class MessageCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
+        margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           color: themeProvider.cCardShadow,
           borderRadius: BorderRadius.circular(18),

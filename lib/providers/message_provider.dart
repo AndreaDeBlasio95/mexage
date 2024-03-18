@@ -1,12 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/message_model.dart';
 import '../utils/utils.dart';
 
-class MessageProvider {
-  final FirebaseFirestore _db =
-  FirebaseFirestore.instance;
+class MessageProvider with ChangeNotifier {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<void> addMessage(String _userId, String _content, Timestamp _timestamp) async {
     try {
@@ -30,10 +30,17 @@ class MessageProvider {
     }
   }
 
-  Stream<List<Message>> getMessages(String _userId) {
-    return _db.collection(_userId).snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Message.fromJson(doc.data())).toList());
+  Future<List<Message>> getMessages() async {
+    try {
+      QuerySnapshot querySnapshot = await _db.collection('IT').get();
+      print("QuerySnapshot: $querySnapshot");
+      List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      return messages;
+    } catch (e) {
+      print("Error fetching messages: $e");
+      // Handle error accordingly
+      throw e;
+    }
   }
-
 
 }
