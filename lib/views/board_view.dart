@@ -34,7 +34,7 @@ class _BoardViewState extends State<BoardView> {
                   'Trending',
                   style: themeProvider.tTextBoldMedium,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 const Expanded(
                   child: BoardMessages(),
                 ),

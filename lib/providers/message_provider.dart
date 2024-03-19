@@ -25,11 +25,13 @@ class MessageProvider with ChangeNotifier {
         timestamp: Timestamp.now(),
       );
       await _db.collection(_country).doc("random").collection("messages").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
+      await _db.collection("users").doc(_userId).collection("messages-sent").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
     } catch (e) {
       print("Error adding message: $e");
     }
   }
 
+  // ----- GETTERS -----
   Future<List<Message>> getCountryMessages() async {
     String _country = Utils.getUserCountry();
     try {

@@ -1,13 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:mexage/theme/custom_themes.dart';
 import 'package:mexage/views/board_view.dart';
+import 'package:mexage/views/messages_sent_view.dart';
 import 'package:provider/provider.dart';
-
 import '../custom_widgets/home_drawer.dart';
-import '../models/message_model.dart';
-import '../custom_widgets/board_messages.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -22,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
   static const List<Widget> _widgetOptions = <Widget>[
     BoardView(),
     Text('Search Page'),
-    Text('Sent Page'),
+    MessagesSent(),
   ];
 
   void _onItemTapped(int index) {
