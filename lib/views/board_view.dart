@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/message_provider.dart';
@@ -14,6 +13,12 @@ class BoardView extends StatefulWidget {
 }
 
 class _BoardViewState extends State<BoardView> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CustomThemes>(
@@ -42,9 +47,8 @@ class _BoardViewState extends State<BoardView> {
                   Provider.of<SignInProvider>(context, listen: false);
               final messageProvider =
                   Provider.of<MessageProvider>(context, listen: false);
-              //messageProvider.addMessage(
-              //    signInProvider.currentUser!.uid, 'content');
-              messageProvider.setTopLikedMessages();
+              messageProvider.addMessage(
+                  signInProvider.currentUser!.uid, 'content');
             },
             child: const Icon(Icons.add),
           ),

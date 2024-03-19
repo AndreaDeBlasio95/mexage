@@ -30,10 +30,22 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<List<Message>> getMessages() async {
+  Future<List<Message>> getCountryMessages() async {
     String _country = Utils.getUserCountry();
     try {
       QuerySnapshot querySnapshot = await _db.collection(_country).doc("random").collection("messages").get();
+      List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      return messages;
+    } catch (e) {
+      print("Error fetching messages: $e");
+      // Handle error accordingly
+      throw e;
+    }
+  }
+
+  Future<List<Message>> getUserMessagesSent(String _userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _db.collection("users").doc(_userId).collection("messages-sent").get();
       List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
       return messages;
     } catch (e) {
@@ -61,7 +73,7 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> setTopLikedMessages() async {
+  Future<void> adminSetTopLikedMessages() async {
     String _country = Utils.getUserCountry();
     try {
       QuerySnapshot querySnapshot = await _db
@@ -69,7 +81,7 @@ class MessageProvider with ChangeNotifier {
           .doc("random")
           .collection("messages")
           .orderBy('likes', descending: true)
-          .limit(4)
+          .limit(5)
           .get();
 
       List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();

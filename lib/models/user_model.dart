@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String uid;
   final String displayName;
@@ -6,6 +8,8 @@ class UserModel {
   int rank;
   int subscriptionType;
   int likes;
+  int messagesSent;
+  Timestamp timestampLastSentMessage;
 
   UserModel({
     required this.uid,
@@ -15,6 +19,8 @@ class UserModel {
     required this.rank,
     required this.subscriptionType,
     this.likes = 0,
+    required this.messagesSent,
+    required this.timestampLastSentMessage,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +32,8 @@ class UserModel {
       rank: json['rank'] as int,
       subscriptionType: json['subscriptionType'] as int,
       likes: json['likes'] as int,
+      messagesSent: json['messagesSent'] as int,
+      timestampLastSentMessage: json['timestampLastSentMessage'] as Timestamp,
     );
   }
 
@@ -38,6 +46,8 @@ class UserModel {
       'rank': rank,
       'subscriptionType': subscriptionType,
       'likes': likes,
+      'messagesSent': messagesSent,
+      'timestampLastSentMessage': timestampLastSentMessage,
     };
   }
 }

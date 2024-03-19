@@ -65,16 +65,17 @@ class UserProvider extends ChangeNotifier {
       rank: 0,
       subscriptionType: 0,
       likes: 0,
+      messagesSent: 0,
+      timestampLastSentMessage: Timestamp.now(),
     );
     return newUser;
   }
 
-  Future<UserModel> getUser(String uid, String collectionPath) async {
+  Future<UserModel> getUser(String uid) async {
     try {
       // Get user data from Firestore
       DocumentSnapshot userSnapshot =
-          await _db.collection(collectionPath).doc(uid).get();
-
+          await _db.collection("users").doc(uid).get();
       if (userSnapshot.exists) {
         // User exists, convert data to UserModel and return
         return UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>);
