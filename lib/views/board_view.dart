@@ -38,9 +38,13 @@ class _BoardViewState extends State<BoardView> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              final signInProvider = Provider.of<SignInProvider>(context, listen: false);
-              final messageProvider = Provider.of<MessageProvider>(context, listen: false);
-              messageProvider.addMessage(signInProvider.currentUser!.uid, 'content', Timestamp.now());
+              final signInProvider =
+                  Provider.of<SignInProvider>(context, listen: false);
+              final messageProvider =
+                  Provider.of<MessageProvider>(context, listen: false);
+              //messageProvider.addMessage(
+              //    signInProvider.currentUser!.uid, 'content');
+              messageProvider.setTopLikedMessages();
             },
             child: const Icon(Icons.add),
           ),

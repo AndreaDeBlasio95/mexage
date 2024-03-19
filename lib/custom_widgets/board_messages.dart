@@ -12,7 +12,7 @@ class BoardMessages extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return FutureBuilder<List<Message>>(
-      future: Provider.of<MessageProvider>(context).getMessages(),
+      future: Provider.of<MessageProvider>(context).getCountryTrendingMessages(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Display shimmer effect while loading
