@@ -4,6 +4,8 @@ import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../models/user_model.dart';
+import '../utils/utils.dart';
+
 
 class UserProvider extends ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -12,6 +14,22 @@ class UserProvider extends ChangeNotifier {
 
   String get userName => _userName;
 
+  // ----- GETTERS -----
+
+  // -------------------
+  // ----- SETTERS -----
+  Future<bool> checkCanSendMessage(context) async {
+    // getting current user
+    final SignInProvider signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    UserModel _userM = await getUser(signInProvider.currentUser!.uid);
+    // getting last message sent
+    String lastMessageSent = Utils.timestampToDate(_userM.timestampLastSentMessage);
+    // getting current date
+    String currentDate = Utils.timestampToDate(Timestamp.now());
+    // checking if last message sent is today
+    return lastMessageSent != currentDate;
+  }
+  // --------------------
   Future<void> registerOrGetUser(context) async {
     SignInProvider _user = Provider.of<SignInProvider>(context, listen: false);
     _user = await Provider.of<SignInProvider>(context, listen: false);

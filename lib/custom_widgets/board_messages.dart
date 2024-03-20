@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mexage/custom_widgets/message_received.dart';
+import 'package:mexage/custom_widgets/message_card_board.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../models/message_model.dart';
@@ -33,7 +33,7 @@ class BoardMessages extends StatelessWidget {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               Message message = snapshot.data![index];
-              return MessageCard(message: message);
+              return MessageCardBoard(message: message);
             },
           );
         }

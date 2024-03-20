@@ -31,7 +31,7 @@ class CustomThemes with ChangeNotifier {
   Color cRed = Colors.black;
   Color cOutline = Colors.black;
   Color cOutlineBlue = Colors.black;
-
+  Color cTextTimestamp = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextHomeTitle = const TextStyle(
@@ -110,6 +110,11 @@ class CustomThemes with ChangeNotifier {
     fontWeight: FontWeight.w700,
     fontSize: 14,
   );
+  TextStyle tTextTimestamp = const TextStyle(
+    fontFamily: 'nunito',
+    color: Colors.blue,
+    fontSize: 16,
+  );
 
   int get currentTheme => _theme;
 
@@ -138,8 +143,9 @@ class CustomThemes with ChangeNotifier {
       cTextNavigationSelected = const Color(0xFF137DCD);
       cTextNavigationNotSelected = const Color(0xFF505B63);
       cRed = const Color(0xFFD32F2F);
-      cOutlineBlue = const Color(0xFFA7D6FF);
+      cOutlineBlue = const Color(0xFF278EDD);
       cOutline = const Color(0xFFE5E5E5);
+      cTextTimestamp = Colors.grey.shade700;
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF141F25);
@@ -162,8 +168,9 @@ class CustomThemes with ChangeNotifier {
       cTextNavigationSelected = Colors.white;
       cTextNavigationNotSelected = const Color(0xFF505B63);
       cRed = const Color(0xFFD32F2F);
-      cOutlineBlue = const Color(0xFFA7D6FF);
+      cOutlineBlue = const Color(0xFF278EDD);
       cOutline = const Color(0xFFE5E5E5);
+      cTextTimestamp = Colors.grey.shade700;
     }
     setTextStyles(value);
     notifyListeners();
@@ -278,6 +285,13 @@ class CustomThemes with ChangeNotifier {
       color: cTextNavigationNotSelected,
       fontWeight: FontWeight.w500,
       fontSize: 14,
+    );
+    tTextTimestamp = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextTimestamp,
+      fontVariations: const [
+        FontVariation('wght', 600),
+      ],
     );
   }
 }

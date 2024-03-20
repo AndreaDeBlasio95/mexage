@@ -7,14 +7,15 @@ import '../models/message_model.dart';
 import '../theme/custom_themes.dart';
 import '../views/message_view.dart';
 
-class MessageCard extends StatelessWidget {
+class MessageCardSent extends StatelessWidget {
   final Message message;
 
-  const MessageCard({super.key, required this.message});
+  const MessageCardSent({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
+    String timestampToDate = Utils.timestampToDate(message.timestamp);
 
     return GestureDetector(
       onTap: () {
@@ -43,14 +44,13 @@ class MessageCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
-          color: themeProvider.cCardShadow,
+          color: themeProvider.cOutlineBlue,
           borderRadius: BorderRadius.circular(18),
         ),
         child: Container(
-          height: 60,
-          margin: const EdgeInsets.only(bottom: 6),
           decoration: BoxDecoration(
             color: themeProvider.cCardMessageInbox,
             borderRadius: BorderRadius.circular(16),
@@ -58,27 +58,50 @@ class MessageCard extends StatelessWidget {
           child: Card(
             elevation: 0,
             color: Colors.transparent,
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
               children: [
+                // Timestamp ----------------------------------------------
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: Text(message.content,
-                      style: themeProvider.tTextMessageCard,
-                      overflow: TextOverflow.ellipsis),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  margin: const EdgeInsets.only(top: 8, bottom: 8),
+                  padding: const EdgeInsets.only(bottom: 4),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade100.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(24),
+                    color: Colors.grey.shade300.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Center(
-                    child: _buildTrailingLikesWidget(),
+                  child: Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(timestampToDate,
+                          style: themeProvider.tTextTimestamp)
                   ),
                 ),
+                // Content ----------------------------------------------
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.65,
+                      child: Text(message.content,
+                          style: themeProvider.tTextMessageCard,
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Center(
+                        child: _buildTrailingLikesWidget(),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
               ],
             ),
           ),

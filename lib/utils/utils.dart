@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Utils {
   static String formatNumber(int number) {
     if (number < 1000) {
@@ -25,6 +27,16 @@ class Utils {
       }
     } catch (e) {
       print('Error getting user country: $e');
+      return ''; // Return empty string in case of error
+    }
+  }
+
+  static String timestampToDate(Timestamp timestamp) {
+    try {
+      DateTime dateTime = timestamp.toDate(); // Convert Timestamp to DateTime
+      return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+    } catch (e) {
+      print('Error converting timestamp to date: $e');
       return ''; // Return empty string in case of error
     }
   }
