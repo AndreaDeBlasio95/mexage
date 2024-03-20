@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:mexage/custom_widgets/create_new_message.dart';
 import 'package:mexage/custom_widgets/message_card_sent.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import '../custom_widgets/message_card_board.dart';
 import '../models/message_model.dart';
 import '../providers/message_provider.dart';
 import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
 
-class MessagesSent extends StatelessWidget {
+class MessagesSent extends StatefulWidget {
   const MessagesSent({super.key});
 
+  @override
+  State<MessagesSent> createState() => _MessagesSentState();
+}
+
+class _MessagesSentState extends State<MessagesSent> {
   @override
   Widget build(BuildContext context) {
     final _signProvider = Provider.of<SignInProvider>(context, listen: false);
@@ -78,9 +83,7 @@ class MessagesSent extends StatelessWidget {
                   } else {
                     // Data is loaded
                     final canSendMessage = snapshot.data ?? false;
-                    return Text(canSendMessage
-                        ? 'You can send a message.'
-                        : 'You cannot send a message today.');
+                    return canSendMessage ? CreateNewMessage() : Container();
                   }
                 },
               ),

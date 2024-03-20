@@ -8,6 +8,7 @@ import '../utils/utils.dart';
 class MessageProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  // ----- SETTERS -----
   Future<void> addMessage(String _userId, String _content) async {
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
@@ -26,9 +27,22 @@ class MessageProvider with ChangeNotifier {
       );
       await _db.collection(_country).doc("random").collection("messages").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
       await _db.collection("users").doc(_userId).collection("messages-sent").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
+      await updateSingleValueInUserDocument(_userId, "timestampLastSentMessage", Timestamp.now());
     } catch (e) {
       print("Error adding message: $e");
     }
+  }
+  // ----- UPDATES -----
+  Future<void> updateSingleValueInUserDocument(String _userId, String _fieldName, dynamic _value) async {
+    // Update the value
+    await _db.collection("users").doc(_userId).update({
+      _fieldName: _value,
+      // Specify the field you want to update and the new value
+    }).then((_) {
+      print('Document successfully updated');
+    }).catchError((error) {
+      print('Error updating document: $error');
+    });
   }
 
   // ----- GETTERS -----
