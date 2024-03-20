@@ -54,8 +54,19 @@ class _MessagesSentState extends State<MessagesSent> {
                     } else if (snapshot.data == null ||
                         snapshot.data!.isEmpty) {
                       // Handle case when there are no messages
-                      return Container(
-                        child: const Text('No messages available'),
+                      return Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.05,
+                          ),
+                          Container(
+                            child: Text("It's a bit empty here!\nLet's send your first bottle!", style: themeProvider.tTextNormal, textAlign: TextAlign.center,),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.05,
+                          ),
+                          Image.asset("images/icon-palm.png", height: 250),
+                        ],
                       );
                     } else {
                       // Display list of messages

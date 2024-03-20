@@ -28,6 +28,8 @@ class MessageProvider with ChangeNotifier {
       await _db.collection(_country).doc("random").collection("messages").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
       await _db.collection("users").doc(_userId).collection("messages-sent").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
       await updateSingleValueInUserDocument(_userId, "timestampLastSentMessage", Timestamp.now());
+      await updateSingleValueInUserDocument(_userId, "messagesSent", FieldValue.increment(1));
+
     } catch (e) {
       print("Error adding message: $e");
     }

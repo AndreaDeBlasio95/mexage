@@ -22,6 +22,9 @@ class UserProvider extends ChangeNotifier {
     // getting current user
     final SignInProvider signInProvider = Provider.of<SignInProvider>(context, listen: false);
     UserModel _userM = await getUser(signInProvider.currentUser!.uid);
+    if (_userM.messagesSent == 0){
+      return true;
+    }
     // getting last message sent
     String lastMessageSent = Utils.timestampToDate(_userM.timestampLastSentMessage);
     // getting current date
