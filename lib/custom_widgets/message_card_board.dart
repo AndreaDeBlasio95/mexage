@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:mexage/custom_widgets/animated_cartoon_container.dart';
 import 'package:mexage/utils/utils.dart';
 import 'package:provider/provider.dart';
 import '../models/message_model.dart';
@@ -42,19 +43,10 @@ class MessageCardBoard extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: themeProvider.cCardShadow,
-          borderRadius: BorderRadius.circular(18),
-        ),
+      child: AnimatedCartoonContainer(
+        message: message,
         child: Container(
-          height: 60,
-          margin: const EdgeInsets.only(bottom: 6),
-          decoration: BoxDecoration(
-            color: themeProvider.cCardMessageInbox,
-            borderRadius: BorderRadius.circular(16),
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 4),
           child: Card(
             elevation: 0,
             color: Colors.transparent,

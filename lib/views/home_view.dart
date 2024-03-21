@@ -14,12 +14,12 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   bool _isLoading = true;
   int? themeColorSelected; // 0 for light, 1 for dark
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   static const List<Widget> _widgetOptions = <Widget>[
     BoardView(),
-    Text('Search Page'),
     MessagesSent(),
+    Text('Search Page'),
   ];
 
   void _onItemTapped(int index) {
@@ -32,6 +32,9 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
+    setState(() {
+      _selectedIndex = 1;
+    });
   }
 
   Future<void> checkTheme() async {
@@ -122,12 +125,12 @@ class _HomeViewState extends State<HomeView> {
               label: 'Board',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.all_inbox_rounded),
-              label: 'Received',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.send_rounded),
               label: 'Sent',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.all_inbox_rounded),
+              label: 'Received',
             ),
           ],
           iconSize: 24,
@@ -157,7 +160,7 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Container()
           : _widgetOptions.elementAt(_selectedIndex),
     );
   }

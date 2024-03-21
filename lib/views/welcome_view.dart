@@ -130,7 +130,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Container()
           : SingleChildScrollView(
               child: Center(
                 child: Column(
@@ -164,54 +164,6 @@ class _WelcomeViewState extends State<WelcomeView> {
                     Container(
                       height: MediaQuery.of(context).size.height * 0.13,
                     ),
-                    // Login
-                    /*
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    marginValueOpenBottle = 0;
-                  });
-                  Navigator.pushNamed(context, '/home');
-                },
-                onLongPressStart: (_) {
-                  setState(() {
-                    marginValueOpenBottle = 0;
-                  });
-                },
-                onLongPressEnd: (_) {
-                  setState(() {
-                    marginValueOpenBottle = 6;
-                  });
-                },
-                child: Container(
-                  margin: marginValueOpenBottle > 0 ? const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 0) : const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 6),
-                  decoration: BoxDecoration(
-                    color: themeProvider.cCardShadow,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Container(
-                    margin: marginValueOpenBottle > 0 ? const EdgeInsets.only(bottom: 6) : const EdgeInsets.only(bottom: 0),
-                    decoration: BoxDecoration(
-                      color: themeProvider.cCardMessageInbox,
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: Card(
-                      elevation: 0,
-                      color: Colors.transparent,
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 16),
-                      child: ListTile(
-                        title: Text("Open a Bottle!",
-                            style: themeProvider.tTextBoldMedium,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-               */
                     const SizedBox(height: 8),
                     // Sign In With Google -----
                     GestureDetector(
@@ -279,48 +231,6 @@ class _WelcomeViewState extends State<WelcomeView> {
                         ),
                       ),
                     ),
-                    // Sign Out -----
-                    /*
-              GestureDetector(
-                onTap: () {
-                  _handleSignOut();
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 6),
-                  decoration: BoxDecoration(
-                    color: themeProvider.cCardMessageInbox,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 2, right: 2, top: 1, bottom: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: Card(
-                      elevation: 0,
-                      color: Colors.transparent,
-                      margin: const EdgeInsets.only(
-                          top: 4, bottom: 4, left: 16, right: 16),
-                      child: ListTile(
-                        leading: Image.asset(
-                          'images/icon-google.png',
-                          height: 28,
-                          width: 28,
-                        ),
-                        title: Text("Sign out",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: themeProvider.cCardMessageInbox),
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-               */
                   ],
                 ),
               ),
