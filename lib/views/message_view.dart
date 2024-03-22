@@ -86,7 +86,7 @@ class _MessageViewState extends State<MessageView>
             children: [
               _isToggleAnimation
                   ? Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.4,
                       child: Text(
                         widget.message,
                         style: widget.themeProvider.tTextNormal,

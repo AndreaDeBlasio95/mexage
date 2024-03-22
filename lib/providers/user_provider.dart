@@ -92,6 +92,7 @@ class UserProvider extends ChangeNotifier {
       subscriptionType: 0,
       likes: 0,
       messagesSent: 0,
+      accountStatus: 0,
       timestampLastSentMessage: Timestamp.now(),
     );
     return newUser;

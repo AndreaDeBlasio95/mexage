@@ -71,6 +71,14 @@ class MessageProvider with ChangeNotifier {
         originalMessageId: _originalMessage,
         timestamp: Timestamp.now(),
       );
+      // udate likes in original message
+      await _db
+          .collection(_country)
+          .doc("trending")
+          .collection("messages")
+          .doc(_originalMessage)
+          .update({'likes': FieldValue.increment(1)});
+      // create comment in trending
       await _db
           .collection(_country)
           .doc("trending")
@@ -80,6 +88,7 @@ class MessageProvider with ChangeNotifier {
           .doc(messageId)
           .set(message
               .toJson()); // Use set instead of add to specify the document ID
+      // create comment in user
       await _db
           .collection("users")
           .doc(_userId)

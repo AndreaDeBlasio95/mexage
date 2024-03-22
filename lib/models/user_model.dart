@@ -9,6 +9,7 @@ class UserModel {
   int subscriptionType;
   int likes;
   int messagesSent;
+  int accountStatus;
   Timestamp timestampLastSentMessage;
 
   UserModel({
@@ -19,6 +20,7 @@ class UserModel {
     required this.rank,
     required this.subscriptionType,
     this.likes = 0,
+    this.accountStatus = 0,
     required this.messagesSent,
     required this.timestampLastSentMessage,
   });
@@ -33,6 +35,7 @@ class UserModel {
       subscriptionType: json['subscriptionType'] as int,
       likes: json['likes'] as int,
       messagesSent: json['messagesSent'] as int,
+      accountStatus: json['accountStatus'] as int,
       timestampLastSentMessage: json['timestampLastSentMessage'] as Timestamp,
     );
   }
@@ -47,6 +50,7 @@ class UserModel {
       'subscriptionType': subscriptionType,
       'likes': likes,
       'messagesSent': messagesSent,
+      'accountStatus': accountStatus,
       'timestampLastSentMessage': timestampLastSentMessage,
     };
   }
