@@ -9,7 +9,7 @@ class MessageProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // ----- SETTERS -----
-  Future<void> addMessage(String _userId, String _content) async {
+  Future<void> addMessage(String _userId, String _userName, String _content) async {
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -17,6 +17,7 @@ class MessageProvider with ChangeNotifier {
       Message message = Message(
         id: messageId,
         userId: _userId,
+        userName: _userName,
         content: _content,
         country: _country,
         rank: 0,
@@ -51,7 +52,7 @@ class MessageProvider with ChangeNotifier {
   }
 
   Future<void> addComment(
-      String _userId, String _content, String _originalMessage) async {
+      String _userId, String _userName, String _content, String _originalMessage) async {
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -59,6 +60,7 @@ class MessageProvider with ChangeNotifier {
       Message message = Message(
         id: messageId,
         userId: _userId,
+        userName: _userName,
         content: _content,
         country: _country,
         rank: 0,

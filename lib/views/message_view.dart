@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/custom_snack_bar.dart';
+import 'package:mexage/providers/user_provider.dart';
 import 'package:mexage/views/comments_view.dart';
 import 'package:provider/provider.dart';
 import '../providers/message_provider.dart';
@@ -243,22 +244,34 @@ class _MessageViewState extends State<MessageView>
                         )
                       : Container()
                   : Container(),
-              const SizedBox(height: 36),
+              const SizedBox(height: 12),
+              _isSubmitted
+                  ? Container(
+                      child: Text(
+                        'Comments',
+                        style: widget.themeProvider.tTextCommentBold,
+                      ),
+                    )
+                  : Container(),
+              const SizedBox(height: 12),
               !_isSubmitted
                   ? _canSubmit
                       ? ElevatedButton(
                           onPressed: () async {
-                            final messageProvider = Provider.of<MessageProvider>(
+                            final messageProvider =
+                                Provider.of<MessageProvider>(context,
+                                    listen: false);
+                            final userProvider = Provider.of<UserProvider>(
                                 context,
                                 listen: false);
                             await messageProvider.addComment(
                                 widget.userId,
+                                userProvider.userName,
                                 _textEditingController.text,
                                 widget.originalMessageId);
                             if (mounted) {
-                              CustomSnackBar.showSnackbar(
-                                  context, 'Message Sent',
-                                  widget.themeProvider);
+                              CustomSnackBar.showSnackbar(context,
+                                  'Message Sent', widget.themeProvider);
                               setState(() {
                                 _isSubmitted = true;
                               });
@@ -268,8 +281,11 @@ class _MessageViewState extends State<MessageView>
                           child: Text('Submit'),
                         )
                       : Container()
-                  : Container(),
-              const SizedBox(height: 12),
+                  : CommentsView(
+                      originalMessageId: widget.originalMessageId,
+                      userId: widget.userId,
+                      themeProvider: widget.themeProvider),
+              const SizedBox(height: 36),
             ],
           ),
         ),

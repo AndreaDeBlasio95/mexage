@@ -15,7 +15,12 @@ class UserProvider extends ChangeNotifier {
   String get userName => _userName;
 
   // ----- GETTERS -----
-
+  Future<String> getUserName (String _userId, context) async {
+    final SignInProvider signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    UserModel _userM = await getUser(signInProvider.currentUser!.uid);
+    _userName = _userM.userName;
+    return _userName;
+  }
   // -------------------
   // ----- SETTERS -----
   Future<bool> checkCanSendMessage(context) async {
@@ -35,7 +40,7 @@ class UserProvider extends ChangeNotifier {
   // --------------------
   Future<void> registerOrGetUser(context) async {
     SignInProvider _user = Provider.of<SignInProvider>(context, listen: false);
-    _user = await Provider.of<SignInProvider>(context, listen: false);
+    _user = Provider.of<SignInProvider>(context, listen: false);
 
     try {
       DocumentSnapshot userSnapshot =

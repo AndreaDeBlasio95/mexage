@@ -20,6 +20,7 @@ class _MessagesSentState extends State<MessagesSent> {
 
   late SignInProvider _signProvider;
   late UserProvider _userProvider;
+  String _userName = "";
 
   @override
   void initState() {
@@ -27,6 +28,11 @@ class _MessagesSentState extends State<MessagesSent> {
 
     _signProvider = Provider.of<SignInProvider>(context, listen: false);
     _userProvider = Provider.of<UserProvider>(context, listen: false);
+    refreshUsername();
+  }
+
+  void refreshUsername () async {
+    _userName = await _userProvider.getUserName(_signProvider.currentUser!.uid, context);
   }
 
   @override

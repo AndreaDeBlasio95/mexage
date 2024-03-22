@@ -4,6 +4,7 @@ class Message {
   bool trending;
   final String id;
   final String userId;
+  final String userName;
   final String content;
   String country;
   int rank;
@@ -17,6 +18,7 @@ class Message {
     this.trending = false,
     required this.id,
     required this.userId,
+    required this.userName,
     required this.content,
     this.country = 'none',
     required this.rank,
@@ -32,6 +34,7 @@ class Message {
       trending: json['trending'] as bool,
       id: json['id'] as String,
       userId: json['userId'] as String,
+      userName: json['userName'] as String,
       content: json['content'] as String,
       country: json['country'] as String,
       rank: json['rank'] as int,
@@ -49,6 +52,7 @@ class Message {
       'trending': trending,
       'id': id,
       'userId': userId,
+      'userName': userName,
       'content': content,
       'country': country,
       'rank': rank,

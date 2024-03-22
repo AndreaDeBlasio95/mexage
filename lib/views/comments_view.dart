@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mexage/custom_widgets/comment_card.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/message_provider.dart';
@@ -74,13 +75,17 @@ class _CommentsViewState extends State<CommentsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Comments")),
-      body: ListView.builder(
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: ListView.builder(
         controller: _scrollController,
         itemCount: _comments.length,
         itemBuilder: (context, index) {
-          return ListTile(title: Text(_comments[index]['content']));
+          return CommentCard(
+              themeProvider: widget.themeProvider,
+              userName: _comments[index]['userName'],
+              content: _comments[index]['content'],
+              timestamp: _comments[index]['timestamp']);
         },
       ),
     );

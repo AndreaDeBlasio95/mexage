@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../providers/message_provider.dart';
 import '../providers/sign_in_provider.dart';
@@ -13,7 +14,6 @@ class BoardView extends StatefulWidget {
 }
 
 class _BoardViewState extends State<BoardView> {
-
   @override
   void initState() {
     super.initState();
@@ -45,10 +45,12 @@ class _BoardViewState extends State<BoardView> {
             onPressed: () {
               final signInProvider =
                   Provider.of<SignInProvider>(context, listen: false);
+              final userProvider =
+                  Provider.of<UserProvider>(context, listen: false);
               final messageProvider =
                   Provider.of<MessageProvider>(context, listen: false);
-              messageProvider.addMessage(
-                  signInProvider.currentUser!.uid, 'content');
+              messageProvider.addMessage(signInProvider.currentUser!.uid,
+                  userProvider.userName, 'content');
               messageProvider.adminSetTopLikedMessages();
             },
             child: const Icon(Icons.add),

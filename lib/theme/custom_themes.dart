@@ -33,6 +33,8 @@ class CustomThemes with ChangeNotifier {
   Color cOutlineBlue = Colors.black;
   Color cTextTimestamp = Colors.black;
   Color cSnackBar = Colors.black;
+  Color cTextCommentBold = Colors.black;
+  Color cTextUsername = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextHomeTitle = const TextStyle(
@@ -126,6 +128,16 @@ class CustomThemes with ChangeNotifier {
     color: Colors.grey,
     fontSize: 18,
   );
+  TextStyle tTextCommentBold = const TextStyle(
+    fontFamily: 'nunito',
+    color: Colors.grey,
+    fontSize: 18,
+  );
+  TextStyle tTextUsername = const TextStyle(
+    fontFamily: 'nunito',
+    color: Colors.grey,
+    fontSize: 18,
+  );
 
   int get currentTheme => _theme;
 
@@ -158,6 +170,8 @@ class CustomThemes with ChangeNotifier {
       cOutline = const Color(0xFFE5E5E5);
       cTextTimestamp = Colors.grey.shade700;
       cSnackBar = const Color(0xFF00120B);
+      cTextCommentBold = const Color(0xFF505B63);
+      cTextUsername = const Color(0xFF54ADEF);
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF141F25);
@@ -184,6 +198,8 @@ class CustomThemes with ChangeNotifier {
       cOutline = const Color(0xFFE5E5E5);
       cTextTimestamp = Colors.grey.shade700;
       cSnackBar = Colors.white;
+      cTextCommentBold = const Color(0xFF505B63);
+      cTextUsername = const Color(0xFF54ADEF);
     }
     setTextStyles(value);
     notifyListeners();
@@ -314,6 +330,22 @@ class CustomThemes with ChangeNotifier {
     tTextSnackBar = TextStyle(
       fontFamily: 'nunito',
       color: cBackGround,
+      fontSize: 14,
+      fontVariations: const [
+        FontVariation('wght', 700),
+      ],
+    );
+    tTextCommentBold = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextCommentBold,
+      fontSize: 18,
+      fontVariations: const [
+        FontVariation('wght', 700),
+      ],
+    );
+    tTextUsername = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextUsername,
       fontSize: 14,
       fontVariations: const [
         FontVariation('wght', 700),
