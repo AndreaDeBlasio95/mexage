@@ -23,19 +23,101 @@ class MessageProvider with ChangeNotifier {
         likes: 0,
         dislikes: 0,
         trending: false,
+        isComment: false,
+        originalMessageId: "",
         timestamp: Timestamp.now(),
       );
-      await _db.collection(_country).doc("random").collection("messages").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
-      await _db.collection("users").doc(_userId).collection("messages-sent").doc(messageId).set(message.toJson()); // Use set instead of add to specify the document ID
-      await updateSingleValueInUserDocument(_userId, "timestampLastSentMessage", Timestamp.now());
-      await updateSingleValueInUserDocument(_userId, "messagesSent", FieldValue.increment(1));
-
+      await _db
+          .collection(_country)
+          .doc("random")
+          .collection("messages")
+          .doc(messageId)
+          .set(message
+              .toJson()); // Use set instead of add to specify the document ID
+      await _db
+          .collection("users")
+          .doc(_userId)
+          .collection("messages-sent")
+          .doc(messageId)
+          .set(message
+              .toJson()); // Use set instead of add to specify the document ID
+      await updateSingleValueInUserDocument(
+          _userId, "timestampLastSentMessage", Timestamp.now());
+      await updateSingleValueInUserDocument(
+          _userId, "messagesSent", FieldValue.increment(1));
     } catch (e) {
       print("Error adding message: $e");
     }
   }
+
+  Future<void> addComment(
+      String _userId, String _content, String _originalMessage) async {
+    try {
+      String messageId = const Uuid().v4(); // Generate UUID for the message ID
+      String _country = Utils.getUserCountry();
+
+      Message message = Message(
+        id: messageId,
+        userId: _userId,
+        content: _content,
+        country: _country,
+        rank: 0,
+        likes: 0,
+        dislikes: 0,
+        trending: false,
+        isComment: true,
+        originalMessageId: _originalMessage,
+        timestamp: Timestamp.now(),
+      );
+      await _db
+          .collection(_country)
+          .doc("trending")
+          .collection("messages")
+          .doc(_originalMessage)
+          .collection("comments")
+          .doc(messageId)
+          .set(message
+              .toJson()); // Use set instead of add to specify the document ID
+      await _db
+          .collection("users")
+          .doc(_userId)
+          .collection("messages-comments")
+          .doc(messageId)
+          .set(message
+              .toJson()); // Use set instead of add to specify the document ID
+      await updateSingleValueInUserDocument(
+          _userId, "timestampLastSentMessage", Timestamp.now());
+      await updateSingleValueInUserDocument(
+          _userId, "messagesSent", FieldValue.increment(1));
+    } catch (e) {
+      print("Error adding message: $e");
+    }
+  }
+
+  Future<List<DocumentSnapshot>> fetchCommentsFromTrending(
+      String _originalMessageId, String _userId,
+      {DocumentSnapshot? startAfter}) async {
+    String _country = Utils.getUserCountry();
+    Query query = FirebaseFirestore.instance
+        .collection(_country)
+        .doc("trending")
+        .collection("messages")
+        .doc(_originalMessageId)
+        .collection("comments")
+        .orderBy('timestamp')
+        .limit(10);
+
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+
+    QuerySnapshot querySnapshot = await query.get();
+    return querySnapshot.docs;
+  }
+
   // ----- UPDATES -----
-  Future<void> updateSingleValueInUserDocument(String _userId, String _fieldName, dynamic _value) async {
+  Future<void> updateSingleValueInUserDocument(
+      String _userId, String _fieldName, dynamic _value) async {
     // Update the value
     await _db.collection("users").doc(_userId).update({
       _fieldName: _value,
@@ -51,8 +133,14 @@ class MessageProvider with ChangeNotifier {
   Future<List<Message>> getCountryMessages() async {
     String _country = Utils.getUserCountry();
     try {
-      QuerySnapshot querySnapshot = await _db.collection(_country).doc("random").collection("messages").get();
-      List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      QuerySnapshot querySnapshot = await _db
+          .collection(_country)
+          .doc("random")
+          .collection("messages")
+          .get();
+      List<Message> messages = querySnapshot.docs
+          .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
       return messages;
     } catch (e) {
       print("Error fetching messages: $e");
@@ -63,8 +151,14 @@ class MessageProvider with ChangeNotifier {
 
   Future<List<Message>> getUserMessagesSent(String _userId) async {
     try {
-      QuerySnapshot querySnapshot = await _db.collection("users").doc(_userId).collection("messages-sent").get();
-      List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      QuerySnapshot querySnapshot = await _db
+          .collection("users")
+          .doc(_userId)
+          .collection("messages-sent")
+          .get();
+      List<Message> messages = querySnapshot.docs
+          .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
       return messages;
     } catch (e) {
       print("Error fetching messages: $e");
@@ -72,7 +166,7 @@ class MessageProvider with ChangeNotifier {
       throw e;
     }
   }
-  
+
   Future<List<Message>> getCountryTrendingMessages() async {
     String _country = Utils.getUserCountry();
     try {
@@ -82,7 +176,9 @@ class MessageProvider with ChangeNotifier {
           .collection("messages")
           .orderBy('likes', descending: true)
           .get();
-      List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      List<Message> messages = querySnapshot.docs
+          .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
       return messages;
     } catch (e) {
       print("Error fetching messages: $e");
@@ -102,9 +198,17 @@ class MessageProvider with ChangeNotifier {
           .limit(5)
           .get();
 
-      List<Message> messages = querySnapshot.docs.map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      List<Message> messages = querySnapshot.docs
+          .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
       for (Message message in messages) {
-        await _db.collection(_country).doc("trending").collection("messages").doc(message.id).set(message.toJson()); // Use set instead of add to specify the document ID
+        await _db
+            .collection(_country)
+            .doc("trending")
+            .collection("messages")
+            .doc(message.id)
+            .set(message
+                .toJson()); // Use set instead of add to specify the document ID
       }
       print("SET TOP TRENDING");
     } catch (e) {
@@ -113,5 +217,4 @@ class MessageProvider with ChangeNotifier {
       throw e;
     }
   }
-
 }

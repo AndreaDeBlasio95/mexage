@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/custom_snack_bar.dart';
+import 'package:mexage/views/comments_view.dart';
+import 'package:provider/provider.dart';
+import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
 
 class MessageView extends StatefulWidget {
+  final String originalMessageId;
+  final String userId;
   final String message;
   final CustomThemes themeProvider;
 
@@ -10,6 +15,8 @@ class MessageView extends StatefulWidget {
     Key? key,
     required this.message,
     required this.themeProvider,
+    required this.originalMessageId,
+    required this.userId,
   }) : super(key: key);
 
   @override
@@ -184,67 +191,84 @@ class _MessageViewState extends State<MessageView>
                     )
                   : Container(),
               const SizedBox(height: 24),
-              !_isSubmitted ? _isLiked
-                  ? TextField(
-                      controller: _textEditingController,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your text',
-                        hintStyle: widget.themeProvider.tTextDisabled,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: widget.themeProvider
-                                  .cTextDisabled), // Underline color
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: widget.themeProvider
-                                  .cCardMessageInbox), // Focused underline color
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _charCount = value.length;
-                          if (_charCount > 200) {
-                            // Limit the text to 500 characters
-                            _textEditingController.text =
-                                _textEditingController.text.substring(0, 200);
-                            _textEditingController.selection =
-                                TextSelection.collapsed(offset: 200);
-                            _charCount = 200;
-                          }
-                          if (_charCount >= 50 && _charCount <= 200) {
-                            _canSubmit = true;
-                          } else {
-                            _canSubmit = false;
-                          }
-                        });
-                      },
-                      maxLines: null,
-                      style: widget.themeProvider.tTextNormal, // Text color
-                    )
-                  : Container() : Container(),
+              !_isSubmitted
+                  ? _isLiked
+                      ? TextField(
+                          controller: _textEditingController,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your text',
+                            hintStyle: widget.themeProvider.tTextDisabled,
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: widget.themeProvider
+                                      .cTextDisabled), // Underline color
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: widget.themeProvider
+                                      .cCardMessageInbox), // Focused underline color
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _charCount = value.length;
+                              if (_charCount > 200) {
+                                // Limit the text to 500 characters
+                                _textEditingController.text =
+                                    _textEditingController.text
+                                        .substring(0, 200);
+                                _textEditingController.selection =
+                                    TextSelection.collapsed(offset: 200);
+                                _charCount = 200;
+                              }
+                              if (_charCount >= 50 && _charCount <= 200) {
+                                _canSubmit = true;
+                              } else {
+                                _canSubmit = false;
+                              }
+                            });
+                          },
+                          maxLines: null,
+                          style: widget.themeProvider.tTextNormal, // Text color
+                        )
+                      : Container()
+                  : Container(),
               const SizedBox(height: 12),
-              !_isSubmitted ? _isLiked
-                  ? Text(
-                      'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
-                      style: widget.themeProvider.tTextSmall,
-                      textAlign: TextAlign.center,
-                    )
-                  : Container() : Container(),
+              !_isSubmitted
+                  ? _isLiked
+                      ? Text(
+                          'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
+                          style: widget.themeProvider.tTextSmall,
+                          textAlign: TextAlign.center,
+                        )
+                      : Container()
+                  : Container(),
               const SizedBox(height: 36),
-              !_isSubmitted ? _canSubmit
-                  ? ElevatedButton(
-                      onPressed: () {
-                        CustomSnackBar.showSnackbar(
-                            context, 'Message Sent', widget.themeProvider);
-                        _textEditingController.clear();
-                        setState(() {
-                          _isSubmitted = true;
-                        });
-                      },
-                      child: Text('Submit'),
-                    )
-                  : Container() : Container(),
+              !_isSubmitted
+                  ? _canSubmit
+                      ? ElevatedButton(
+                          onPressed: () async {
+                            final messageProvider = Provider.of<MessageProvider>(
+                                context,
+                                listen: false);
+                            await messageProvider.addComment(
+                                widget.userId,
+                                _textEditingController.text,
+                                widget.originalMessageId);
+                            if (mounted) {
+                              CustomSnackBar.showSnackbar(
+                                  context, 'Message Sent',
+                                  widget.themeProvider);
+                              setState(() {
+                                _isSubmitted = true;
+                              });
+                              _textEditingController.clear();
+                            }
+                          },
+                          child: Text('Submit'),
+                        )
+                      : Container()
+                  : Container(),
               const SizedBox(height: 12),
             ],
           ),

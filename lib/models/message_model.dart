@@ -9,6 +9,8 @@ class Message {
   int rank;
   int likes;
   int dislikes;
+  bool isComment;
+  String originalMessageId;
   final Timestamp timestamp;
 
   Message({
@@ -20,6 +22,8 @@ class Message {
     required this.rank,
     this.likes = 0,
     this.dislikes = 0,
+    this.isComment = false,
+    this.originalMessageId = '',
     required this.timestamp,
   });
 
@@ -33,6 +37,8 @@ class Message {
       rank: json['rank'] as int,
       likes: json['likes'] as int,
       dislikes: json['dislikes'] as int,
+      isComment: json['isComment'] as bool,
+      originalMessageId: json['originalMessageId'] as String,
       timestamp: json['timestamp'] as Timestamp,
     );
   }
@@ -48,6 +54,8 @@ class Message {
       'rank': rank,
       'likes': likes,
       'dislikes': dislikes,
+      'isComment': isComment,
+      'originalMessageId': originalMessageId,
       'timestamp': timestamp,
     };
   }

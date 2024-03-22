@@ -49,6 +49,7 @@ class _BoardViewState extends State<BoardView> {
                   Provider.of<MessageProvider>(context, listen: false);
               messageProvider.addMessage(
                   signInProvider.currentUser!.uid, 'content');
+              messageProvider.adminSetTopLikedMessages();
             },
             child: const Icon(Icons.add),
           ),

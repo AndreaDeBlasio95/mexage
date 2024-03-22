@@ -24,6 +24,8 @@ class MessageCardSent extends StatelessWidget {
           context,
           PageRouteBuilder(
             pageBuilder: (_, __, ___) => MessageView(
+                originalMessageId: message.id,
+                userId: message.userId,
                 message: message.content, themeProvider: themeProvider),
             transitionsBuilder: (_, animation, __, child) {
               return SlideTransition(

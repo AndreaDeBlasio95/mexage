@@ -17,10 +17,20 @@ class MessagesSent extends StatefulWidget {
 }
 
 class _MessagesSentState extends State<MessagesSent> {
+
+  late SignInProvider _signProvider;
+  late UserProvider _userProvider;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _signProvider = Provider.of<SignInProvider>(context, listen: false);
+    _userProvider = Provider.of<UserProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _signProvider = Provider.of<SignInProvider>(context, listen: false);
-    final _userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return Consumer<CustomThemes>(builder: (context, themeProvider, _) {
       return Scaffold(

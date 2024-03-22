@@ -32,7 +32,10 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
             PageRouteBuilder(
               pageBuilder: (_, __, ___) =>
                   MessageView(
-                      message: widget.message.content, themeProvider: themeProvider),
+                      originalMessageId: widget.message.id,
+                      userId: widget.message.userId,
+                      message: widget.message.content,
+                      themeProvider: themeProvider),
               transitionsBuilder: (_, animation, __, child) {
                 return SlideTransition(
                   position: Tween<Offset>(

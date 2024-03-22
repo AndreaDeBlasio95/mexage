@@ -23,7 +23,10 @@ class MessageCardBoard extends StatelessWidget {
           context,
           PageRouteBuilder(
             pageBuilder: (_, __, ___) => MessageView(
-                message: message.content, themeProvider: themeProvider),
+                originalMessageId: message.id,
+                userId: message.userId,
+                message: message.content,
+                themeProvider: themeProvider),
             transitionsBuilder: (_, animation, __, child) {
               return SlideTransition(
                 position: Tween<Offset>(
