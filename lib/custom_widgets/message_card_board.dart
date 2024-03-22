@@ -68,7 +68,7 @@ class MessageCardBoard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: Center(
-                    child: _buildTrailingLikesWidget(),
+                    child: _buildTrailingLikesWidget(themeProvider),
                   ),
                 ),
               ],
@@ -97,15 +97,27 @@ class MessageCardBoard extends StatelessWidget {
     return const SizedBox();
   }
 
-  Widget _buildTrailingLikesWidget() {
-    return Text(
-      Utils.formatNumber(message.likes),
-      style: const TextStyle(
-        fontFamily: 'nunito',
-        color: Colors.white,
-        fontSize: 14,
-        fontVariations: [
-          FontVariation('wght', 800),
+  Widget _buildTrailingLikesWidget(CustomThemes _themeProvider) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      child: Row(
+        children: [
+          Icon(
+            Icons.thumb_up_alt_rounded,
+            color: _themeProvider.cOutlineBlue,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            Utils.formatNumber(message.likes),
+            style: const TextStyle(
+              fontFamily: 'nunito',
+              color: Colors.white,
+              fontSize: 14,
+              fontVariations: [
+                FontVariation('wght', 800),
+              ],
+            ),
+          ),
         ],
       ),
     );
