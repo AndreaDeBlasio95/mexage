@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../providers/message_provider.dart';
+import '../providers/open_ai_service.dart';
 import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
 import '../custom_widgets/board_messages.dart';
@@ -42,7 +43,7 @@ class _BoardViewState extends State<BoardView> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
+            onPressed: () async {
               final signInProvider =
                   Provider.of<SignInProvider>(context, listen: false);
               final userProvider =
@@ -52,6 +53,18 @@ class _BoardViewState extends State<BoardView> {
               messageProvider.addMessage(signInProvider.currentUser!.uid,
                   userProvider.userName, 'content');
               messageProvider.adminSetTopLikedMessages();
+
+              // test open ai
+              final OpenAIService openAIService = OpenAIService();
+              String message = 'My id card is 1234567890';
+
+              // Call the classifyAndFilterContent method with the user's message
+              var passed = await openAIService.getExplicitnessScore(message);
+              setState(() {
+                print(passed);
+              });
+
+              // end test open ai
             },
             child: const Icon(Icons.add),
           ),

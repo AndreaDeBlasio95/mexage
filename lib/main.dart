@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mexage/providers/message_provider.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
@@ -14,6 +15,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await dotenv.load(fileName: ".env");
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => CustomThemes()),
     ChangeNotifierProvider(create: (_) => SignInProvider()),
