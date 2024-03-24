@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -20,9 +22,18 @@ class OnboardingPage extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontFamily: 'nunito',
+              color: Color(0xFF121212),
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              fontVariations: [
+                FontVariation('wght', 700),
+              ],
+            ),
+            textAlign: TextAlign.center,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 48),
           Image.asset(image, height: 200),
         ],
       ),

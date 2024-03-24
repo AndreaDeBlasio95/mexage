@@ -16,19 +16,19 @@ class _OnboardingViewState extends State<OnboardingView> {
   int _currentPage = 0;
   List<Map<String, String>> onboardingData = [
     {
-      'title': 'Title 1',
+      'title': 'Explore anonymity with SeaBottle!',
       'description': 'Description 1',
-      'image': 'images/icon-palm.png',
+      'image': 'images/icon-onboard-1.png',
     },
     {
-      'title': 'Title 2',
+      'title': 'Send an anonymous message daily.',
       'description': 'Description 2',
-      'image': 'images/icon-palm.png',
+      'image': 'images/icon-send-message.png',
     },
     {
-      'title': 'Title 3',
+      'title': 'Messages delivered at dawn to random users.',
       'description': 'Description 3',
-      'image': 'images/icon-palm.png',
+      'image': 'images/icon-sea-bottle.png',
     },
   ];
 
@@ -91,7 +91,9 @@ class _OnboardingViewState extends State<OnboardingView> {
           const SizedBox(height: 36),
           GestureDetector(
             onTap: () {
-              if (_currentPage == onboardingData.length - 1) {
+              if (_currentPage == onboardingData.length -1) {
+                print("Hello");
+              } else if (_currentPage == onboardingData.length - 1) {
                 // Navigate to next screen or perform desired action
               } else {
                 _pageController.nextPage(
@@ -101,8 +103,10 @@ class _OnboardingViewState extends State<OnboardingView> {
               }
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
-              padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
+              margin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.3),
+              padding:
+                  EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
               decoration: BoxDecoration(
                 color: Color(0xFF7D53DE),
                 borderRadius: BorderRadius.circular(30),
@@ -119,7 +123,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                   fontVariations: [
                     FontVariation('wght', 700),
                   ],
-                ), textAlign: TextAlign.center,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
