@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
+        '/onboard': (context) => OnboardingView(), // Replace SecondPage with the name of your second page widget
         '/login': (context) => const WelcomeView(), // Replace SecondPage with the name of your second page widget
         '/home': (context) => HomeView(), // Replace SecondPage with the name of your second page widget
       },

@@ -54,26 +54,71 @@ class MessageCardBoard extends StatelessWidget {
             elevation: 0,
             color: Colors.transparent,
             margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Column(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: Text(message.content,
-                      style: themeProvider.tTextMessageCard,
-                      overflow: TextOverflow.ellipsis),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Text(message.content,
+                          style: themeProvider.tTextMessageCard,
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Center(
+                        child: _buildTrailingLikesWidget(themeProvider),
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  margin: const EdgeInsets.only(top: 8, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Center(
-                    child: _buildTrailingLikesWidget(themeProvider),
-                  ),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Text(
+                        "lifestyle",
+                        style: themeProvider.tTextSnackBar,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Text(
+                        "motivation",
+                        style: themeProvider.tTextSnackBar,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Text(
+                        "+18",
+                        style: themeProvider.tTextSnackBar,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

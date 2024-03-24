@@ -10,9 +10,10 @@ class CommentCard extends StatelessWidget {
   final String userName;
   final String content;
   final Timestamp timestamp;
+  Color randomColor;
 
-  const CommentCard(
-      {super.key, required this.themeProvider, required this.userName, required this.content, required this.timestamp});
+  CommentCard(
+      {super.key, required this.themeProvider, required this.userName, required this.content, required this.timestamp, this.randomColor = Colors.blue});
 
   Color generateRandomBlueColor() {
     Random random = Random();
@@ -27,6 +28,8 @@ class CommentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    randomColor = generateRandomBlueColor();
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 2),
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -46,7 +49,7 @@ class CommentCard extends StatelessWidget {
                     height: 10,
                     width: 10,
                     decoration: BoxDecoration(
-                      color: themeProvider.cOutlineBlue,
+                      color: randomColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -57,7 +60,7 @@ class CommentCard extends StatelessWidget {
                         userName,
                         style: TextStyle(
                           fontFamily: 'nunito',
-                          color: generateRandomBlueColor(),
+                          color: randomColor,
                           fontSize: 14,
                           fontVariations: const [
                             FontVariation('wght', 700),

@@ -127,114 +127,119 @@ class _WelcomeViewState extends State<WelcomeView> {
     final SignInProvider _signInProvider =
         Provider.of<SignInProvider>(context, listen: false);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: _isLoading
-          ? Container()
-          : SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                    ),
-                    Container(
-                      child: Image.asset(
-                        'images/icon-sea-bottle.png',
-                        height: 200,
-                        width: 200,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: _isLoading
+            ? Container()
+            : SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'SeaBottle',
-                      style: themeProvider.tTextWelcomeTitle,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 42),
-                      child: Text(
-                        'Send and receive messages in a bottle.',
-                        style: themeProvider.tTextMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.13,
-                    ),
-                    const SizedBox(height: 8),
-                    // Sign In With Google -----
-                    GestureDetector(
-                      onTap: () async {
-                        marginValueRegisterNow = 0;
-                        User? _user = await _signInProvider.handleSignIn();
-                        UserProvider _userProvider =
-                            Provider.of<UserProvider>(context, listen: false);
-                        if (_user != null) {
-                          _userProvider.registerOrGetUser(context);
-                        }
-                        if (mounted && _user != null) {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        }
-                      },
-                      onLongPressStart: (_) {
-                        setState(() {
-                          marginValueRegisterNow = 0;
-                        });
-                      },
-                      onLongPressEnd: (_) {
-                        setState(() {
-                          marginValueRegisterNow = 6;
-                        });
-                      },
-                      child: Container(
-                        margin: marginValueRegisterNow > 0
-                            ? const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 8, top: 0)
-                            : const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 8, top: 6),
-                        decoration: BoxDecoration(
-                          color: themeProvider.cOutlineBlue,
-                          borderRadius: BorderRadius.circular(24),
+                      Container(
+                        child: Image.asset(
+                          'images/icon-sea-bottle.png',
+                          height: 200,
+                          width: 200,
                         ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'SeaBottle',
+                        style: themeProvider.tTextWelcomeTitle,
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 42),
+                        child: Text(
+                          'Send and receive messages in a bottle.',
+                          style: themeProvider.tTextMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.13,
+                      ),
+                      const SizedBox(height: 8),
+                      // Sign In With Google -----
+                      GestureDetector(
+                        onTap: () async {
+                          marginValueRegisterNow = 0;
+                          User? _user = await _signInProvider.handleSignIn();
+                          UserProvider _userProvider =
+                              Provider.of<UserProvider>(context, listen: false);
+                          if (_user != null) {
+                            _userProvider.registerOrGetUser(context);
+                          }
+                          if (mounted && _user != null) {
+                            Navigator.pushReplacementNamed(context, '/home');
+                          }
+                        },
+                        onLongPressStart: (_) {
+                          setState(() {
+                            marginValueRegisterNow = 0;
+                          });
+                        },
+                        onLongPressEnd: (_) {
+                          setState(() {
+                            marginValueRegisterNow = 6;
+                          });
+                        },
                         child: Container(
                           margin: marginValueRegisterNow > 0
                               ? const EdgeInsets.only(
-                                  left: 2, right: 2, top: 1, bottom: 6)
-                              : const EdgeInsets.only(bottom: 0),
+                                  left: 16, right: 16, bottom: 8, top: 0)
+                              : const EdgeInsets.only(
+                                  left: 16, right: 16, bottom: 8, top: 6),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(22),
+                            color: themeProvider.cOutlineBlue,
+                            borderRadius: BorderRadius.circular(24),
                           ),
-                          child: Card(
-                            elevation: 0,
-                            color: Colors.transparent,
-                            margin: const EdgeInsets.only(
-                                top: 4, bottom: 4, left: 16, right: 16),
-                            child: ListTile(
-                              leading: Image.asset(
-                                'images/icon-google.png',
-                                height: 28,
-                                width: 28,
+                          child: Container(
+                            margin: marginValueRegisterNow > 0
+                                ? const EdgeInsets.only(
+                                    left: 2, right: 2, top: 1, bottom: 6)
+                                : const EdgeInsets.only(bottom: 0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(22),
+                            ),
+                            child: Card(
+                              elevation: 0,
+                              color: Colors.transparent,
+                              margin: const EdgeInsets.only(
+                                  top: 4, bottom: 4, left: 16, right: 16),
+                              child: ListTile(
+                                leading: Image.asset(
+                                  'images/icon-google.png',
+                                  height: 28,
+                                  width: 28,
+                                ),
+                                title: Text("Sign in with Google!",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: themeProvider.cCardMessageInbox),
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis),
                               ),
-                              title: Text("Sign in with Google!",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: themeProvider.cCardMessageInbox),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }
