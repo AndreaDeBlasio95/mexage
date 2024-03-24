@@ -5,6 +5,7 @@ import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:mexage/theme/custom_themes.dart';
 import 'package:mexage/views/home_view.dart';
+import 'package:mexage/views/onboarding_view.dart';
 import 'package:mexage/views/welcome_view.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const WelcomeView(),
+      home: OnboardingView(),
     );
   }
 }
