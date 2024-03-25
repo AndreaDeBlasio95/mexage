@@ -18,36 +18,9 @@ class MessageCardSent extends StatelessWidget {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
     String timestampToDate = Utils.timestampToDate(message.timestamp);
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => MessageView(
-                originalMessageId: message.id,
-                userId: message.userId,
-                message: message.content, themeProvider: themeProvider),
-            transitionsBuilder: (_, animation, __, child) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: Offset(1.0, 0.0),
-                  end: Offset.zero,
-                ).animate(
-                  CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.fastOutSlowIn, // Bounce-in curve
-                  ),
-                ),
-                child: child,
-              );
-            },
-            transitionDuration:
-                Duration(milliseconds: 500), // Adjust duration as needed
-          ),
-        );
-      },
-      child: AnimatedCartoonContainer(
+    return AnimatedCartoonContainer(
         message: message,
+        isLiked: false, // todo: change this
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Card(
@@ -100,7 +73,6 @@ class MessageCardSent extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 

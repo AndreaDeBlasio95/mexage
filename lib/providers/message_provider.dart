@@ -71,7 +71,7 @@ class MessageProvider with ChangeNotifier {
         originalMessageId: _originalMessage,
         timestamp: Timestamp.now(),
       );
-      // udate likes in original message
+      // update likes in original message
       await _db
           .collection(_country)
           .doc("trending")
@@ -96,6 +96,13 @@ class MessageProvider with ChangeNotifier {
           .doc(messageId)
           .set(message
               .toJson()); // Use set instead of add to specify the document ID
+      // update a collection to know if the user has commented on the message
+      await _db
+          .collection("users")
+          .doc(_userId)
+          .collection("messages-comments-board")
+          .doc(_originalMessage)
+          .set({'commented': true});
       await updateSingleValueInUserDocument(
           _userId, "timestampLastSentMessage", Timestamp.now());
       await updateSingleValueInUserDocument(
@@ -182,7 +189,7 @@ class MessageProvider with ChangeNotifier {
     String _country = Utils.getUserCountry();
     try {
       DocumentSnapshot snapshot =
-      await _db.collection("users").doc(_userId).collection("messages-comments").doc(_documentId).get();
+      await _db.collection("users").doc(_userId).collection("messages-comments-board").doc(_documentId).get();
       return snapshot.exists;
     } catch (e) {
       print("Error checking document existence: $e");

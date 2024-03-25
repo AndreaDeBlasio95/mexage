@@ -1,14 +1,11 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/animated_cartoon_container.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
-import 'package:mexage/utils/utils.dart';
 import 'package:provider/provider.dart';
 import '../models/message_model.dart';
 import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
-import '../views/message_view.dart';
 
 class MessageCardBoard extends StatefulWidget {
   final Message message;
@@ -26,26 +23,24 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
   @override
   void initState() {
     super.initState();
-    _messageExistFuture = messageExistInUserCollection(context);
-    _messageExistFuture.then((value) {
-      setState(() {
-        _messageExist = value;
-      });
-    });
+    _messageExistFuture = messageExistInUserCollection();
+
   }
 
-  Future<bool> messageExistInUserCollection(context) async {
+  Future<bool> messageExistInUserCollection() async {
     final messageProvider =
         Provider.of<MessageProvider>(context, listen: false);
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     try {
       bool documentExists = await messageProvider.checkIfDocumentExists(
           widget.message.id, signInProvider.currentUser!.uid);
-      print(
-          'Document exists from message card board - in the user collection: $documentExists');
+      setState(() {
+        _messageExist = documentExists;
+      });
       return documentExists;
     } catch (e) {
       print('Error: $e');
+      _messageExist = false;
       return false;
     }
   }
@@ -54,37 +49,9 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => MessageView(
-                originalMessageId: widget.message.id,
-                userId: widget.message.userId,
-                message: widget.message.content,
-                themeProvider: themeProvider),
-            transitionsBuilder: (_, animation, __, child) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(1.0, 0.0),
-                  end: Offset.zero,
-                ).animate(
-                  CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.fastOutSlowIn, // Bounce-in curve
-                  ),
-                ),
-                child: child,
-              );
-            },
-            transitionDuration:
-                const Duration(milliseconds: 500), // Adjust duration as needed
-          ),
-        );
-      },
-      child: AnimatedCartoonContainer(
+    return AnimatedCartoonContainer(
         message: widget.message,
+        isLiked: _messageExist,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Card(
@@ -141,7 +108,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
-                        "motivation",
+                        "$_messageExist",
                         style: themeProvider.tTextSnackBar,
                       ),
                     ),
@@ -163,7 +130,6 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
             ),
           ),
         ),
-      ),
     );
   }
 

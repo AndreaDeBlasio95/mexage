@@ -8,8 +8,9 @@ import '../views/message_view.dart';
 class AnimatedCartoonContainer extends StatefulWidget {
   final Widget child;
   final Message message;
+  final bool isLiked;
 
-  const AnimatedCartoonContainer({super.key, required this.child, required this.message});
+  const AnimatedCartoonContainer({super.key, required this.child, required this.message, required this.isLiked});
 
   @override
   _AnimatedCartoonContainerState createState() => _AnimatedCartoonContainerState();
@@ -35,6 +36,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
                       originalMessageId: widget.message.id,
                       userId: widget.message.userId,
                       message: widget.message.content,
+                      isLiked: widget.isLiked,
                       themeProvider: themeProvider),
               transitionsBuilder: (_, animation, __, child) {
                 return SlideTransition(

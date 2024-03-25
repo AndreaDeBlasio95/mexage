@@ -10,15 +10,17 @@ class MessageView extends StatefulWidget {
   final String originalMessageId;
   final String userId;
   final String message;
+  final bool isLiked;
   final CustomThemes themeProvider;
 
   const MessageView({
-    Key? key,
+    super.key,
     required this.message,
     required this.themeProvider,
     required this.originalMessageId,
+    required this.isLiked,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   _MessageViewState createState() => _MessageViewState();
@@ -60,6 +62,15 @@ class _MessageViewState extends State<MessageView>
     _charCount = 0;
     bool _canSubmit = false;
     bool _isSubmitted = false;
+
+    if (widget.isLiked) {
+      setState(() {
+        _isToggleAnimation = true;
+        _isSubmitted = true;
+        _isLiked = true;
+        _canSubmit = true;
+      });
+    }
   }
 
   @override
@@ -82,11 +93,11 @@ class _MessageViewState extends State<MessageView>
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Column(
+          child: !widget.isLiked ? Column(
             children: [
               _isToggleAnimation
                   ? Container(
-                      height: MediaQuery.of(context).size.height * 0.4,
+                      height: MediaQuery.of(context).size.height * 0.3,
                       child: Text(
                         widget.message,
                         style: widget.themeProvider.tTextNormal,
@@ -286,6 +297,21 @@ class _MessageViewState extends State<MessageView>
                       userId: widget.userId,
                       themeProvider: widget.themeProvider),
               const SizedBox(height: 36),
+            ],
+          ) : Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: Text(
+                  widget.message,
+                  style: widget.themeProvider.tTextNormal,
+                ),
+              ),
+              const SizedBox(height: 32),
+              CommentsView(
+                  originalMessageId: widget.originalMessageId,
+                  userId: widget.userId,
+                  themeProvider: widget.themeProvider),
             ],
           ),
         ),
