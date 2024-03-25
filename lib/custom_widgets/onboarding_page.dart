@@ -16,13 +16,13 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'nunito',
               color: Color(0xFF121212),
               fontWeight: FontWeight.bold,
@@ -33,7 +33,7 @@ class OnboardingPage extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 48),
+          const SizedBox(height: 48),
           Image.asset(image, height: 200),
         ],
       ),

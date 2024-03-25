@@ -178,6 +178,18 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> checkIfDocumentExists(String _documentId, String _userId) async {
+    String _country = Utils.getUserCountry();
+    try {
+      DocumentSnapshot snapshot =
+      await _db.collection("users").doc(_userId).collection("messages-comments").doc(_documentId).get();
+      return snapshot.exists;
+    } catch (e) {
+      print("Error checking document existence: $e");
+      return false; // Assuming document doesn't exist if there's an error
+    }
+  }
+
   Future<List<Message>> getCountryTrendingMessages() async {
     String _country = Utils.getUserCountry();
     try {

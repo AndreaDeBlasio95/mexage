@@ -2,16 +2,53 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/animated_cartoon_container.dart';
+import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/utils/utils.dart';
 import 'package:provider/provider.dart';
 import '../models/message_model.dart';
+import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
 import '../views/message_view.dart';
 
-class MessageCardBoard extends StatelessWidget {
+class MessageCardBoard extends StatefulWidget {
   final Message message;
 
-  const MessageCardBoard({super.key, required this.message});
+  MessageCardBoard({super.key, required this.message});
+
+  @override
+  State<MessageCardBoard> createState() => _MessageCardBoardState();
+}
+
+class _MessageCardBoardState extends State<MessageCardBoard> {
+  late Future<bool> _messageExistFuture;
+  bool _messageExist = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _messageExistFuture = messageExistInUserCollection(context);
+    _messageExistFuture.then((value) {
+      setState(() {
+        _messageExist = value;
+      });
+    });
+  }
+
+  Future<bool> messageExistInUserCollection(context) async {
+    final messageProvider =
+        Provider.of<MessageProvider>(context, listen: false);
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    try {
+      bool documentExists = await messageProvider.checkIfDocumentExists(
+          widget.message.id, signInProvider.currentUser!.uid);
+      print(
+          'Document exists from message card board - in the user collection: $documentExists');
+      return documentExists;
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +60,14 @@ class MessageCardBoard extends StatelessWidget {
           context,
           PageRouteBuilder(
             pageBuilder: (_, __, ___) => MessageView(
-                originalMessageId: message.id,
-                userId: message.userId,
-                message: message.content,
+                originalMessageId: widget.message.id,
+                userId: widget.message.userId,
+                message: widget.message.content,
                 themeProvider: themeProvider),
             transitionsBuilder: (_, animation, __, child) {
               return SlideTransition(
                 position: Tween<Offset>(
-                  begin: Offset(1.0, 0.0),
+                  begin: const Offset(1.0, 0.0),
                   end: Offset.zero,
                 ).animate(
                   CurvedAnimation(
@@ -42,12 +79,12 @@ class MessageCardBoard extends StatelessWidget {
               );
             },
             transitionDuration:
-                Duration(milliseconds: 500), // Adjust duration as needed
+                const Duration(milliseconds: 500), // Adjust duration as needed
           ),
         );
       },
       child: AnimatedCartoonContainer(
-        message: message,
+        message: widget.message,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Card(
@@ -61,11 +98,11 @@ class MessageCardBoard extends StatelessWidget {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width * 0.6,
-                      child: Text(message.content,
+                      child: Text(widget.message.content,
                           style: themeProvider.tTextMessageCard,
                           overflow: TextOverflow.ellipsis),
                     ),
-                    Container(
+                    !_messageExist ? Container(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       margin: const EdgeInsets.only(top: 8, bottom: 8),
                       decoration: BoxDecoration(
@@ -75,6 +112,9 @@ class MessageCardBoard extends StatelessWidget {
                       child: Center(
                         child: _buildTrailingLikesWidget(themeProvider),
                       ),
+                    ) : Container(
+                      height: 40,
+                      width: 1,
                     ),
                   ],
                 ),
@@ -127,46 +167,19 @@ class MessageCardBoard extends StatelessWidget {
     );
   }
 
-  Widget _buildTrailingWidget() {
-    if (message.likes == 0) {
-      return Icon(
-        Icons.thumb_up_alt_outlined,
-        color: Colors.grey.shade200,
-        size: 20,
-      );
-    }
-    if (message.likes == 1) {
-      return Icon(Icons.thumb_up_alt_rounded,
-          color: Colors.grey.shade200, size: 20);
-    }
-    if (message.likes == 2) {
-      return Icon(Icons.thumb_down, color: Colors.grey.shade200, size: 20);
-    }
-    return const SizedBox();
-  }
-
   Widget _buildTrailingLikesWidget(CustomThemes _themeProvider) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-      child: Row(
-        children: [
-          Icon(
-            Icons.thumb_up_alt_rounded,
-            color: _themeProvider.cOutlineBlue,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            Utils.formatNumber(message.likes),
-            style: const TextStyle(
-              fontFamily: 'nunito',
-              color: Colors.white,
-              fontSize: 14,
-              fontVariations: [
-                FontVariation('wght', 800),
-              ],
-            ),
-          ),
-        ],
+      child: const Text(
+        "New",
+        style: TextStyle(
+          fontFamily: 'nunito',
+          color: Colors.white,
+          fontSize: 14,
+          fontVariations: [
+            FontVariation('wght', 800),
+          ],
+        ),
       ),
     );
   }

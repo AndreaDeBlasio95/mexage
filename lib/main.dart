@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const WelcomeView(), // Replace SecondPage with the name of your second page widget
         '/home': (context) => HomeView(), // Replace SecondPage with the name of your second page widget
       },
-      title: 'Mexage',
+      title: 'SeaBottle',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
