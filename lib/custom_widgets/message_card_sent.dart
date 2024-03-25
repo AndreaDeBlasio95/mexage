@@ -52,7 +52,7 @@ class MessageCardSent extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.65,
                       child: Text(message.content,
-                          style: themeProvider.tTextMessageCard,
+                          style: themeProvider.tTextCard,
                           overflow: TextOverflow.ellipsis),
                     ),
                     Container(

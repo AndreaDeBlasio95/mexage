@@ -161,7 +161,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                         padding: const EdgeInsets.symmetric(horizontal: 42),
                         child: Text(
                           'Send and receive messages in a bottle.',
-                          style: themeProvider.tTextMedium,
+                          style: themeProvider.tTextGrey,
                           textAlign: TextAlign.center,
                         ),
                       ),

@@ -77,7 +77,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
           curve: Curves.ease,
           margin: EdgeInsets.only(bottom: _isPressed ? 0 : _shadowSize, top: _isPressed ? _shadowSize : 0,),
           decoration: BoxDecoration(
-            color: themeProvider.cOutlineBlue,
+            color: themeProvider.cCardColorToOpenOutline,
             borderRadius: BorderRadius.circular(20),
           ),
           child: AnimatedContainer(
@@ -86,7 +86,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
             padding: EdgeInsets.only(bottom: _isPressed ? _shadowSize : 0),
             margin: EdgeInsets.only(bottom: _isPressed ? 0 : _shadowSize),
             decoration: BoxDecoration(
-              color: themeProvider.cCardMessageInbox,
+              color: themeProvider.cCardColorToOpen,
               borderRadius: BorderRadius.circular(18),
             ),
             child: widget.child,

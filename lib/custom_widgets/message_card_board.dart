@@ -66,15 +66,14 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.6,
                       child: Text(widget.message.content,
-                          style: themeProvider.tTextMessageCard,
+                          style: themeProvider.tTextCard,
                           overflow: TextOverflow.ellipsis),
                     ),
                     !_messageExist ? Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      padding: const EdgeInsets.only(bottom: 4),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade100.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(24),
+                        color: const Color(0xFF218FC4),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(
                         child: _buildTrailingLikesWidget(themeProvider),
@@ -97,7 +96,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                       ),
                       child: Text(
                         "lifestyle",
-                        style: themeProvider.tTextSnackBar,
+                        style: themeProvider.tTextTag,
                       ),
                     ),
                     Container(
@@ -109,19 +108,18 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                       ),
                       child: Text(
                         "$_messageExist",
-                        style: themeProvider.tTextSnackBar,
+                        style: themeProvider.tTextTag,
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 8, right: 8),
-                      margin: const EdgeInsets.only(top: 8, bottom: 8),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade100.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
                         "+18",
-                        style: themeProvider.tTextSnackBar,
+                        style: themeProvider.tTextTag,
                       ),
                     ),
                   ],
@@ -135,7 +133,11 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
 
   Widget _buildTrailingLikesWidget(CustomThemes _themeProvider) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: Color(0xFF1AADF6),
+        borderRadius: BorderRadius.circular(24),
+      ),
       child: const Text(
         "New",
         style: TextStyle(
