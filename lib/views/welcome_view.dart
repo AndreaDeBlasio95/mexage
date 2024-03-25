@@ -227,7 +227,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
-                                        color: themeProvider.cCardMessageInbox),
+                                        color: themeProvider.cCardDrawer),
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis),
                               ),

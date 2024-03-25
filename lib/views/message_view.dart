@@ -138,7 +138,7 @@ class _MessageViewState extends State<MessageView>
                                         child: Icon(
                                           Icons.thumb_up_alt_rounded,
                                           color: widget
-                                              .themeProvider.cCardMessageInbox,
+                                              .themeProvider.cCardDrawer,
                                           size: 36,
                                         ),
                                       ),
@@ -218,7 +218,7 @@ class _MessageViewState extends State<MessageView>
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color: widget.themeProvider
-                                      .cCardMessageInbox), // Focused underline color
+                                      .cCardDrawer), // Focused underline color
                             ),
                           ),
                           onChanged: (value) {

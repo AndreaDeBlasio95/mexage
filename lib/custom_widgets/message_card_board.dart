@@ -91,7 +91,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       margin: const EdgeInsets.only(top: 8, bottom: 8),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade100.withOpacity(0.2),
+                        color: themeProvider.cTextAppBar.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
@@ -103,7 +103,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       margin: const EdgeInsets.only(top: 8, bottom: 8),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade100.withOpacity(0.3),
+                        color: themeProvider.cTextAppBar.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
@@ -114,7 +114,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                     Container(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade100.withOpacity(0.4),
+                        color: themeProvider.cTextAppBar.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(

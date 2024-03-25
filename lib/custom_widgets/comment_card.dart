@@ -34,7 +34,7 @@ class CommentCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: Card(
-        color: themeProvider.cCardMessageInbox.withOpacity(0.1),
+        color: themeProvider.cCardDrawer.withOpacity(0.1),
         elevation: 0,
         margin: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(

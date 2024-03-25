@@ -9,19 +9,17 @@ class CustomThemes with ChangeNotifier {
   // Initialize with default values
 
   // --- COLORS ---
-  Color cBackGround = Colors.white;
-  Color cTextTitle = const Color(0xFF4259F0);
-  Color cTextAppBar = const Color(0xFF4259F0);
-  Color cTextGrey = const Color(0xFF454F54);
-  Color cTextBold = const Color(0xFFD8FBFC);
-  Color cTextNormal = const Color(0xFF454F54);
-  Color cTextMessageCardDrawer = Colors.black;
+  Color cBackGround = Colors.black;
+  Color cTextTitle = Colors.black;
+  Color cTextAppBar = Colors.black;
+  Color cTextGrey = Colors.black;
+  Color cTextBold = Colors.black;
+  Color cTextNormal = Colors.black;
   Color cTextTabBar = Colors.black;
   Color cTextDisabled = Colors.black;
   Color cIcons = Colors.black;
-  Color cCardMessageInbox = Colors.black;
-  Color cTabOptions = Colors.black;
-  Color cCardShadow = Colors.black;
+  Color cCardDrawer = Colors.black;
+  Color cCardDrawerShadow = Colors.black;
   Color cTextWelcomeTitle = Colors.black;
   Color cTextNavigationSelected = Colors.black;
   Color cTextNavigationNotSelected = Colors.black;
@@ -33,8 +31,8 @@ class CustomThemes with ChangeNotifier {
   Color cTextCommentBold = Colors.black;
   Color cTextUsername = Colors.black;
   Color cTextCard = Colors.black;
-  Color cTextTag = const Color(0xFF454F54);
-  Color cCardColorToOpen = Colors.black;
+  Color cTextTag = Colors.black;
+  Color cCardColorToOpen =Colors.black;
   Color cCardColorToOpenOutline = Colors.black;
 
   // --- TEXT STYLES ---
@@ -132,7 +130,7 @@ class CustomThemes with ChangeNotifier {
   TextStyle tTextTag = const TextStyle(
     fontFamily: 'nunito',
     color: Colors.grey,
-    fontSize: 18,
+    fontSize: 14,
   );
 
   int get currentTheme => _theme;
@@ -145,16 +143,14 @@ class CustomThemes with ChangeNotifier {
       cBackGround = Colors.white;
       cTextAppBar = const Color(0xFF4259F0); // Zaffre blue
       cTextTitle = const Color(0xFF4259F0); // Medium slate blue
-      cTextGrey = const Color(0xFFE5E5E5);
+      cTextGrey = const Color(0xFF454F54);
       cTextBold = const Color(0xFFD8FBFC);
       cTextNormal = const Color(0xFF454F54);
       cTextTabBar = const Color(0xFF7699D4); // vista blue
       cTextDisabled = const Color(0xFF505B63); // Payne's grey
       cIcons = const Color(0xFFDCD9FC); // tropical indigo
-      cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
-      cTextMessageCardDrawer = Colors.white;
-      cTabOptions = const Color(0xFF7CC944);
-      cCardShadow = const Color(0xFF329BEC);
+      cCardDrawer = const Color(0xFF54ADEF); // Argentinian blue
+      cCardDrawerShadow = const Color(0xFF329BEC);
       cTextWelcomeTitle = const Color(0xFF7D53DE); // Medium slate blue
       cTextNavigationSelected = const Color(0xFF137DCD);
       cTextNavigationNotSelected = const Color(0xFF505B63);
@@ -174,28 +170,26 @@ class CustomThemes with ChangeNotifier {
       cBackGround = const Color(0xFF141F23);
       cTextAppBar = const Color(0xFF7B8BF4); // RISD blue
       cTextTitle = const Color(0xFF7B8BF4); // RISD blue
-      cTextGrey = const Color(0xFF212F37);
+      cTextGrey = const Color(0xFFE7E7E7);
       cTextBold = const Color(0xFFE6E6E6);
       cTextNormal = const Color(0xFFEAEFF1);
       cTextTabBar = const Color(0xFFF9F4F5); // ice blue
       cTextDisabled = const Color(0xFF505B63); // Payne's grey
       cIcons = const Color(0xFFDCD9FC); // tropical indigo
-      cCardMessageInbox = const Color(0xFF54ADEF); // Argentinian blue
-      cTextMessageCardDrawer = Colors.white;
-      cTabOptions = const Color(0xFF7CC944);
-      cCardShadow = const Color(0xFF329BEC);
+      cCardDrawer = const Color(0xFF212F37); // Argentinian blue
+      cCardDrawerShadow = const Color(0xFF495662);
       cTextWelcomeTitle = const Color(0xFF7D53DE); // Medium slate blue
       cTextNavigationSelected = Colors.white;
       cTextNavigationNotSelected = const Color(0xFF505B63);
       cRed = const Color(0xFFD32F2F);
       cOutlineBlue = const Color(0xFF278EDD);
       cOutline = const Color(0xFFE5E5E5);
-      cTextTimestamp = Colors.grey.shade700;
+      cTextTimestamp = Colors.grey.shade200;
       cSnackBar = Colors.white;
       cTextCommentBold = const Color(0xFF505B63);
       cTextUsername = const Color(0xFF54ADEF);
-      cCardColorToOpen = const Color(0xFF4AC6FF);
-      cCardColorToOpenOutline = const Color(0xFF4EAFDD);
+      cCardColorToOpen = const Color(0xFF212F37);
+      cCardColorToOpenOutline = const Color(0xFF495662);
       cTextCard = const Color(0xFF093247);
       cTextTag = const Color(0xFFDDEEEE);
     }
@@ -215,10 +209,17 @@ class CustomThemes with ChangeNotifier {
         FontVariation('wght', 800),
       ],
     );
+    tTextSmall = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextGrey,
+      fontSize: 10,
+      fontVariations: const [
+        FontVariation('wght', 500),
+      ],
+    );
     tTextNormal = TextStyle(
       fontFamily: 'nunito',
       color: cTextNormal,
-      fontWeight: FontWeight.w500,
       fontSize: 16,
       fontVariations: const [
         FontVariation('wght', 500),
@@ -256,7 +257,7 @@ class CustomThemes with ChangeNotifier {
     );
      tTextMessageCardDrawer = TextStyle(
       fontFamily: 'nunito',
-      color: cTextMessageCardDrawer,
+      color: cTextBold,
       fontSize: 16,
       fontVariations: const [
         FontVariation('wght', 500),
@@ -291,7 +292,7 @@ class CustomThemes with ChangeNotifier {
     );
     tTextTimestamp = TextStyle(
       fontFamily: 'nunito',
-      color: cTextTimestamp,
+      color: cTextGrey,
       fontVariations: const [
         FontVariation('wght', 600),
       ],
@@ -327,13 +328,13 @@ class CustomThemes with ChangeNotifier {
     );
     tTextCard = TextStyle(
       fontFamily: 'nunito',
-      color: cTextCard,
-      fontSize: 18,
+      color: cTextNormal,
+      fontSize: 16,
       fontVariations: const [
         FontVariation('wght', 700),
       ],
     );
-    tTextCard = TextStyle(
+    tTextTag = TextStyle(
       fontFamily: 'nunito',
       color: cTextTag,
       fontSize: 14,

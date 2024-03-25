@@ -60,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           const SizedBox(height: 12),
           Card(
             elevation: 0,
-            color: themeProvider.cCardMessageInbox,
+            color: themeProvider.cCardDrawer,
             child: ListTile(
               leading: Icon(Icons.person, color: themeProvider.cIcons),
               title: Text(_userProvider.userName, style: themeProvider.tTextMessageCardDrawer, overflow: TextOverflow.ellipsis,),
@@ -72,7 +72,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           Card(
             elevation: 0,
-            color: themeProvider.cCardMessageInbox,
+            color: themeProvider.cCardDrawer,
             child: ListTile(
               leading: Icon(Icons.email, color: themeProvider.cIcons),
               title: Text('${_signInProvider.currentUser!.email}', style: themeProvider.tTextMessageCardDrawer, overflow: TextOverflow.ellipsis,),
@@ -92,7 +92,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           const SizedBox(height: 12),
           Card(
             elevation: 0,
-            color: themeProvider.cCardMessageInbox,
+            color: themeProvider.cCardDrawer,
             child: ListTile(
               leading: Icon(Icons.notifications, color: themeProvider.cIcons),
               title: Text('Notifications', style: themeProvider.tTextMessageCardDrawer),
@@ -104,7 +104,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           Card(
             elevation: 0,
-            color: themeProvider.cCardMessageInbox,
+            color: themeProvider.cCardDrawer,
             child: ListTile(
               leading: Icon(Icons.security, color: themeProvider.cIcons),
               title: Text('Security', style: themeProvider.tTextMessageCardDrawer),
@@ -116,7 +116,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           Card(
             elevation: 0,
-            color: themeProvider.cCardMessageInbox,
+            color: themeProvider.cCardDrawer,
             child: ListTile(
               leading: themeColorSelected == 0 ? Icon(Icons.light_mode, color: themeProvider.cIcons) : Icon(Icons.dark_mode, color: themeProvider.cIcons),
               title: Text('Switch Theme', style: themeProvider.tTextMessageCardDrawer),
