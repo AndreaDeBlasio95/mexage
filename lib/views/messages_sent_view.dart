@@ -39,82 +39,87 @@ class _MessagesSentState extends State<MessagesSent> {
   Widget build(BuildContext context) {
 
     return Consumer<CustomThemes>(builder: (context, themeProvider, _) {
-      return Scaffold(
-        backgroundColor: themeProvider.cBackGround,
-        body: Container(
-          padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                child: Text(
-                  'Sent',
-                  style: themeProvider.tTextBoldMedium,
-                  textAlign: TextAlign.left,
+      return WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: themeProvider.cBackGround,
+          body: Container(
+            padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  child: Text(
+                    'Sent',
+                    style: themeProvider.tTextBoldMedium,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: FutureBuilder<List<Message>>(
-                  future: Provider.of<MessageProvider>(context)
-                      .getUserMessagesSent(_signProvider.currentUser!.uid),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: FutureBuilder<List<Message>>(
+                    future: Provider.of<MessageProvider>(context)
+                        .getUserMessagesSent(_signProvider.currentUser!.uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Display shimmer effect while loading
+                        return _buildShimmerEffect();
+                      } else if (snapshot.hasError) {
+                        // Handle error case
+                        return Container(
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      } else if (snapshot.data == null ||
+                          snapshot.data!.isEmpty) {
+                        // Handle case when there are no messages
+                        return Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                            ),
+                            Container(
+                              child: Text("It's a bit empty here!\nLet's send your first bottle!", style: themeProvider.tTextNormal, textAlign: TextAlign.center,),
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                            ),
+                            Image.asset("images/icon-palm.png", height: 250),
+                          ],
+                        );
+                      } else {
+                        // Display list of messages
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            Message message = snapshot.data![index];
+                            return MessageCardSent(message: message);
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+                FutureBuilder<bool>(
+                  future: _userProvider.checkCanSendMessage(context),
                   builder: (context, snapshot) {
+                    // Checking connection state
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      // Display shimmer effect while loading
-                      return _buildShimmerEffect();
+                      // Still loading
+                      return Container();
                     } else if (snapshot.hasError) {
-                      // Handle error case
-                      return Container(
-                        child: Text('Error: ${snapshot.error}'),
-                      );
-                    } else if (snapshot.data == null ||
-                        snapshot.data!.isEmpty) {
-                      // Handle case when there are no messages
-                      return Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                          ),
-                          Container(
-                            child: Text("It's a bit empty here!\nLet's send your first bottle!", style: themeProvider.tTextNormal, textAlign: TextAlign.center,),
-                          ),
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                          ),
-                          Image.asset("images/icon-palm.png", height: 250),
-                        ],
-                      );
+                      // If an error occurred
+                      return Text('Error: ${snapshot.error}');
                     } else {
-                      // Display list of messages
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          Message message = snapshot.data![index];
-                          return MessageCardSent(message: message);
-                        },
-                      );
+                      // Data is loaded
+                      final canSendMessage = snapshot.data ?? false;
+                      return canSendMessage ? CreateNewMessage() : Container();
                     }
                   },
                 ),
-              ),
-              FutureBuilder<bool>(
-                future: _userProvider.checkCanSendMessage(context),
-                builder: (context, snapshot) {
-                  // Checking connection state
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // Still loading
-                    return Container();
-                  } else if (snapshot.hasError) {
-                    // If an error occurred
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    // Data is loaded
-                    final canSendMessage = snapshot.data ?? false;
-                    return canSendMessage ? CreateNewMessage() : Container();
-                  }
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

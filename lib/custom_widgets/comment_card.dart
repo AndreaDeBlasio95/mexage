@@ -18,8 +18,8 @@ class CommentCard extends StatelessWidget {
   Color generateRandomBlueColor() {
     Random random = Random();
     // Generate random values for red and green components
-    int red = random.nextInt(256);
-    int green = random.nextInt(256);
+    int red = random.nextInt(180);
+    int green = random.nextInt(180);
     // Blue component set to maximum value for a shade of blue
     int blue = 255;
     // Create Color object with the generated values
@@ -66,7 +66,7 @@ class CommentCard extends StatelessWidget {
                             FontVariation('wght', 700),
                           ],
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
