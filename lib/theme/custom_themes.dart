@@ -147,7 +147,7 @@ class CustomThemes with ChangeNotifier {
       cTextBold = const Color(0xFFD8FBFC);
       cTextNormal = const Color(0xFF454F54);
       cTextTabBar = const Color(0xFF7699D4); // vista blue
-      cTextDisabled = const Color(0xFF505B63); // Payne's grey
+      cTextDisabled = const Color(0xFFE7E7E7); // Payne's grey
       cIcons = const Color(0xFFDCD9FC); // tropical indigo
       cCardDrawer = const Color(0xFF54ADEF); // Argentinian blue
       cCardDrawerShadow = const Color(0xFF329BEC);
@@ -191,7 +191,7 @@ class CustomThemes with ChangeNotifier {
       cCardColorToOpen = const Color(0xFF212F37);
       cCardColorToOpenOutline = const Color(0xFF495662);
       cTextCard = const Color(0xFF093247);
-      cTextTag = const Color(0xFFDDEEEE);
+      cTextTag = const Color(0xFF212F37);
     }
     setTextStyles(value);
     notifyListeners();

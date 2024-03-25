@@ -70,9 +70,9 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                           overflow: TextOverflow.ellipsis),
                     ),
                     !_messageExist ? Container(
-                      padding: const EdgeInsets.only(bottom: 4),
+                      padding: const EdgeInsets.only(bottom: 4, top: 2, left: 2, right: 2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF218FC4),
+                        color: themeProvider.cCardColorToOpenOutline,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(
@@ -91,7 +91,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       margin: const EdgeInsets.only(top: 8, bottom: 8),
                       decoration: BoxDecoration(
-                        color: themeProvider.cTextAppBar.withOpacity(0.3),
+                        color: Colors.lightBlueAccent,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
@@ -103,7 +103,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       margin: const EdgeInsets.only(top: 8, bottom: 8),
                       decoration: BoxDecoration(
-                        color: themeProvider.cTextAppBar.withOpacity(0.3),
+                        color: Colors.lightBlueAccent,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
@@ -114,7 +114,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                     Container(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       decoration: BoxDecoration(
-                        color: themeProvider.cTextAppBar.withOpacity(0.3),
+                        color: Colors.lightBlueAccent,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
@@ -135,14 +135,14 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: Color(0xFF1AADF6),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
       ),
-      child: const Text(
+      child: Text(
         "New",
         style: TextStyle(
           fontFamily: 'nunito',
-          color: Colors.white,
+          color: _themeProvider.cTextTag,
           fontSize: 14,
           fontVariations: [
             FontVariation('wght', 800),
