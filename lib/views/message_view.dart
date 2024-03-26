@@ -375,8 +375,6 @@ class _MessageViewState extends State<MessageView>
   }
 
   void _animateThumbDown() async {
-    _animationControllerDislike.reset();
-    _animationControllerDislike.forward();
     final messageProvider =
         Provider.of<MessageProvider>(context, listen: false);
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
@@ -386,5 +384,9 @@ class _MessageViewState extends State<MessageView>
         userProvider.userName,
         "I don't like this message.",
         widget.originalMessageId);
+    if (mounted){
+      _animationControllerDislike.reset();
+      _animationControllerDislike.forward();
+    }
   }
 }
