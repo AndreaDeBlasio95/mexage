@@ -111,7 +111,7 @@ class UserProvider extends ChangeNotifier {
         throw Exception('User not found');
       }
     } catch (e) {
-      print('Error getting user: $e');
+      print('First Login, user will be load in a few seconds $e');
       // Optionally, you can throw an error or handle it differently based on your requirements
       throw e;
     }

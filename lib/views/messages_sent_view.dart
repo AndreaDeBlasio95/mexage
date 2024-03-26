@@ -31,8 +31,11 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     refreshUsername();
   }
 
-  void refreshUsername () async {
+  Future<void> refreshUsername () async {
     _userName = await _userProvider.getUserName(_signProvider.currentUser!.uid, context);
+    setState(() {
+      _userName = _userName;
+    });
   }
 
   @override
@@ -101,7 +104,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                     },
                   ),
                 ),
-                FutureBuilder<bool>(
+                _userName != "" ? FutureBuilder<bool>(
                   future: _userProvider.checkCanSendMessage(context),
                   builder: (context, snapshot) {
                     // Checking connection state
@@ -117,7 +120,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                       return canSendMessage ? const CreateNewMessage() : Container();
                     }
                   },
-                ),
+                ) : Container(),
               ],
             ),
           ),

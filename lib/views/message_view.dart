@@ -61,8 +61,6 @@ class _MessageViewState extends State<MessageView>
     );
 
     _charCount = 0;
-    bool _canSubmit = false;
-    bool _isSubmitted = false;
 
     if (widget.isLiked) {
       setState(() {
@@ -84,6 +82,8 @@ class _MessageViewState extends State<MessageView>
 
   @override
   Widget build(BuildContext context) {
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: widget.themeProvider.cBackGround,
       appBar: AppBar(
@@ -92,7 +92,7 @@ class _MessageViewState extends State<MessageView>
         iconTheme: IconThemeData(color: widget.themeProvider.cTextNormal),
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: widget.userId != signInProvider.currentUser!.uid ? Container(
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: !widget.isLiked
               ? Column(
@@ -345,23 +345,27 @@ class _MessageViewState extends State<MessageView>
                     const SizedBox(height: 36),
                   ],
                 )
-              : Column(
-                  children: [
-                    Container(
-                      child: Text(
-                        widget.message,
-                        style: widget.themeProvider.tTextNormal,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    CommentsView(
-                        originalMessageId: widget.originalMessageId,
-                        userId: widget.userId,
-                        themeProvider: widget.themeProvider),
-                  ],
-                ),
-        ),
+              : _buildMessageViewWithoutInteraction()
+        ) : _buildMessageViewWithoutInteraction(),
       ),
+    );
+  }
+
+  Widget _buildMessageViewWithoutInteraction() {
+    return Column(
+      children: [
+        Container(
+          child: Text(
+            widget.message,
+            style: widget.themeProvider.tTextNormal,
+          ),
+        ),
+        const SizedBox(height: 32),
+        CommentsView(
+            originalMessageId: widget.originalMessageId,
+            userId: widget.userId,
+            themeProvider: widget.themeProvider),
+      ],
     );
   }
 
@@ -377,7 +381,10 @@ class _MessageViewState extends State<MessageView>
         Provider.of<MessageProvider>(context, listen: false);
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await messageProvider.addComment(signInProvider.currentUser!.uid, userProvider.userName,
-        "I don't like this message.", widget.originalMessageId);
+    await messageProvider.addComment(
+        signInProvider.currentUser!.uid,
+        userProvider.userName,
+        "I don't like this message.",
+        widget.originalMessageId);
   }
 }
