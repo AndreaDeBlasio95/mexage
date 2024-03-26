@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/custom_snack_bar.dart';
+import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:mexage/views/comments_view.dart';
 import 'package:provider/provider.dart';
@@ -284,8 +285,11 @@ class _MessageViewState extends State<MessageView>
                                       final userProvider =
                                           Provider.of<UserProvider>(context,
                                               listen: false);
+                                      final signInProvider =
+                                          Provider.of<SignInProvider>(context,
+                                              listen: false);
                                       await messageProvider.addComment(
-                                          widget.userId,
+                                          signInProvider.currentUser!.uid,
                                           userProvider.userName,
                                           _textEditingController.text,
                                           widget.originalMessageId);
@@ -311,8 +315,11 @@ class _MessageViewState extends State<MessageView>
                                       final userProvider =
                                           Provider.of<UserProvider>(context,
                                               listen: false);
+                                      final signInProvider =
+                                          Provider.of<SignInProvider>(context,
+                                              listen: false);
                                       await messageProvider.addComment(
-                                          widget.userId,
+                                          signInProvider.currentUser!.uid,
                                           userProvider.userName,
                                           _textEditingController.text,
                                           widget.originalMessageId);
@@ -368,8 +375,9 @@ class _MessageViewState extends State<MessageView>
     _animationControllerDislike.forward();
     final messageProvider =
         Provider.of<MessageProvider>(context, listen: false);
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await messageProvider.addComment(widget.userId, userProvider.userName,
+    await messageProvider.addComment(signInProvider.currentUser!.uid, userProvider.userName,
         "I don't like this message.", widget.originalMessageId);
   }
 }
