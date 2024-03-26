@@ -9,7 +9,8 @@ class MessageProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // ----- SETTERS -----
-  Future<void> addMessage(String _userId, String _userName, String _content) async {
+  Future<void> addMessage(
+      String _userId, String _userName, String _content) async {
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -51,7 +52,8 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addComment(String _userId, String _userName, String _content, String _originalMessage) async {
+  Future<void> addComment(String _userId, String _userName, String _content,
+      String _originalMessage) async {
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -111,9 +113,12 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<List<DocumentSnapshot>> fetchCommentsFromTrending(String _originalMessageId, String _userId, {DocumentSnapshot? startAfter}) async {
+  Future<List<DocumentSnapshot>> fetchCommentsFromTrending(
+      String _originalMessageId, String _userId,
+      {DocumentSnapshot? startAfter}) async {
     String _country = Utils.getUserCountry();
-    Query query = _db.collection(_country)
+    Query query = _db
+        .collection(_country)
         .doc("trending")
         .collection("messages")
         .doc(_originalMessageId)
@@ -130,13 +135,15 @@ class MessageProvider with ChangeNotifier {
   }
 
   // Receive the message
-  Future<Message?> getNextMessage(String userId, int limitIteration, DocumentSnapshot? lastDocument) async {
+  Future<Message?> getNextMessage(
+      String userId, int limitIteration, DocumentSnapshot? lastDocument) async {
     if (limitIteration >= 10) {
       return null; // Reached iteration limit, exit recursion
     }
 
     String country = Utils.getUserCountry();
-    Query query = _db.collection(country)
+    Query query = _db
+        .collection(country)
         .doc('random')
         .collection('messages')
         .orderBy('timestamp')
@@ -153,12 +160,11 @@ class MessageProvider with ChangeNotifier {
     }
 
     DocumentSnapshot document = querySnapshot.docs.first;
-    Message message =
-    Message.fromJson(document.data() as Map<String, dynamic>);
+    Message message = Message.fromJson(document.data() as Map<String, dynamic>);
 
     // Check if the document exists in messages-received collection
-    bool documentExists = await checkIfDocumentExistsInUserCollection(
-        message.id, userId);
+    bool documentExists =
+        await checkIfDocumentExistsInUserCollection(message.id, userId);
     print("Document exists: $documentExists");
 
     bool isMyMessage = message.userId == userId;
@@ -179,11 +185,10 @@ class MessageProvider with ChangeNotifier {
           .collection("messages-received")
           .doc(message.id)
           .set(message
-          .toJson()); // Use set instead of add to specify the document ID
+              .toJson()); // Use set instead of add to specify the document ID
       return message;
     }
   }
-
 
   // ----- UPDATES -----
   Future<void> updateSingleValueInUserDocument(
@@ -243,6 +248,7 @@ class MessageProvider with ChangeNotifier {
           .collection("users")
           .doc(_userId)
           .collection("messages-received")
+          .orderBy("timestamp", descending: true)
           .get();
       List<Message> messages = querySnapshot.docs
           .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
@@ -255,11 +261,16 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> checkIfDocumentExistsInUserCollection(String _documentId, String _userId) async {
+  Future<bool> checkIfDocumentExistsInUserCollection(
+      String _documentId, String _userId) async {
     String _country = Utils.getUserCountry();
     try {
-      DocumentSnapshot snapshot =
-      await _db.collection("users").doc(_userId).collection("messages-received").doc(_documentId).get();
+      DocumentSnapshot snapshot = await _db
+          .collection("users")
+          .doc(_userId)
+          .collection("messages-received")
+          .doc(_documentId)
+          .get();
       return snapshot.exists;
     } catch (e) {
       print("Error checking document existence: $e");
@@ -270,8 +281,12 @@ class MessageProvider with ChangeNotifier {
   Future<bool> checkIfDocumentExists(String _documentId, String _userId) async {
     String _country = Utils.getUserCountry();
     try {
-      DocumentSnapshot snapshot =
-      await _db.collection("users").doc(_userId).collection("messages-comments-board").doc(_documentId).get();
+      DocumentSnapshot snapshot = await _db
+          .collection("users")
+          .doc(_userId)
+          .collection("messages-comments-board")
+          .doc(_documentId)
+          .get();
       return snapshot.exists;
     } catch (e) {
       print("Error checking document existence: $e");
@@ -301,6 +316,7 @@ class MessageProvider with ChangeNotifier {
 
   Future<void> adminSetTopLikedMessages() async {
     String _country = Utils.getUserCountry();
+    await copyCollectionTrending(_country);
     try {
       QuerySnapshot querySnapshot = await _db
           .collection(_country)
@@ -328,5 +344,40 @@ class MessageProvider with ChangeNotifier {
       // Handle error accordingly
       throw e;
     }
+  }
+
+  Future<void> copyCollectionTrending(String _country) async {
+    String _getCurrentWeek = Utils.getCurrentWeekYearFormat();
+    // Reference to the source collection
+    CollectionReference sourceRef =
+    _db.collection(_country).doc("trending").collection("messages");
+
+    // Reference to the destination collection
+    CollectionReference destinationRef =
+    _db.collection(_country).doc(_getCurrentWeek).collection("messages");
+
+    // Check if any documents exist in the source collection
+    QuerySnapshot sourceSnapshot = await sourceRef.limit(1).get();
+    if (sourceSnapshot.docs.isEmpty) {
+      print('Source collection does not exist');
+      return null;
+    }
+
+    // Get all documents from the source collection
+    QuerySnapshot snapshot = await sourceRef.get();
+
+    // Iterate over each document and copy it to the destination collection
+    snapshot.docs.forEach((document) async {
+      await destinationRef.doc(document.id).set(document.data());
+    });
+
+    //await deleteDocuments(sourceRef);
+  }
+
+  Future<void> deleteDocuments(CollectionReference collectionRef) async {
+    QuerySnapshot snapshot = await collectionRef.get();
+    snapshot.docs.forEach((doc) {
+      doc.reference.delete();
+    });
   }
 }

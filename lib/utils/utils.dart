@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Utils {
@@ -41,4 +40,34 @@ class Utils {
     }
   }
 
+  static String getCurrentWeekYearFormat() {
+    // Get current date
+    DateTime now = DateTime.now();
+    // Get the week number
+    int weekNumber = _getIsoWeekNumber(now);
+    // Get the year
+    int year = now.year;
+    // Format the output
+    return 'trending-$weekNumber-$year';
+  }
+
+  static int _getIsoWeekNumber(DateTime date) {
+    int dayOfYear = _dayOfYear(date);
+    int woy = ((dayOfYear - date.weekday + 10) / 7).floor();
+    if (woy < 1) {
+      woy = _getIsoWeekNumber(DateTime(date.year - 1, 12, 31));
+    } else if (woy > 52) {
+      if (date.month == 12 && (dayOfYear - date.weekday) >= 28) {
+        woy = 1;
+      } else {
+        woy = _getIsoWeekNumber(DateTime(date.year + 1, 1, 1));
+      }
+    }
+    return woy;
+  }
+
+  static int _dayOfYear(DateTime date) {
+    DateTime firstDayOfYear = DateTime(date.year, 1, 1);
+    return date.difference(firstDayOfYear).inDays + 1;
+  }
 }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import '../custom_widgets/board_messages.dart';
+import '../custom_widgets/board_messages_list.dart';
 import '../providers/message_provider.dart';
 import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
@@ -57,14 +57,14 @@ class _BoardViewState extends State<BoardView> {
                 final messageProvider =
                     Provider.of<MessageProvider>(context, listen: false);
 
-                await messageProvider.addMessage(signInProvider.currentUser!.uid,
-                    userProvider.userName, 'Message by ${userProvider.userName} - ${DateTime.now()}');
+                //await messageProvider.addMessage(signInProvider.currentUser!.uid,
+                //    userProvider.userName, 'Message by ${userProvider.userName} - ${DateTime.now()}');
 
                 await messageProvider.adminSetTopLikedMessages();
 
                 // delete this line
-                DocumentSnapshot? lastDocument;
-                await messageProvider.getNextMessage(signInProvider.currentUser!.uid, 0, lastDocument);
+                //DocumentSnapshot? lastDocument;
+                //await messageProvider.getNextMessage(signInProvider.currentUser!.uid, 0, lastDocument);
 
                 // start test open ai ---------------
                 //final OpenAIService openAIService = OpenAIService();
