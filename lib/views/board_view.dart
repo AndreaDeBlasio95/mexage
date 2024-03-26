@@ -58,17 +58,19 @@ class _BoardViewState extends State<BoardView> {
                     userProvider.userName, 'content');
                 messageProvider.adminSetTopLikedMessages();
 
-                // test open ai
-                final OpenAIService openAIService = OpenAIService();
-                String message = 'My id card is 1234567890';
+                // delete this line
+                messageProvider.getNextMessage(signInProvider.currentUser!.uid);
 
-                // Call the classifyAndFilterContent method with the user's message
-                var passed = await openAIService.getExplicitnessScore(message);
-                setState(() {
-                  print(passed);
-                });
+                // start test open ai ---------------
+                //final OpenAIService openAIService = OpenAIService();
+                String message = 'this is a message from the user';
 
-                // end test open ai
+                //var passed = await openAIService.getExplicitnessScore(message);
+                //setState(() {
+                //  print(passed);
+                //});
+
+                // end test open ai ---------------
               },
               child: const Icon(Icons.add),
             ),

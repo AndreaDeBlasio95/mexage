@@ -51,8 +51,7 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addComment(
-      String _userId, String _userName, String _content, String _originalMessage) async {
+  Future<void> addComment(String _userId, String _userName, String _content, String _originalMessage) async {
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -112,9 +111,7 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<List<DocumentSnapshot>> fetchCommentsFromTrending(
-      String _originalMessageId, String _userId,
-      {DocumentSnapshot? startAfter}) async {
+  Future<List<DocumentSnapshot>> fetchCommentsFromTrending(String _originalMessageId, String _userId, {DocumentSnapshot? startAfter}) async {
     String _country = Utils.getUserCountry();
     Query query = FirebaseFirestore.instance
         .collection(_country)
@@ -131,6 +128,39 @@ class MessageProvider with ChangeNotifier {
 
     QuerySnapshot querySnapshot = await query.get();
     return querySnapshot.docs;
+  }
+
+  // Receive the message
+  Future<Message?> getNextMessage(String userId) async {
+    String country = Utils.getUserCountry();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(country)
+        .doc('random')
+        .collection('messages')
+        .orderBy('timestamp')
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      return null; // No more documents to fetch
+    }
+
+    DocumentSnapshot document = querySnapshot.docs.first;
+    Message message =
+    Message.fromJson(document.data() as Map<String, dynamic>);
+
+    // Check if the document exists in messages-received collection
+    bool documentExists = await checkIfDocumentExists(message.id, userId);
+    bool isMyMessage = message.userId == userId;
+    print("It's my message $isMyMessage");
+    if (documentExists && !isMyMessage) {
+      // Document exists in messages-received collection, fetch next document recursively
+      return getNextMessage(userId);
+    } else {
+      print("the message is: $message can't be received by $userId because it's his own message");
+      return getNextMessage(userId);
+      // Document does not exist in messages-received collection, return the message
+    }
   }
 
   // ----- UPDATES -----
@@ -173,6 +203,24 @@ class MessageProvider with ChangeNotifier {
           .collection("users")
           .doc(_userId)
           .collection("messages-sent")
+          .get();
+      List<Message> messages = querySnapshot.docs
+          .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      return messages;
+    } catch (e) {
+      print("Error fetching messages: $e");
+      // Handle error accordingly
+      throw e;
+    }
+  }
+
+  Future<List<Message>> getUserMessagesReceived(String _userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection("users")
+          .doc(_userId)
+          .collection("messages-received")
           .get();
       List<Message> messages = querySnapshot.docs
           .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))

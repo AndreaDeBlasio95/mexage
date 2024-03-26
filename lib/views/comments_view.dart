@@ -76,7 +76,8 @@ class _CommentsViewState extends State<CommentsView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height * 0.8,
+      width: double.infinity,
       child: ListView.builder(
         controller: _scrollController,
         itemCount: _comments.length,

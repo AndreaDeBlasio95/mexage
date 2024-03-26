@@ -5,6 +5,7 @@ import 'package:mexage/views/board_view.dart';
 import 'package:mexage/views/messages_sent_view.dart';
 import 'package:provider/provider.dart';
 import '../custom_widgets/home_drawer.dart';
+import 'messages_received_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -18,8 +19,8 @@ class _HomeViewState extends State<HomeView> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     BoardView(),
-    MessagesSent(),
-    Text('Search Page'),
+    MessagesSentView(),
+    MessagesReceivedView(),
   ];
 
   void _onItemTapped(int index) {

@@ -6,7 +6,6 @@ import 'package:mexage/utils/utils.dart';
 import 'package:provider/provider.dart';
 import '../models/message_model.dart';
 import '../theme/custom_themes.dart';
-import '../views/message_view.dart';
 
 class MessageCardSent extends StatelessWidget {
   final Message message;
@@ -19,60 +18,55 @@ class MessageCardSent extends StatelessWidget {
     String timestampToDate = Utils.timestampToDate(message.timestamp);
 
     return AnimatedCartoonContainer(
-        message: message,
-        isLiked: false, // todo: change this
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 2),
-          child: Card(
-            elevation: 0,
-            color: Colors.transparent,
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                // Timestamp ----------------------------------------------
-                Container(
+      message: message,
+      isLiked: false, // todo: change this
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: Card(
+          elevation: 0,
+          color: Colors.transparent,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              // Content ----------------------------------------------
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    child: Text(message.content,
+                        style: themeProvider.tTextCard,
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    margin: const EdgeInsets.only(top: 8, bottom: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Center(
+                      child: _buildTrailingLikesWidget(),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Timestamp ----------------------------------------------
+              Container(
                   padding: const EdgeInsets.only(bottom: 4),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300.withOpacity(0.8),
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Text(timestampToDate,
-                          style: themeProvider.tTextTimestamp)),
-                ),
-                // Content ----------------------------------------------
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.65,
-                      child: Text(message.content,
-                          style: themeProvider.tTextCard,
-                          overflow: TextOverflow.ellipsis),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      margin: const EdgeInsets.only(top: 8, bottom: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Center(
-                        child: _buildTrailingLikesWidget(),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-              ],
-            ),
+                  child: Text(timestampToDate,
+                      style: themeProvider.tTextSmall),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 

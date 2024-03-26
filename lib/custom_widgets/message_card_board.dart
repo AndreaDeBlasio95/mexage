@@ -84,46 +84,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      margin: const EdgeInsets.only(top: 8, bottom: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Text(
-                        "lifestyle",
-                        style: themeProvider.tTextTag,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      margin: const EdgeInsets.only(top: 8, bottom: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Text(
-                        "$_messageExist",
-                        style: themeProvider.tTextTag,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Text(
-                        "+18",
-                        style: themeProvider.tTextTag,
-                      ),
-                    ),
-                  ],
-                )
+                //_buildRowTags(themeProvider),
               ],
             ),
           ),
@@ -144,11 +105,54 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
           fontFamily: 'nunito',
           color: _themeProvider.cTextTag,
           fontSize: 14,
-          fontVariations: [
+          fontVariations: const [
             FontVariation('wght', 800),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildRowTags(CustomThemes _themeProvider) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          margin: const EdgeInsets.only(top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: Colors.lightBlueAccent,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Text(
+            "lifestyle",
+            style: _themeProvider.tTextTag,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          margin: const EdgeInsets.only(top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: Colors.lightBlueAccent,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Text(
+            "$_messageExist",
+            style: _themeProvider.tTextTag,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          decoration: BoxDecoration(
+            color: Colors.lightBlueAccent,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Text(
+            "+18",
+            style: _themeProvider.tTextTag,
+          ),
+        ),
+      ],
     );
   }
 }

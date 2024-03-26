@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mexage/custom_widgets/create_new_message.dart';
-import 'package:mexage/custom_widgets/message_card_sent.dart';
-import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../custom_widgets/message_card_sent.dart';
 import '../models/message_model.dart';
 import '../providers/message_provider.dart';
 import '../providers/sign_in_provider.dart';
+import '../providers/user_provider.dart';
 import '../theme/custom_themes.dart';
 
-class MessagesSentView extends StatefulWidget {
-  const MessagesSentView({super.key});
+class MessagesReceivedView extends StatefulWidget {
+  const MessagesReceivedView({super.key});
 
   @override
-  State<MessagesSentView> createState() => _MessagesSentViewState();
+  State<MessagesReceivedView> createState() => _MessagesReceivedViewState();
 }
 
-class _MessagesSentViewState extends State<MessagesSentView> {
+class _MessagesReceivedViewState extends State<MessagesReceivedView> {
 
   late SignInProvider _signProvider;
   late UserProvider _userProvider;
@@ -52,7 +52,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                 Container(
                   width: double.infinity,
                   child: Text(
-                    'Sent',
+                    'Received',
                     style: themeProvider.tTextBoldMedium,
                     textAlign: TextAlign.left,
                   ),
@@ -61,7 +61,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                 Expanded(
                   child: FutureBuilder<List<Message>>(
                     future: Provider.of<MessageProvider>(context)
-                        .getUserMessagesSent(_signProvider.currentUser!.uid),
+                        .getUserMessagesReceived(_signProvider.currentUser!.uid),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         // Display shimmer effect while loading
@@ -80,7 +80,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                               height: MediaQuery.of(context).size.height * 0.05,
                             ),
                             Container(
-                              child: Text("It's a bit empty here!\nLet's send your first bottle!", style: themeProvider.tTextNormal, textAlign: TextAlign.center,),
+                              child: Text("Next message at 07.00 a.m. and 07.00 p.m.", style: themeProvider.tTextNormal, textAlign: TextAlign.center,),
                             ),
                             Container(
                               height: MediaQuery.of(context).size.height * 0.05,
@@ -101,6 +101,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                     },
                   ),
                 ),
+                /*
                 FutureBuilder<bool>(
                   future: _userProvider.checkCanSendMessage(context),
                   builder: (context, snapshot) {
@@ -118,6 +119,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                     }
                   },
                 ),
+                */
               ],
             ),
           ),

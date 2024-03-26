@@ -98,7 +98,6 @@ class _MessageViewState extends State<MessageView>
                   children: [
                     _isToggleAnimation
                         ? Container(
-                            height: MediaQuery.of(context).size.height * 0.3,
                             child: Text(
                               widget.message,
                               style: widget.themeProvider.tTextNormal,
@@ -305,6 +304,7 @@ class _MessageViewState extends State<MessageView>
                                   ),
                                   ElevatedButton(
                                     onPressed: () async {
+                                      _textEditingController.clear();
                                       final messageProvider =
                                           Provider.of<MessageProvider>(context,
                                               listen: false);
@@ -324,7 +324,6 @@ class _MessageViewState extends State<MessageView>
                                         setState(() {
                                           _isSubmitted = true;
                                         });
-                                        _textEditingController.clear();
                                       }
                                     },
                                     child: Text('Skip'),
@@ -342,7 +341,6 @@ class _MessageViewState extends State<MessageView>
               : Column(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
                       child: Text(
                         widget.message,
                         style: widget.themeProvider.tTextNormal,
