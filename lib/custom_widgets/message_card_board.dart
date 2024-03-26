@@ -9,14 +9,16 @@ import '../theme/custom_themes.dart';
 
 class MessageCardBoard extends StatefulWidget {
   final Message message;
+  final Future<void> Function() refreshDataFunction;
 
-  MessageCardBoard({super.key, required this.message});
+  MessageCardBoard({Key? key, required this.message, required this.refreshDataFunction}) : super(key: key);
 
   @override
   State<MessageCardBoard> createState() => _MessageCardBoardState();
 }
 
 class _MessageCardBoardState extends State<MessageCardBoard> {
+
   late Future<bool> _messageExistFuture;
   bool _messageExist = false;
 
@@ -24,7 +26,10 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
   void initState() {
     super.initState();
     _messageExistFuture = messageExistInUserCollection();
+  }
 
+  Future<void> refreshData() async {
+    await widget.refreshDataFunction();
   }
 
   Future<bool> messageExistInUserCollection() async {
@@ -52,6 +57,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
     return AnimatedCartoonContainer(
         message: widget.message,
         isLiked: _messageExist,
+        refreshDataFunction: refreshData,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Card(

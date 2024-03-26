@@ -110,7 +110,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                       return Container();
                     } else if (snapshot.hasError) {
                       // If an error occurred
-                      return Text('Error: ${snapshot.error}');
+                      return Container();
                     } else {
                       // Data is loaded
                       final canSendMessage = snapshot.data ?? false;

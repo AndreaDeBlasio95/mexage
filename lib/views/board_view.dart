@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../providers/message_provider.dart';
-import '../providers/open_ai_service.dart';
 import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
 import '../custom_widgets/board_messages.dart';
@@ -41,7 +41,7 @@ class _BoardViewState extends State<BoardView> {
                   ),
                   const SizedBox(height: 8),
                   const Expanded(
-                    child: BoardMessages(),
+                    child: BoardMessagesList(),
                   ),
                 ],
               ),
@@ -50,16 +50,21 @@ class _BoardViewState extends State<BoardView> {
               onPressed: () async {
                 final signInProvider =
                     Provider.of<SignInProvider>(context, listen: false);
+
                 final userProvider =
                     Provider.of<UserProvider>(context, listen: false);
+
                 final messageProvider =
                     Provider.of<MessageProvider>(context, listen: false);
-                messageProvider.addMessage(signInProvider.currentUser!.uid,
-                    userProvider.userName, 'content');
-                messageProvider.adminSetTopLikedMessages();
+
+                await messageProvider.addMessage(signInProvider.currentUser!.uid,
+                    userProvider.userName, 'Message by ${userProvider.userName} - ${DateTime.now()}');
+
+                await messageProvider.adminSetTopLikedMessages();
 
                 // delete this line
-                messageProvider.getNextMessage(signInProvider.currentUser!.uid);
+                DocumentSnapshot? lastDocument;
+                await messageProvider.getNextMessage(signInProvider.currentUser!.uid, 0, lastDocument);
 
                 // start test open ai ---------------
                 //final OpenAIService openAIService = OpenAIService();

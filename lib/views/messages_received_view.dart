@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mexage/custom_widgets/message_card_received.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -94,7 +95,7 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             Message message = snapshot.data![index];
-                            return MessageCardSent(message: message);
+                            return MessageCardReceived(message: message);
                           },
                         );
                       }

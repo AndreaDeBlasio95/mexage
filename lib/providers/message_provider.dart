@@ -113,8 +113,7 @@ class MessageProvider with ChangeNotifier {
 
   Future<List<DocumentSnapshot>> fetchCommentsFromTrending(String _originalMessageId, String _userId, {DocumentSnapshot? startAfter}) async {
     String _country = Utils.getUserCountry();
-    Query query = FirebaseFirestore.instance
-        .collection(_country)
+    Query query = _db.collection(_country)
         .doc("trending")
         .collection("messages")
         .doc(_originalMessageId)
@@ -131,15 +130,23 @@ class MessageProvider with ChangeNotifier {
   }
 
   // Receive the message
-  Future<Message?> getNextMessage(String userId) async {
+  Future<Message?> getNextMessage(String userId, int limitIteration, DocumentSnapshot? lastDocument) async {
+    if (limitIteration >= 10) {
+      return null; // Reached iteration limit, exit recursion
+    }
+
     String country = Utils.getUserCountry();
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection(country)
+    Query query = _db.collection(country)
         .doc('random')
         .collection('messages')
         .orderBy('timestamp')
-        .limit(1)
-        .get();
+        .limit(1);
+
+    if (lastDocument != null) {
+      query = query.startAfterDocument(lastDocument);
+    }
+
+    QuerySnapshot querySnapshot = await query.get();
 
     if (querySnapshot.docs.isEmpty) {
       return null; // No more documents to fetch
@@ -150,18 +157,33 @@ class MessageProvider with ChangeNotifier {
     Message.fromJson(document.data() as Map<String, dynamic>);
 
     // Check if the document exists in messages-received collection
-    bool documentExists = await checkIfDocumentExists(message.id, userId);
+    bool documentExists = await checkIfDocumentExistsInUserCollection(
+        message.id, userId);
+    print("Document exists: $documentExists");
+
     bool isMyMessage = message.userId == userId;
     print("It's my message $isMyMessage");
-    if (documentExists && !isMyMessage) {
-      // Document exists in messages-received collection, fetch next document recursively
-      return getNextMessage(userId);
+
+    if (documentExists || isMyMessage) {
+      print(
+          "The message ${message.id} can't be received by $userId because it's their own message");
+      // Fetch another message
+      return getNextMessage(userId, limitIteration + 1, document);
     } else {
-      print("the message is: $message can't be received by $userId because it's his own message");
-      return getNextMessage(userId);
-      // Document does not exist in messages-received collection, return the message
+      print("Message: ${message.id} can be received by $userId");
+      // Return the message as it is suitable for the user
+      // create comment in user
+      await _db
+          .collection("users")
+          .doc(userId)
+          .collection("messages-received")
+          .doc(message.id)
+          .set(message
+          .toJson()); // Use set instead of add to specify the document ID
+      return message;
     }
   }
+
 
   // ----- UPDATES -----
   Future<void> updateSingleValueInUserDocument(
@@ -230,6 +252,18 @@ class MessageProvider with ChangeNotifier {
       print("Error fetching messages: $e");
       // Handle error accordingly
       throw e;
+    }
+  }
+
+  Future<bool> checkIfDocumentExistsInUserCollection(String _documentId, String _userId) async {
+    String _country = Utils.getUserCountry();
+    try {
+      DocumentSnapshot snapshot =
+      await _db.collection("users").doc(_userId).collection("messages-received").doc(_documentId).get();
+      return snapshot.exists;
+    } catch (e) {
+      print("Error checking document existence: $e");
+      return false; // Assuming document doesn't exist if there's an error
     }
   }
 
