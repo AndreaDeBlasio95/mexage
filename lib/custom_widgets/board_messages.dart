@@ -6,8 +6,8 @@ import '../models/message_model.dart';
 import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
 
-class BoardMessages extends StatelessWidget {
-  const BoardMessages({super.key});
+class BoardMessagesList extends StatelessWidget {
+  const BoardMessagesList({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import '../custom_widgets/board_messages.dart';
 import '../providers/message_provider.dart';
 import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
-import '../custom_widgets/board_messages.dart';
 
 class BoardView extends StatefulWidget {
   const BoardView({super.key});
