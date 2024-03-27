@@ -87,7 +87,8 @@ class _MessageViewState extends State<MessageView>
     return WillPopScope(
       onWillPop: () async {
         // When navigating back, toggle the flag to call the function
-        Provider.of<MessageProvider>(context, listen: false).refreshData(widget.originalMessageId, signInProvider.currentUser!.uid);
+        Provider.of<MessageProvider>(context, listen: false).refreshData(
+            widget.originalMessageId, signInProvider.currentUser!.uid);
         return true; // Return true to allow pop
       },
       child: Scaffold(
@@ -100,77 +101,55 @@ class _MessageViewState extends State<MessageView>
         body: SingleChildScrollView(
           child: widget.userId != signInProvider.currentUser!.uid
               ? Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 8),
                   child: !widget.isLiked
                       ? Column(
                           children: [
+                            // Display the message content
                             _isToggleAnimation
                                 ? Container(
+                                    width: double.infinity,
                                     child: Text(
                                       widget.message,
                                       style: widget.themeProvider.tTextNormal,
+                                      textAlign: TextAlign.start,
                                     ),
                                   )
                                 : Container(
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.6,
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.6,
                                     child: Text(
                                       widget.message,
                                       style: widget.themeProvider.tTextNormal,
+                                      textAlign: TextAlign.start,
                                     ),
                                   ),
                             const SizedBox(height: 32),
+                            // Display the rate message text
                             !_isToggleAnimation
                                 ? Container(
                                     child: Text(
-                                      "Like to leave a comment",
+                                      "Rate the message",
                                       style: widget.themeProvider.tTextNormal,
                                     ),
                                   )
                                 : Container(),
                             const SizedBox(height: 32),
+                            // Display the like and dislike buttons
                             !_isSubmitted
                                 ? Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       _isToggleAnimation
-                                          ? AnimatedBuilder(
-                                              animation: _animationControllerLike,
-                                              builder: (context, child) {
-                                                if (_isLiked) {
-                                                  return Transform.translate(
-                                                    offset: Offset(
-                                                        50 *
-                                                            _dislikeAnimation
-                                                                .value,
-                                                        -100.0 *
-                                                            _likeAnimation.value),
-                                                    child: Opacity(
-                                                      opacity: 1 -
-                                                          _likeAnimation.value,
-                                                      child: Icon(
-                                                        Icons
-                                                            .thumb_up_alt_rounded,
-                                                        color: widget
-                                                            .themeProvider
-                                                            .cCardDrawer,
-                                                        size: 36,
-                                                      ),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return const SizedBox();
-                                                }
-                                              },
-                                            )
+                                          ? Container()
                                           : GestureDetector(
                                               onTap: () {
                                                 setState(() {
                                                   _isToggleAnimation = true;
                                                   _isLiked = true;
                                                 });
-                                                _animateThumbUp();
                                               },
                                               child: Icon(
                                                 Icons.thumb_up_alt_outlined,
@@ -180,47 +159,19 @@ class _MessageViewState extends State<MessageView>
                                               ),
                                             ),
                                       _isToggleAnimation
-                                          ? AnimatedBuilder(
-                                              animation:
-                                                  _animationControllerDislike,
-                                              builder: (context, child) {
-                                                if (!_isLiked) {
-                                                  return Transform.translate(
-                                                    offset: Offset(
-                                                        0 *
-                                                            _dislikeAnimation
-                                                                .value,
-                                                        100.0 *
-                                                            _dislikeAnimation
-                                                                .value),
-                                                    child: Opacity(
-                                                      opacity: 1 -
-                                                          _dislikeAnimation.value,
-                                                      child: Icon(
-                                                        Icons.thumb_down,
-                                                        color: widget
-                                                            .themeProvider.cRed,
-                                                        size: 36,
-                                                      ),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return const SizedBox();
-                                                }
-                                              },
-                                            )
+                                          ? Container()
                                           : GestureDetector(
                                               onTap: () {
                                                 setState(() {
                                                   _isToggleAnimation = true;
-                                                  _isLiked = false;
+                                                  _isLiked = true;
                                                 });
-                                                _animateThumbDown();
                                               },
                                               child: Icon(
-                                                Icons.thumb_down_off_alt_outlined,
-                                                color: widget
-                                                    .themeProvider.cTextDisabled,
+                                                Icons
+                                                    .thumb_down_off_alt_outlined,
+                                                color: widget.themeProvider
+                                                    .cTextDisabled,
                                                 size: 36,
                                               ),
                                             ),
@@ -234,8 +185,8 @@ class _MessageViewState extends State<MessageView>
                                         controller: _textEditingController,
                                         decoration: InputDecoration(
                                           hintText: 'Enter your text',
-                                          hintStyle:
-                                              widget.themeProvider.tTextDisabled,
+                                          hintStyle: widget
+                                              .themeProvider.tTextDisabled,
                                           enabledBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: widget.themeProvider
@@ -316,10 +267,12 @@ class _MessageViewState extends State<MessageView>
                                                       context,
                                                       listen: false);
                                               await messageProvider.addComment(
-                                                  signInProvider.currentUser!.uid,
+                                                  signInProvider
+                                                      .currentUser!.uid,
                                                   userProvider.userName,
                                                   _textEditingController.text,
-                                                  widget.originalMessageId);
+                                                  widget.originalMessageId,
+                                                  true);
                                               if (mounted) {
                                                 CustomSnackBar.showSnackbar(
                                                     context,
@@ -349,10 +302,12 @@ class _MessageViewState extends State<MessageView>
                                                       context,
                                                       listen: false);
                                               await messageProvider.addComment(
-                                                  signInProvider.currentUser!.uid,
+                                                  signInProvider
+                                                      .currentUser!.uid,
                                                   userProvider.userName,
                                                   _textEditingController.text,
-                                                  widget.originalMessageId);
+                                                  widget.originalMessageId,
+                                                  true);
                                               if (mounted) {
                                                 CustomSnackBar.showSnackbar(
                                                     context,
@@ -412,7 +367,7 @@ class _MessageViewState extends State<MessageView>
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     // Add empty comment to the message if disliked, this message will not be rendered in the comments_view
     await messageProvider.addComment(signInProvider.currentUser!.uid,
-        userProvider.userName, "", widget.originalMessageId);
+        userProvider.userName, "", widget.originalMessageId, false);
     if (mounted) {
       _animationControllerDislike.reset();
       _animationControllerDislike.forward();

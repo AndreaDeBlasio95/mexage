@@ -65,7 +65,7 @@ class MessageProvider with ChangeNotifier {
   }
 
   Future<void> addComment(String _userId, String _userName, String _content,
-      String _originalMessage) async {
+      String _originalMessage, bool _isLikedOrDislike) async {
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -85,12 +85,13 @@ class MessageProvider with ChangeNotifier {
         timestamp: Timestamp.now(),
       );
       // update likes in original message
+      String booleanField = _isLikedOrDislike ? 'likes' : 'dislikes';
       await _db
           .collection(_country)
           .doc("trending")
           .collection("messages")
           .doc(_originalMessage)
-          .update({'likes': FieldValue.increment(1)});
+          .update({booleanField: FieldValue.increment(1)});
       // create comment in trending
       await _db
           .collection(_country)
