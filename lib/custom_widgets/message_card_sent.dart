@@ -30,7 +30,7 @@ class MessageCardSent extends StatelessWidget {
             children: [
               // Content ----------------------------------------------
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.7,
@@ -42,12 +42,10 @@ class MessageCardSent extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     margin: const EdgeInsets.only(top: 8, bottom: 8),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100.withOpacity(0.2),
+                      color: themeProvider.cIcons,
                       borderRadius: BorderRadius.circular(24),
                     ),
-                    child: Center(
-                      child: _buildTrailingLikesWidget(),
-                    ),
+                    child: _buildTrailingLikesWidget(themeProvider),
                   ),
                 ],
               ),
@@ -55,13 +53,12 @@ class MessageCardSent extends StatelessWidget {
 
               // Timestamp ----------------------------------------------
               Container(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Text(timestampToDate,
-                      style: themeProvider.tTextSmall),
+                padding: const EdgeInsets.only(bottom: 4),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(timestampToDate, style: themeProvider.tTextSmall),
               ),
             ],
           ),
@@ -70,32 +67,14 @@ class MessageCardSent extends StatelessWidget {
     );
   }
 
-  Widget _buildTrailingWidget() {
-    if (message.likes == 0) {
-      return Icon(
-        Icons.thumb_up_alt_outlined,
-        color: Colors.grey.shade200,
-        size: 20,
-      );
-    }
-    if (message.likes == 1) {
-      return Icon(Icons.thumb_up_alt_rounded,
-          color: Colors.grey.shade200, size: 20);
-    }
-    if (message.likes == 2) {
-      return Icon(Icons.thumb_down, color: Colors.grey.shade200, size: 20);
-    }
-    return const SizedBox();
-  }
-
-  Widget _buildTrailingLikesWidget() {
+  Widget _buildTrailingLikesWidget(CustomThemes themeProvider) {
     return Text(
       Utils.formatNumber(message.likes),
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'nunito',
-        color: Colors.white,
+        color: themeProvider.cTextNormal,
         fontSize: 14,
-        fontVariations: [
+        fontVariations: const [
           FontVariation('wght', 800),
         ],
       ),

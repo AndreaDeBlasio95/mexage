@@ -82,6 +82,11 @@ class _CommentsViewState extends State<CommentsView> {
         controller: _scrollController,
         itemCount: _comments.length,
         itemBuilder: (context, index) {
+          if (_comments.isEmpty || _comments[index]['content'] == "") {
+            return const SizedBox(
+              height: 1,
+            );
+          }
           return CommentCard(
               themeProvider: widget.themeProvider,
               userName: _comments[index]['userName'],

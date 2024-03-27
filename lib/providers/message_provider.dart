@@ -347,6 +347,8 @@ class MessageProvider with ChangeNotifier {
   }
 
   Future<void> copyCollectionTrending(String _country) async {
+    print("Copying collection...");
+
     String _getCurrentWeek = Utils.getCurrentWeekYearFormat();
     // Reference to the source collection
     CollectionReference sourceRef =
@@ -359,8 +361,8 @@ class MessageProvider with ChangeNotifier {
     // Check if any documents exist in the source collection
     QuerySnapshot sourceSnapshot = await sourceRef.limit(1).get();
     if (sourceSnapshot.docs.isEmpty) {
-      print('Source collection does not exist');
-      return null;
+      print('Source collection does not exist, copying reverted!');
+      return;
     }
 
     // Get all documents from the source collection
@@ -371,7 +373,7 @@ class MessageProvider with ChangeNotifier {
       await destinationRef.doc(document.id).set(document.data());
     });
 
-    //await deleteDocuments(sourceRef);
+    await deleteDocuments(sourceRef);
   }
 
   Future<void> deleteDocuments(CollectionReference collectionRef) async {
