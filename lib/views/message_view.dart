@@ -40,6 +40,8 @@ class _MessageViewState extends State<MessageView>
   bool _canSubmit = false;
   bool _isSubmitted = false;
 
+  bool likeToSentToProvider = false;
+
   @override
   void initState() {
     super.initState();
@@ -149,6 +151,8 @@ class _MessageViewState extends State<MessageView>
                                                 setState(() {
                                                   _isToggleAnimation = true;
                                                   _isLiked = true;
+                                                  // pass this into buttons: submit and skip
+                                                  likeToSentToProvider = true;
                                                 });
                                               },
                                               child: Icon(
@@ -165,6 +169,8 @@ class _MessageViewState extends State<MessageView>
                                                 setState(() {
                                                   _isToggleAnimation = true;
                                                   _isLiked = true;
+                                                  // pass this into buttons: submit and skip
+                                                  likeToSentToProvider = false;
                                                 });
                                               },
                                               child: Icon(
@@ -207,7 +213,7 @@ class _MessageViewState extends State<MessageView>
                                                   _textEditingController.text
                                                       .substring(0, 200);
                                               _textEditingController.selection =
-                                                  TextSelection.collapsed(
+                                                  const TextSelection.collapsed(
                                                       offset: 200);
                                               _charCount = 200;
                                             }
@@ -236,16 +242,6 @@ class _MessageViewState extends State<MessageView>
                                     : Container()
                                 : Container(),
                             const SizedBox(height: 12),
-                            _isSubmitted
-                                ? Container(
-                                    child: Text(
-                                      'Comments',
-                                      style:
-                                          widget.themeProvider.tTextCommentBold,
-                                    ),
-                                  )
-                                : Container(),
-                            const SizedBox(height: 12),
                             !_isSubmitted
                                 ? _canSubmit
                                     ? Row(
@@ -266,13 +262,14 @@ class _MessageViewState extends State<MessageView>
                                                   Provider.of<SignInProvider>(
                                                       context,
                                                       listen: false);
+
                                               await messageProvider.addComment(
                                                   signInProvider
                                                       .currentUser!.uid,
                                                   userProvider.userName,
                                                   _textEditingController.text,
                                                   widget.originalMessageId,
-                                                  true);
+                                                  likeToSentToProvider);
                                               if (mounted) {
                                                 CustomSnackBar.showSnackbar(
                                                     context,
@@ -284,7 +281,7 @@ class _MessageViewState extends State<MessageView>
                                                 _textEditingController.clear();
                                               }
                                             },
-                                            child: Text('Submit'),
+                                            child: const Text('Submit'),
                                           ),
                                           ElevatedButton(
                                             onPressed: () async {
@@ -307,7 +304,7 @@ class _MessageViewState extends State<MessageView>
                                                   userProvider.userName,
                                                   _textEditingController.text,
                                                   widget.originalMessageId,
-                                                  true);
+                                                  likeToSentToProvider);
                                               if (mounted) {
                                                 CustomSnackBar.showSnackbar(
                                                     context,
@@ -318,7 +315,7 @@ class _MessageViewState extends State<MessageView>
                                                 });
                                               }
                                             },
-                                            child: Text('Skip'),
+                                            child: const Text('Skip'),
                                           ),
                                         ],
                                       )
@@ -355,12 +352,7 @@ class _MessageViewState extends State<MessageView>
     );
   }
 
-  void _animateThumbUp() {
-    _animationControllerLike.reset();
-    _animationControllerLike.forward();
-  }
-
-  void _animateThumbDown() async {
+  Future<void> _dislikeMessage() async {
     final messageProvider =
         Provider.of<MessageProvider>(context, listen: false);
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);

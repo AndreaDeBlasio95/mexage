@@ -85,7 +85,12 @@ class MessageProvider with ChangeNotifier {
         timestamp: Timestamp.now(),
       );
       // update likes in original message
-      String booleanField = _isLikedOrDislike ? 'likes' : 'dislikes';
+      String booleanField = "";
+      if (_isLikedOrDislike) {
+        booleanField = "likes";
+      } else {
+        booleanField = "dislikes";
+      }
       await _db
           .collection(_country)
           .doc("trending")
