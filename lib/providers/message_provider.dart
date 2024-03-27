@@ -8,6 +8,18 @@ import '../utils/utils.dart';
 class MessageProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  //bool _refreshFunction = false;
+
+  //bool get refreshFunction => _refreshFunction;
+
+  // Function to toggle the flag
+  Future<void> refreshData(String _documentId, String _userId) async {
+    //_refreshFunction = !_refreshFunction;
+    checkIfDocumentExistsInUserCollection(_documentId, _userId);
+    print("Refreshed Data");
+    notifyListeners();
+  }
+
   // ----- SETTERS -----
   Future<void> addMessage(
       String _userId, String _userName, String _content) async {

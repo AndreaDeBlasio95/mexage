@@ -51,46 +51,59 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
-    return AnimatedCartoonContainer(
-      message: widget.message,
-      isLiked: _messageExist,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Card(
-          elevation: 0,
-          color: Colors.transparent,
-          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 4, bottom: 4),
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: Text(widget.message.content,
-                          style: themeProvider.tTextCard,
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis),
-                    ),
+    return Consumer<CustomThemes>(builder: (context, themeProvider, _) {
+      return FutureBuilder<bool>(
+          future: _messageExistFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(); // Placeholder for loading state
+            }
+            if (snapshot.hasError) {
+              return Container(); // Placeholder for error state
+            }
+            return AnimatedCartoonContainer(
+              message: widget.message,
+              isLiked: _messageExist,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Card(
+                  elevation: 0,
+                  color: Colors.transparent,
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, top: 4, bottom: 4),
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: Text(widget.message.content,
+                                  style: themeProvider.tTextCard,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          !_messageExist
+                              ? _buildTrailingNewOrYour(themeProvider)
+                              : Container(
+                                  height: 40,
+                                  width: 1,
+                                ),
+                        ],
+                      ),
+                      //_buildRowTags(themeProvider),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  !_messageExist
-                      ? _buildTrailingNewOrYour(themeProvider)
-                      : Container(
-                          height: 40,
-                          width: 1,
-                        ),
-                ],
+                ),
               ),
-              //_buildRowTags(themeProvider),
-            ],
-          ),
-        ),
-      ),
-    );
+            );
+          });
+    });
   }
 
   Widget _buildTrailingNewOrYour(CustomThemes _themeProvider) {

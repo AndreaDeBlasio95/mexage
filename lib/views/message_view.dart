@@ -84,293 +84,300 @@ class _MessageViewState extends State<MessageView>
   Widget build(BuildContext context) {
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
 
-    return Scaffold(
-      backgroundColor: widget.themeProvider.cBackGround,
-      appBar: AppBar(
-        title: Text('Message', style: widget.themeProvider.tTextBoldMedium),
+    return WillPopScope(
+      onWillPop: () async {
+        // When navigating back, toggle the flag to call the function
+        Provider.of<MessageProvider>(context, listen: false).refreshData(widget.originalMessageId, signInProvider.currentUser!.uid);
+        return true; // Return true to allow pop
+      },
+      child: Scaffold(
         backgroundColor: widget.themeProvider.cBackGround,
-        iconTheme: IconThemeData(color: widget.themeProvider.cTextNormal),
-      ),
-      body: SingleChildScrollView(
-        child: widget.userId != signInProvider.currentUser!.uid
-            ? Container(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: !widget.isLiked
-                    ? Column(
-                        children: [
-                          _isToggleAnimation
-                              ? Container(
-                                  child: Text(
-                                    widget.message,
-                                    style: widget.themeProvider.tTextNormal,
+        appBar: AppBar(
+          title: Text('Message', style: widget.themeProvider.tTextBoldMedium),
+          backgroundColor: widget.themeProvider.cBackGround,
+          iconTheme: IconThemeData(color: widget.themeProvider.cTextNormal),
+        ),
+        body: SingleChildScrollView(
+          child: widget.userId != signInProvider.currentUser!.uid
+              ? Container(
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  child: !widget.isLiked
+                      ? Column(
+                          children: [
+                            _isToggleAnimation
+                                ? Container(
+                                    child: Text(
+                                      widget.message,
+                                      style: widget.themeProvider.tTextNormal,
+                                    ),
+                                  )
+                                : Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * 0.6,
+                                    child: Text(
+                                      widget.message,
+                                      style: widget.themeProvider.tTextNormal,
+                                    ),
                                   ),
-                                )
-                              : Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.6,
-                                  child: Text(
-                                    widget.message,
-                                    style: widget.themeProvider.tTextNormal,
-                                  ),
-                                ),
-                          const SizedBox(height: 32),
-                          !_isToggleAnimation
-                              ? Container(
-                                  child: Text(
-                                    "Like to leave a comment",
-                                    style: widget.themeProvider.tTextNormal,
-                                  ),
-                                )
-                              : Container(),
-                          const SizedBox(height: 32),
-                          !_isSubmitted
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    _isToggleAnimation
-                                        ? AnimatedBuilder(
-                                            animation: _animationControllerLike,
-                                            builder: (context, child) {
-                                              if (_isLiked) {
-                                                return Transform.translate(
-                                                  offset: Offset(
-                                                      50 *
-                                                          _dislikeAnimation
-                                                              .value,
-                                                      -100.0 *
-                                                          _likeAnimation.value),
-                                                  child: Opacity(
-                                                    opacity: 1 -
-                                                        _likeAnimation.value,
-                                                    child: Icon(
-                                                      Icons
-                                                          .thumb_up_alt_rounded,
-                                                      color: widget
-                                                          .themeProvider
-                                                          .cCardDrawer,
-                                                      size: 36,
+                            const SizedBox(height: 32),
+                            !_isToggleAnimation
+                                ? Container(
+                                    child: Text(
+                                      "Like to leave a comment",
+                                      style: widget.themeProvider.tTextNormal,
+                                    ),
+                                  )
+                                : Container(),
+                            const SizedBox(height: 32),
+                            !_isSubmitted
+                                ? Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _isToggleAnimation
+                                          ? AnimatedBuilder(
+                                              animation: _animationControllerLike,
+                                              builder: (context, child) {
+                                                if (_isLiked) {
+                                                  return Transform.translate(
+                                                    offset: Offset(
+                                                        50 *
+                                                            _dislikeAnimation
+                                                                .value,
+                                                        -100.0 *
+                                                            _likeAnimation.value),
+                                                    child: Opacity(
+                                                      opacity: 1 -
+                                                          _likeAnimation.value,
+                                                      child: Icon(
+                                                        Icons
+                                                            .thumb_up_alt_rounded,
+                                                        color: widget
+                                                            .themeProvider
+                                                            .cCardDrawer,
+                                                        size: 36,
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              } else {
-                                                return const SizedBox();
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              },
+                                            )
+                                          : GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _isToggleAnimation = true;
+                                                  _isLiked = true;
+                                                });
+                                                _animateThumbUp();
+                                              },
+                                              child: Icon(
+                                                Icons.thumb_up_alt_outlined,
+                                                color: widget
+                                                    .themeProvider.cTextNormal,
+                                                size: 36,
+                                              ),
+                                            ),
+                                      _isToggleAnimation
+                                          ? AnimatedBuilder(
+                                              animation:
+                                                  _animationControllerDislike,
+                                              builder: (context, child) {
+                                                if (!_isLiked) {
+                                                  return Transform.translate(
+                                                    offset: Offset(
+                                                        0 *
+                                                            _dislikeAnimation
+                                                                .value,
+                                                        100.0 *
+                                                            _dislikeAnimation
+                                                                .value),
+                                                    child: Opacity(
+                                                      opacity: 1 -
+                                                          _dislikeAnimation.value,
+                                                      child: Icon(
+                                                        Icons.thumb_down,
+                                                        color: widget
+                                                            .themeProvider.cRed,
+                                                        size: 36,
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              },
+                                            )
+                                          : GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _isToggleAnimation = true;
+                                                  _isLiked = false;
+                                                });
+                                                _animateThumbDown();
+                                              },
+                                              child: Icon(
+                                                Icons.thumb_down_off_alt_outlined,
+                                                color: widget
+                                                    .themeProvider.cTextDisabled,
+                                                size: 36,
+                                              ),
+                                            ),
+                                    ],
+                                  )
+                                : Container(),
+                            const SizedBox(height: 24),
+                            !_isSubmitted
+                                ? _isLiked
+                                    ? TextField(
+                                        controller: _textEditingController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Enter your text',
+                                          hintStyle:
+                                              widget.themeProvider.tTextDisabled,
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: widget.themeProvider
+                                                    .cTextDisabled), // Underline color
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: widget.themeProvider
+                                                    .cCardDrawer), // Focused underline color
+                                          ),
+                                        ),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _charCount = value.length;
+                                            if (_charCount > 200) {
+                                              // Limit the text to 500 characters
+                                              _textEditingController.text =
+                                                  _textEditingController.text
+                                                      .substring(0, 200);
+                                              _textEditingController.selection =
+                                                  TextSelection.collapsed(
+                                                      offset: 200);
+                                              _charCount = 200;
+                                            }
+                                            if (_charCount >= 0 &&
+                                                _charCount <= 200) {
+                                              _canSubmit = true;
+                                            } else {
+                                              _canSubmit = false;
+                                            }
+                                          });
+                                        },
+                                        maxLines: null,
+                                        style: widget.themeProvider
+                                            .tTextNormal, // Text color
+                                      )
+                                    : Container()
+                                : Container(),
+                            const SizedBox(height: 12),
+                            !_isSubmitted
+                                ? _isLiked
+                                    ? Text(
+                                        'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
+                                        style: widget.themeProvider.tTextSmall,
+                                        textAlign: TextAlign.center,
+                                      )
+                                    : Container()
+                                : Container(),
+                            const SizedBox(height: 12),
+                            _isSubmitted
+                                ? Container(
+                                    child: Text(
+                                      'Comments',
+                                      style:
+                                          widget.themeProvider.tTextCommentBold,
+                                    ),
+                                  )
+                                : Container(),
+                            const SizedBox(height: 12),
+                            !_isSubmitted
+                                ? _canSubmit
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              final messageProvider =
+                                                  Provider.of<MessageProvider>(
+                                                      context,
+                                                      listen: false);
+                                              final userProvider =
+                                                  Provider.of<UserProvider>(
+                                                      context,
+                                                      listen: false);
+                                              final signInProvider =
+                                                  Provider.of<SignInProvider>(
+                                                      context,
+                                                      listen: false);
+                                              await messageProvider.addComment(
+                                                  signInProvider.currentUser!.uid,
+                                                  userProvider.userName,
+                                                  _textEditingController.text,
+                                                  widget.originalMessageId);
+                                              if (mounted) {
+                                                CustomSnackBar.showSnackbar(
+                                                    context,
+                                                    'Message Sent',
+                                                    widget.themeProvider);
+                                                setState(() {
+                                                  _isSubmitted = true;
+                                                });
+                                                _textEditingController.clear();
                                               }
                                             },
-                                          )
-                                        : GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _isToggleAnimation = true;
-                                                _isLiked = true;
-                                              });
-                                              _animateThumbUp();
-                                            },
-                                            child: Icon(
-                                              Icons.thumb_up_alt_outlined,
-                                              color: widget
-                                                  .themeProvider.cTextNormal,
-                                              size: 36,
-                                            ),
+                                            child: Text('Submit'),
                                           ),
-                                    _isToggleAnimation
-                                        ? AnimatedBuilder(
-                                            animation:
-                                                _animationControllerDislike,
-                                            builder: (context, child) {
-                                              if (!_isLiked) {
-                                                return Transform.translate(
-                                                  offset: Offset(
-                                                      0 *
-                                                          _dislikeAnimation
-                                                              .value,
-                                                      100.0 *
-                                                          _dislikeAnimation
-                                                              .value),
-                                                  child: Opacity(
-                                                    opacity: 1 -
-                                                        _dislikeAnimation.value,
-                                                    child: Icon(
-                                                      Icons.thumb_down,
-                                                      color: widget
-                                                          .themeProvider.cRed,
-                                                      size: 36,
-                                                    ),
-                                                  ),
-                                                );
-                                              } else {
-                                                return const SizedBox();
-                                              }
-                                            },
-                                          )
-                                        : GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _isToggleAnimation = true;
-                                                _isLiked = false;
-                                              });
-                                              _animateThumbDown();
-                                            },
-                                            child: Icon(
-                                              Icons.thumb_down_off_alt_outlined,
-                                              color: widget
-                                                  .themeProvider.cTextDisabled,
-                                              size: 36,
-                                            ),
-                                          ),
-                                  ],
-                                )
-                              : Container(),
-                          const SizedBox(height: 24),
-                          !_isSubmitted
-                              ? _isLiked
-                                  ? TextField(
-                                      controller: _textEditingController,
-                                      decoration: InputDecoration(
-                                        hintText: 'Enter your text',
-                                        hintStyle:
-                                            widget.themeProvider.tTextDisabled,
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: widget.themeProvider
-                                                  .cTextDisabled), // Underline color
-                                        ),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: widget.themeProvider
-                                                  .cCardDrawer), // Focused underline color
-                                        ),
-                                      ),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _charCount = value.length;
-                                          if (_charCount > 200) {
-                                            // Limit the text to 500 characters
-                                            _textEditingController.text =
-                                                _textEditingController.text
-                                                    .substring(0, 200);
-                                            _textEditingController.selection =
-                                                TextSelection.collapsed(
-                                                    offset: 200);
-                                            _charCount = 200;
-                                          }
-                                          if (_charCount >= 0 &&
-                                              _charCount <= 200) {
-                                            _canSubmit = true;
-                                          } else {
-                                            _canSubmit = false;
-                                          }
-                                        });
-                                      },
-                                      maxLines: null,
-                                      style: widget.themeProvider
-                                          .tTextNormal, // Text color
-                                    )
-                                  : Container()
-                              : Container(),
-                          const SizedBox(height: 12),
-                          !_isSubmitted
-                              ? _isLiked
-                                  ? Text(
-                                      'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
-                                      style: widget.themeProvider.tTextSmall,
-                                      textAlign: TextAlign.center,
-                                    )
-                                  : Container()
-                              : Container(),
-                          const SizedBox(height: 12),
-                          _isSubmitted
-                              ? Container(
-                                  child: Text(
-                                    'Comments',
-                                    style:
-                                        widget.themeProvider.tTextCommentBold,
-                                  ),
-                                )
-                              : Container(),
-                          const SizedBox(height: 12),
-                          !_isSubmitted
-                              ? _canSubmit
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            final messageProvider =
-                                                Provider.of<MessageProvider>(
-                                                    context,
-                                                    listen: false);
-                                            final userProvider =
-                                                Provider.of<UserProvider>(
-                                                    context,
-                                                    listen: false);
-                                            final signInProvider =
-                                                Provider.of<SignInProvider>(
-                                                    context,
-                                                    listen: false);
-                                            await messageProvider.addComment(
-                                                signInProvider.currentUser!.uid,
-                                                userProvider.userName,
-                                                _textEditingController.text,
-                                                widget.originalMessageId);
-                                            if (mounted) {
-                                              CustomSnackBar.showSnackbar(
-                                                  context,
-                                                  'Message Sent',
-                                                  widget.themeProvider);
-                                              setState(() {
-                                                _isSubmitted = true;
-                                              });
+                                          ElevatedButton(
+                                            onPressed: () async {
                                               _textEditingController.clear();
-                                            }
-                                          },
-                                          child: Text('Submit'),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            _textEditingController.clear();
-                                            final messageProvider =
-                                                Provider.of<MessageProvider>(
+                                              final messageProvider =
+                                                  Provider.of<MessageProvider>(
+                                                      context,
+                                                      listen: false);
+                                              final userProvider =
+                                                  Provider.of<UserProvider>(
+                                                      context,
+                                                      listen: false);
+                                              final signInProvider =
+                                                  Provider.of<SignInProvider>(
+                                                      context,
+                                                      listen: false);
+                                              await messageProvider.addComment(
+                                                  signInProvider.currentUser!.uid,
+                                                  userProvider.userName,
+                                                  _textEditingController.text,
+                                                  widget.originalMessageId);
+                                              if (mounted) {
+                                                CustomSnackBar.showSnackbar(
                                                     context,
-                                                    listen: false);
-                                            final userProvider =
-                                                Provider.of<UserProvider>(
-                                                    context,
-                                                    listen: false);
-                                            final signInProvider =
-                                                Provider.of<SignInProvider>(
-                                                    context,
-                                                    listen: false);
-                                            await messageProvider.addComment(
-                                                signInProvider.currentUser!.uid,
-                                                userProvider.userName,
-                                                _textEditingController.text,
-                                                widget.originalMessageId);
-                                            if (mounted) {
-                                              CustomSnackBar.showSnackbar(
-                                                  context,
-                                                  'Comment Skipped',
-                                                  widget.themeProvider);
-                                              setState(() {
-                                                _isSubmitted = true;
-                                              });
-                                            }
-                                          },
-                                          child: Text('Skip'),
-                                        ),
-                                      ],
-                                    )
-                                  : Container()
-                              : CommentsView(
-                                  originalMessageId: widget.originalMessageId,
-                                  userId: widget.userId,
-                                  themeProvider: widget.themeProvider),
-                          const SizedBox(height: 36),
-                        ],
-                      )
-                    : _buildMessageViewWithoutInteraction())
-            : _buildMessageViewWithoutInteraction(),
+                                                    'Comment Skipped',
+                                                    widget.themeProvider);
+                                                setState(() {
+                                                  _isSubmitted = true;
+                                                });
+                                              }
+                                            },
+                                            child: Text('Skip'),
+                                          ),
+                                        ],
+                                      )
+                                    : Container()
+                                : CommentsView(
+                                    originalMessageId: widget.originalMessageId,
+                                    userId: widget.userId,
+                                    themeProvider: widget.themeProvider),
+                            const SizedBox(height: 36),
+                          ],
+                        )
+                      : _buildMessageViewWithoutInteraction())
+              : _buildMessageViewWithoutInteraction(),
+        ),
       ),
     );
   }
