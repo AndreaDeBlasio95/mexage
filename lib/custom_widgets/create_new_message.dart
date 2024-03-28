@@ -16,7 +16,7 @@ class CreateNewMessage extends StatelessWidget {
           final signInProvider = Provider.of<SignInProvider>(context, listen: false);
           final messageProvider = Provider.of<MessageProvider>(context, listen: false);
           final userProvider = Provider.of<UserProvider>(context, listen: false);
-          await messageProvider.addMessage(signInProvider.currentUser!.uid, userProvider.userName, "this is a message from the user");
+          await messageProvider.addMessage(signInProvider.currentUser!.uid, userProvider.userName, "Message sent from 'Sent View' by ${userProvider.userName}");
         },
         child: Container(
           color: Colors.transparent,

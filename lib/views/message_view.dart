@@ -41,6 +41,7 @@ class _MessageViewState extends State<MessageView>
   bool _isSubmitted = false;
 
   bool likeToSentToProvider = false;
+  int _commentType = 0;
 
   @override
   void initState() {
@@ -243,7 +244,7 @@ class _MessageViewState extends State<MessageView>
                                 : Container(),
                             const SizedBox(height: 12),
                             !_isSubmitted
-                                ? _canSubmit
+                                ? _isLiked
                                     ? Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -262,13 +263,22 @@ class _MessageViewState extends State<MessageView>
                                                   Provider.of<SignInProvider>(
                                                       context,
                                                       listen: false);
-
+                                              setState(() {
+                                                if (!likeToSentToProvider) {
+                                                  // disliked and commented
+                                                  _commentType = 1;
+                                                } else {
+                                                  // liked and commented
+                                                  _commentType = 3;
+                                                }
+                                              });
                                               await messageProvider.addComment(
                                                   signInProvider
                                                       .currentUser!.uid,
                                                   userProvider.userName,
                                                   _textEditingController.text,
                                                   widget.originalMessageId,
+                                                  _commentType,
                                                   likeToSentToProvider);
                                               if (mounted) {
                                                 CustomSnackBar.showSnackbar(
@@ -298,12 +308,22 @@ class _MessageViewState extends State<MessageView>
                                                   Provider.of<SignInProvider>(
                                                       context,
                                                       listen: false);
+                                              setState(() {
+                                                if (!likeToSentToProvider) {
+                                                  // disliked and skipped
+                                                  _commentType = 0;
+                                                } else {
+                                                  // liked and skipped
+                                                  _commentType = 2;
+                                                }
+                                              });
                                               await messageProvider.addComment(
                                                   signInProvider
                                                       .currentUser!.uid,
                                                   userProvider.userName,
                                                   _textEditingController.text,
                                                   widget.originalMessageId,
+                                                  _commentType,
                                                   likeToSentToProvider);
                                               if (mounted) {
                                                 CustomSnackBar.showSnackbar(
@@ -327,8 +347,13 @@ class _MessageViewState extends State<MessageView>
                             const SizedBox(height: 36),
                           ],
                         )
-                      : _buildMessageViewWithoutInteraction())
-              : _buildMessageViewWithoutInteraction(),
+                      : Container(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 8),
+                          child: _buildMessageViewWithoutInteraction()))
+              : Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 8),
+                  child: _buildMessageViewWithoutInteraction()),
         ),
       ),
     );
@@ -350,19 +375,5 @@ class _MessageViewState extends State<MessageView>
             themeProvider: widget.themeProvider),
       ],
     );
-  }
-
-  Future<void> _dislikeMessage() async {
-    final messageProvider =
-        Provider.of<MessageProvider>(context, listen: false);
-    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    // Add empty comment to the message if disliked, this message will not be rendered in the comments_view
-    await messageProvider.addComment(signInProvider.currentUser!.uid,
-        userProvider.userName, "", widget.originalMessageId, false);
-    if (mounted) {
-      _animationControllerDislike.reset();
-      _animationControllerDislike.forward();
-    }
   }
 }

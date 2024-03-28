@@ -3,17 +3,20 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mexage/theme/custom_themes.dart';
+import 'package:provider/provider.dart';
+import '../providers/sign_in_provider.dart';
 import '../utils/utils.dart';
 
 class CommentCard extends StatelessWidget {
   final CustomThemes themeProvider;
   final String userName;
+  final String userId;
   final String content;
   final Timestamp timestamp;
   Color randomColor;
 
   CommentCard(
-      {super.key, required this.themeProvider, required this.userName, required this.content, required this.timestamp, this.randomColor = Colors.blue});
+      {super.key, required this.themeProvider, required this.userName, required this.userId, required this.content, required this.timestamp, this.randomColor = Colors.blue});
 
   Color generateRandomBlueColor() {
     Random random = Random();
@@ -29,12 +32,19 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     randomColor = generateRandomBlueColor();
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    bool isMyComment = userId == signInProvider.currentUser!.uid;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 2),
       margin: const EdgeInsets.symmetric(vertical: 4),
-      child: Card(
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+      decoration: BoxDecoration(
         color: themeProvider.cCardDrawer.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: isMyComment ? Border.all(color: randomColor, width: 1) : Border.all(color: Colors.transparent, width: 0)
+      ),
+      child: Card(
+        color: Colors.transparent,
         elevation: 0,
         margin: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(

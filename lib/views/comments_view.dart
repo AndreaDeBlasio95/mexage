@@ -90,6 +90,7 @@ class _CommentsViewState extends State<CommentsView> {
           return CommentCard(
               themeProvider: widget.themeProvider,
               userName: _comments[index]['userName'],
+              userId: _comments[index]['userId'],
               content: _comments[index]['content'],
               timestamp: _comments[index]['timestamp']);
         },

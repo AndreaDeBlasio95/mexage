@@ -12,7 +12,7 @@ class MessageProvider with ChangeNotifier {
 
   //bool get refreshFunction => _refreshFunction;
 
-  // Function to toggle the flag
+  // ----- REFRESH from the board card to the board view -----
   Future<void> refreshData(String _documentId, String _userId) async {
     //_refreshFunction = !_refreshFunction;
     checkIfDocumentExistsInUserCollection(_documentId, _userId);
@@ -65,7 +65,8 @@ class MessageProvider with ChangeNotifier {
   }
 
   Future<void> addComment(String _userId, String _userName, String _content,
-      String _originalMessage, bool _isLikedOrDislike) async {
+      String _originalMessage, int _commentType, bool _isLikedOrDislike) async {
+    // _commentType 0 = dislike skipped, 1 = dislike commented, 2 = like skipped, 3 = like commented
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -91,12 +92,16 @@ class MessageProvider with ChangeNotifier {
       } else {
         booleanField = "dislikes";
       }
+      // update likes in original message
       await _db
           .collection(_country)
           .doc("trending")
           .collection("messages")
           .doc(_originalMessage)
-          .update({booleanField: FieldValue.increment(1)});
+          .update({
+        booleanField: FieldValue.increment(1),
+        "rank": FieldValue.increment(_commentType)
+      });
       // create comment in trending
       await _db
           .collection(_country)
@@ -182,7 +187,6 @@ class MessageProvider with ChangeNotifier {
     QuerySnapshot querySnapshot = await query.get();
 
     if (querySnapshot.docs.isEmpty) {
-
       return null; // No more documents to fetch
     }
 
@@ -328,7 +332,7 @@ class MessageProvider with ChangeNotifier {
           .collection(_country)
           .doc("trending")
           .collection("messages")
-          .orderBy('likes', descending: true)
+          .orderBy('rank', descending: true)
           .get();
       List<Message> messages = querySnapshot.docs
           .map((doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
@@ -340,7 +344,6 @@ class MessageProvider with ChangeNotifier {
       throw e;
     }
   }
-
 
   /*
   Future<void> adminSetTopLikedMessages() async {
@@ -388,23 +391,31 @@ class MessageProvider with ChangeNotifier {
             .collection(_country)
             .doc(collectionName)
             .collection("messages")
-            .orderBy('likes', descending: true)
+            .orderBy('rank', descending: true)
             .limit(5)
             .get();
 
         if (querySnapshot.docs.isNotEmpty) {
           List<Message> messages = querySnapshot.docs
-              .map((doc) =>
-              Message.fromJson(doc.data() as Map<String, dynamic>))
+              .map(
+                  (doc) => Message.fromJson(doc.data() as Map<String, dynamic>))
               .toList();
 
           for (Message message in messages) {
+            // Set the document in the trending collection
             await _db
                 .collection(_country)
                 .doc("trending")
                 .collection("messages")
                 .doc(message.id)
                 .set(message.toJson());
+            // Delete the document from the current collection
+            await _db
+                .collection(_country)
+                .doc(collectionName)
+                .collection("messages")
+                .doc(message.id)
+                .delete();
           }
           print("SET TOP TRENDING");
           return; // Exit the loop if documents are successfully fetched

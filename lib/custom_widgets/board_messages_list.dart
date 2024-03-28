@@ -53,7 +53,7 @@ class BoardMessagesList extends StatelessWidget {
           highlightColor: Colors.grey[100]!,
           child: ListTile(
             title: Container(
-              height: 60.0,
+              height: 50.0,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
