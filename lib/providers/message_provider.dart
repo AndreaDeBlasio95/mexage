@@ -141,6 +141,7 @@ class MessageProvider with ChangeNotifier {
         .collection("messages")
         .doc(_originalMessageId)
         .collection("comments")
+        .orderBy("likes", descending: true)
         .orderBy('timestamp')
         .limit(10);
 
@@ -149,6 +150,13 @@ class MessageProvider with ChangeNotifier {
     }
 
     QuerySnapshot querySnapshot = await query.get();
+
+    // Check if the comments collection exists
+    if (querySnapshot.docs.isEmpty) {
+      print("comments collection doesn't exist or is empty");
+      return [];
+    }
+
     return querySnapshot.docs;
   }
 
@@ -174,6 +182,7 @@ class MessageProvider with ChangeNotifier {
     QuerySnapshot querySnapshot = await query.get();
 
     if (querySnapshot.docs.isEmpty) {
+
       return null; // No more documents to fetch
     }
 
@@ -332,6 +341,8 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
+
+  /*
   Future<void> adminSetTopLikedMessages() async {
     String _country = Utils.getUserCountry();
     await copyCollectionTrending(_country);
@@ -363,6 +374,48 @@ class MessageProvider with ChangeNotifier {
       throw e;
     }
   }
+   */
+
+  Future<void> adminSetTopLikedMessages() async {
+    String _country = Utils.getUserCountry();
+    await copyCollectionTrending(_country);
+
+    List<String> collections = ["random-3", "random-2", "random-1", "random"];
+
+    for (String collectionName in collections) {
+      try {
+        QuerySnapshot querySnapshot = await _db
+            .collection(_country)
+            .doc(collectionName)
+            .collection("messages")
+            .orderBy('likes', descending: true)
+            .limit(5)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          List<Message> messages = querySnapshot.docs
+              .map((doc) =>
+              Message.fromJson(doc.data() as Map<String, dynamic>))
+              .toList();
+
+          for (Message message in messages) {
+            await _db
+                .collection(_country)
+                .doc("trending")
+                .collection("messages")
+                .doc(message.id)
+                .set(message.toJson());
+          }
+          print("SET TOP TRENDING");
+          return; // Exit the loop if documents are successfully fetched
+        }
+      } catch (e) {
+        print("Error fetching messages from $collectionName: $e");
+        // Handle error accordingly
+      }
+    }
+    print("No documents found in any collection.");
+  }
 
   Future<void> copyCollectionTrending(String _country) async {
     print("Copying collection...");
@@ -370,11 +423,11 @@ class MessageProvider with ChangeNotifier {
     String _getCurrentWeek = Utils.getCurrentWeekYearFormat();
     // Reference to the source collection
     CollectionReference sourceRef =
-    _db.collection(_country).doc("trending").collection("messages");
+        _db.collection(_country).doc("trending").collection("messages");
 
     // Reference to the destination collection
     CollectionReference destinationRef =
-    _db.collection(_country).doc(_getCurrentWeek).collection("messages");
+        _db.collection(_country).doc(_getCurrentWeek).collection("messages");
 
     // Check if any documents exist in the source collection
     QuerySnapshot sourceSnapshot = await sourceRef.limit(1).get();
