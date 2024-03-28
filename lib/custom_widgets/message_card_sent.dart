@@ -18,6 +18,7 @@ class MessageCardSent extends StatelessWidget {
     String timestampToDate = Utils.timestampToDate(message.timestamp);
 
     return AnimatedCartoonContainer(
+      collectionReference: 'random',
       message: message,
       isLiked: false, // todo: change this
       child: Container(

@@ -8,6 +8,7 @@ import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
 
 class MessageView extends StatefulWidget {
+  final String collectionReference; // random or trending
   final String originalMessageId;
   final String userId;
   final String message;
@@ -16,6 +17,7 @@ class MessageView extends StatefulWidget {
 
   const MessageView({
     super.key,
+    required this.collectionReference,
     required this.message,
     required this.themeProvider,
     required this.originalMessageId,
@@ -73,6 +75,7 @@ class _MessageViewState extends State<MessageView>
         _canSubmit = true;
       });
     }
+    print("Collection Reference ${widget.collectionReference}");
   }
 
   @override
@@ -251,89 +254,17 @@ class _MessageViewState extends State<MessageView>
                                         children: [
                                           ElevatedButton(
                                             onPressed: () async {
-                                              final messageProvider =
-                                                  Provider.of<MessageProvider>(
-                                                      context,
-                                                      listen: false);
-                                              final userProvider =
-                                                  Provider.of<UserProvider>(
-                                                      context,
-                                                      listen: false);
-                                              final signInProvider =
-                                                  Provider.of<SignInProvider>(
-                                                      context,
-                                                      listen: false);
-                                              setState(() {
-                                                if (!likeToSentToProvider) {
-                                                  // disliked and commented
-                                                  _commentType = 1;
-                                                } else {
-                                                  // liked and commented
-                                                  _commentType = 3;
-                                                }
-                                              });
-                                              await messageProvider.addComment(
-                                                  signInProvider
-                                                      .currentUser!.uid,
-                                                  userProvider.userName,
-                                                  _textEditingController.text,
-                                                  widget.originalMessageId,
-                                                  _commentType,
-                                                  likeToSentToProvider);
-                                              if (mounted) {
-                                                CustomSnackBar.showSnackbar(
-                                                    context,
-                                                    'Message Sent',
-                                                    widget.themeProvider);
-                                                setState(() {
-                                                  _isSubmitted = true;
-                                                });
-                                                _textEditingController.clear();
-                                              }
+                                              // pass _like = true
+                                              await addComment(true);
+                                              _textEditingController.clear();
                                             },
                                             child: const Text('Submit'),
                                           ),
                                           ElevatedButton(
                                             onPressed: () async {
                                               _textEditingController.clear();
-                                              final messageProvider =
-                                                  Provider.of<MessageProvider>(
-                                                      context,
-                                                      listen: false);
-                                              final userProvider =
-                                                  Provider.of<UserProvider>(
-                                                      context,
-                                                      listen: false);
-                                              final signInProvider =
-                                                  Provider.of<SignInProvider>(
-                                                      context,
-                                                      listen: false);
-                                              setState(() {
-                                                if (!likeToSentToProvider) {
-                                                  // disliked and skipped
-                                                  _commentType = 0;
-                                                } else {
-                                                  // liked and skipped
-                                                  _commentType = 2;
-                                                }
-                                              });
-                                              await messageProvider.addComment(
-                                                  signInProvider
-                                                      .currentUser!.uid,
-                                                  userProvider.userName,
-                                                  _textEditingController.text,
-                                                  widget.originalMessageId,
-                                                  _commentType,
-                                                  likeToSentToProvider);
-                                              if (mounted) {
-                                                CustomSnackBar.showSnackbar(
-                                                    context,
-                                                    'Comment Skipped',
-                                                    widget.themeProvider);
-                                                setState(() {
-                                                  _isSubmitted = true;
-                                                });
-                                              }
+                                              // pass _like = false
+                                              await addComment(false);
                                             },
                                             child: const Text('Skip'),
                                           ),
@@ -375,5 +306,65 @@ class _MessageViewState extends State<MessageView>
             themeProvider: widget.themeProvider),
       ],
     );
+  }
+
+  Future<void> addComment(bool _skipOrSubmit) async {
+    // providers
+    final messageProvider =
+        Provider.of<MessageProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    // handle if skipped or submitted
+    if (!_skipOrSubmit) { // skip
+      setState(() {
+        if (!likeToSentToProvider) {
+          // disliked and skipped
+          _commentType = 0;
+        } else {
+          // liked and skipped
+          _commentType = 2;
+        }
+      });
+      await messageProvider.addComment(
+          widget.collectionReference,
+          signInProvider.currentUser!.uid,
+          userProvider.userName,
+          _textEditingController.text,
+          widget.originalMessageId,
+          _commentType,
+          likeToSentToProvider);
+      if (mounted) {
+        CustomSnackBar.showSnackbar(
+            context, 'Comment Skipped', widget.themeProvider);
+        setState(() {
+          _isSubmitted = true;
+        });
+      }
+    } else { // submit
+      setState(() {
+        if (!likeToSentToProvider) {
+          // disliked and commented
+          _commentType = 1;
+        } else {
+          // liked and commented
+          _commentType = 3;
+        }
+      });
+      await messageProvider.addComment(
+          widget.collectionReference,
+          signInProvider.currentUser!.uid,
+          userProvider.userName,
+          _textEditingController.text,
+          widget.originalMessageId,
+          _commentType,
+          likeToSentToProvider);
+      if (mounted) {
+        CustomSnackBar.showSnackbar(
+            context, 'Message Sent', widget.themeProvider);
+        setState(() {
+          _isSubmitted = true;
+        });
+      }
+    }
   }
 }

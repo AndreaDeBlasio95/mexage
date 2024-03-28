@@ -19,6 +19,7 @@ class UserProvider extends ChangeNotifier {
     final SignInProvider signInProvider = Provider.of<SignInProvider>(context, listen: false);
     UserModel _userM = await getUser(signInProvider.currentUser!.uid);
     _userName = _userM.userName;
+    notifyListeners();
     return _userName;
   }
   // -------------------

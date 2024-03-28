@@ -33,7 +33,9 @@ class CustomThemes with ChangeNotifier {
   Color cTextCard = Colors.black;
   Color cTextTag = Colors.black;
   Color cCardColorToOpen =Colors.black;
+  Color cCardColorToOpened =Colors.black;
   Color cCardColorToOpenOutline = Colors.black;
+  Color cCardColorToOpenedOutline = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextAppBar = const TextStyle(
@@ -162,7 +164,9 @@ class CustomThemes with ChangeNotifier {
       cTextCommentBold = const Color(0xFF505B63);
       cTextUsername = const Color(0xFF54ADEF);
       cCardColorToOpen = const Color(0xFFECF8FE);
+      cCardColorToOpened = const Color(0xFF7368F5);
       cCardColorToOpenOutline = const Color(0xFFC4EAFB);
+      cCardColorToOpenedOutline = const Color(0xFF4E3FF3);
       cTextCard = const Color(0xFF1AADF6);
       cTextTag = const Color(0xFF454F54);
     } else if (value == 1) {
@@ -189,7 +193,9 @@ class CustomThemes with ChangeNotifier {
       cTextCommentBold = const Color(0xFF505B63);
       cTextUsername = const Color(0xFF54ADEF);
       cCardColorToOpen = const Color(0xFF212F37);
+      cCardColorToOpened = const Color(0xFF7368F5);
       cCardColorToOpenOutline = const Color(0xFF495662);
+      cCardColorToOpenedOutline = const Color(0xFF4E3FF3);
       cTextCard = const Color(0xFF093247);
       cTextTag = const Color(0xFF212F37);
     }

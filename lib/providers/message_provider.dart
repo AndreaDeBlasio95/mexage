@@ -64,9 +64,10 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addComment(String _userId, String _userName, String _content,
+  Future<void> addComment(String _collectionReference, String _userId, String _userName, String _content,
       String _originalMessage, int _commentType, bool _isLikedOrDislike) async {
     // _commentType 0 = dislike skipped, 1 = dislike commented, 2 = like skipped, 3 = like commented
+    // _collectionReference = "trending" or "random"
     try {
       String messageId = const Uuid().v4(); // Generate UUID for the message ID
       String _country = Utils.getUserCountry();
@@ -95,7 +96,7 @@ class MessageProvider with ChangeNotifier {
       // update likes in original message
       await _db
           .collection(_country)
-          .doc("trending")
+          .doc(_collectionReference)
           .collection("messages")
           .doc(_originalMessage)
           .update({
@@ -105,7 +106,7 @@ class MessageProvider with ChangeNotifier {
       // create comment in trending
       await _db
           .collection(_country)
-          .doc("trending")
+          .doc(_collectionReference)
           .collection("messages")
           .doc(_originalMessage)
           .collection("comments")

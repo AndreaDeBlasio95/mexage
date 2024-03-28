@@ -19,6 +19,7 @@ class MessageCardBoard extends StatefulWidget {
 class _MessageCardBoardState extends State<MessageCardBoard> {
   late Future<bool> _messageExistFuture;
   bool _messageExist = false;
+  String _tagNewOrYour = "New";
 
   @override
   void initState() {
@@ -30,6 +31,13 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
     final messageProvider =
         Provider.of<MessageProvider>(context, listen: false);
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    if (widget.message.userId == signInProvider.currentUser!.uid) {
+      setState(() {
+        _tagNewOrYour = "Your";
+      });
+    }
+    print(_tagNewOrYour);
+
     if (widget.message.userId == signInProvider.currentUser!.uid) {
       return true;
     }
@@ -62,10 +70,19 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
               return Container(); // Placeholder for error state
             }
             return AnimatedCartoonContainer(
+              collectionReference: 'trending',
               message: widget.message,
               isLiked: _messageExist,
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                  color: _tagNewOrYour == "New"
+                      ? _messageExist
+                          ? Colors.transparent
+                          : themeProvider.cCardColorToOpened
+                      : Color(0xFF1CFEBA),
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Card(
                   elevation: 0,
                   color: Colors.transparent,
@@ -81,19 +98,37 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                               padding: const EdgeInsets.only(
                                   left: 8, right: 8, top: 4, bottom: 4),
                               width: MediaQuery.of(context).size.width * 0.6,
-                              child: Text(widget.message.content,
-                                  style: themeProvider.tTextCard,
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.ellipsis),
+                              child: _tagNewOrYour == "New"
+                                  ? _messageExist
+                                      ? Text(widget.message.content,
+                                          style: themeProvider.tTextCard,
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis)
+                                      : Text(widget.message.content,
+                                          style: const TextStyle(
+                                            fontFamily: 'nunito',
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontVariations: [
+                                              FontVariation('wght', 700),
+                                            ],
+                                            overflow: TextOverflow.ellipsis,
+                                          ))
+                                  : Text(widget.message.content,
+                                      style: themeProvider.tTextCard,
+                                      textAlign: TextAlign.left,
+                                      overflow: TextOverflow.ellipsis),
                             ),
                           ),
                           const SizedBox(width: 8),
+                          /*
                           !_messageExist
                               ? _buildTrailingNewOrYour(themeProvider)
                               : Container(
                                   height: 40,
                                   width: 1,
                                 ),
+                          */
                         ],
                       ),
                       //_buildRowTags(themeProvider),
