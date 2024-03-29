@@ -31,6 +31,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
   }
 
   List<Color> setColorByTag() {
+    final themeProvider = Provider.of<CustomThemes>(context, listen: false);
     List<Color> colors = [];
     if (_tagNewOrYour == "Your"){
       colors.add(const Color(0xFF7CCE00));
@@ -38,6 +39,9 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
     } else if (_tagNewOrYour == "New") {
       colors.add(const Color(0xFF1AADF6));
       colors.add(const Color(0xFF0885C4));
+    } else {
+      colors.add(themeProvider.cCardColorToOpen);
+      colors.add(themeProvider.cCardColorToOpenOutline);
     }
     return colors;
   }
@@ -60,13 +64,22 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
     try {
       bool documentExists = await messageProvider.checkIfDocumentExists(
           widget.message.id, signInProvider.currentUser!.uid);
-      setState(() {
-        _messageExist = documentExists;
-      });
+      if (documentExists) {
+        setState(() {
+          _messageExist = documentExists;
+          _tagNewOrYour = "Seen";
+          _colors = setColorByTag();
+        });
+      } else {
+        setState(() {
+          _messageExist = documentExists;
+          _tagNewOrYour = "New";
+          _colors = setColorByTag();
+        });
+      }
       return documentExists;
     } catch (e) {
       print('Error: $e');
-      _messageExist = false;
       return false;
     }
   }
