@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mexage/custom_widgets/animated_cartoon_container_new.dart';
 import 'package:mexage/custom_widgets/custom_snack_bar.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
@@ -254,21 +255,40 @@ class _MessageViewState extends State<MessageView>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              // pass _like = true
-                                              await addComment(true);
-                                              _textEditingController.clear();
+                                          AnimatedCartoonContainerNew(
+                                            child: Container(
+                                                width: 120,
+                                                padding:
+                                                     EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 16),
+                                                child: Text(
+                                                  'Submit',
+                                                  style: widget
+                                                      .themeProvider.tTextCard, textAlign: TextAlign.center,
+                                                )),
+                                            callbackFunction: () async {
+                                              await addCommentCallback(true);
                                             },
-                                            child: const Text('Submit'),
+                                            colorCard: widget.themeProvider
+                                                .cCardColorToOpened,
+                                            colorCardOutline: widget.themeProvider.cCardColorToOpenedOutline
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              _textEditingController.clear();
-                                              // pass _like = false
-                                              await addComment(false);
+                                          AnimatedCartoonContainerNew(
+                                            child: Container(
+                                              width: 120,
+                                                padding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 16),
+                                                child: Text(
+                                                  'Skip',
+                                                  style: widget
+                                                      .themeProvider.tTextCard, textAlign: TextAlign.center,
+                                                )),
+                                            callbackFunction: () async {
+                                              await addCommentCallback(false);
                                             },
-                                            child: const Text('Skip'),
                                           ),
                                         ],
                                       )
@@ -290,6 +310,15 @@ class _MessageViewState extends State<MessageView>
         ),
       ),
     );
+  }
+
+  Future<void> addCommentCallback(bool _value) async {
+    await addComment(_value);
+    if (mounted) {
+      setState(() {
+        _textEditingController.clear();
+      });
+    }
   }
 
   Widget _buildMessageViewWithoutInteraction() {
@@ -317,7 +346,8 @@ class _MessageViewState extends State<MessageView>
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     // handle if skipped or submitted
-    if (!_skipOrSubmit) { // skip
+    if (!_skipOrSubmit) {
+      // skip
       setState(() {
         if (!likeToSentToProvider) {
           // disliked and skipped
@@ -343,7 +373,8 @@ class _MessageViewState extends State<MessageView>
           _isSubmitted = true;
         });
       }
-    } else { // submit
+    } else {
+      // submit
       setState(() {
         if (!likeToSentToProvider) {
           // disliked and commented

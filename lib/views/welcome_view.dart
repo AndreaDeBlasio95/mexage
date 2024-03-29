@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,7 +18,7 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> {
   bool _isLoading = true;
-  int? themeColorSelected; // 0 for light, 1 for dark
+  int themeColorSelected = 0; // 0 for light, 1 for dark
   double marginValueOpenBottle = 6;
   double marginValueRegisterNow = 6;
 
@@ -92,16 +94,28 @@ class _WelcomeViewState extends State<WelcomeView> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Text(
+                      const Text(
                         'SeaBottle',
-                        style: themeProvider.tTextWelcomeTitle,
+                        style: TextStyle(
+                          fontFamily: 'madami',
+                          color: Color(0xFF4259F0),
+                          fontWeight: FontWeight.w900,
+                          fontSize: 36,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 42),
-                        child: Text(
+                        child: const Text(
                           'Send and receive messages in a bottle.',
-                          style: themeProvider.tTextGrey,
+                          style: TextStyle(
+                            fontFamily: 'nunito',
+                            color: Color(0xFF454F54),
+                            fontSize: 18,
+                            fontVariations: [
+                              FontVariation('wght', 700),
+                            ],
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -140,8 +154,16 @@ class _WelcomeViewState extends State<WelcomeView> {
                               : const EdgeInsets.only(
                                   left: 16, right: 16, bottom: 8, top: 6),
                           decoration: BoxDecoration(
-                            color: themeProvider.cOutlineBlue,
+                            color: const Color(0xFF1AADF6),
                             borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
                           ),
                           child: Container(
                             margin: marginValueRegisterNow > 0
@@ -163,11 +185,15 @@ class _WelcomeViewState extends State<WelcomeView> {
                                   height: 28,
                                   width: 28,
                                 ),
-                                title: Text("Sign in with Google!",
+                                title: const Text("Sign in with Google!",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: themeProvider.cCardDrawer),
+                                      fontFamily: 'nunito',
+                                      color: Color(0xFF141F23),
+                                      fontSize: 20,
+                                      fontVariations: [
+                                        FontVariation('wght', 800),
+                                      ],
+                                    ),
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis),
                               ),

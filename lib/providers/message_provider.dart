@@ -49,7 +49,9 @@ class MessageProvider with ChangeNotifier {
           .set(message
               .toJson()); // Use set instead of add to specify the document ID
       await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userId)
           .collection("messages-sent")
           .doc(messageId)
@@ -64,8 +66,15 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addComment(String _userIdOriginalMessage, String _collectionReference, String _userId, String _userName, String _content,
-      String _originalMessage, int _commentType, bool _isLikedOrDislike) async {
+  Future<void> addComment(
+      String _userIdOriginalMessage,
+      String _collectionReference,
+      String _userId,
+      String _userName,
+      String _content,
+      String _originalMessage,
+      int _commentType,
+      bool _isLikedOrDislike) async {
     // _commentType 0 = dislike skipped, 1 = dislike commented, 2 = like skipped, 3 = like commented
     // _collectionReference = "trending" or "random"
     try {
@@ -105,7 +114,9 @@ class MessageProvider with ChangeNotifier {
       });
       // update user message sent
       await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userIdOriginalMessage)
           .collection("messages-sent")
           .doc(_originalMessage)
@@ -125,7 +136,9 @@ class MessageProvider with ChangeNotifier {
               .toJson()); // Use set instead of add to specify the document ID
       // create comment in user
       await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userId)
           .collection("messages-comments")
           .doc(messageId)
@@ -133,7 +146,9 @@ class MessageProvider with ChangeNotifier {
               .toJson()); // Use set instead of add to specify the document ID
       // update a collection to know if the user has commented on the message
       await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userId)
           .collection("messages-comments-board")
           .doc(_originalMessage)
@@ -222,7 +237,9 @@ class MessageProvider with ChangeNotifier {
       // Return the message as it is suitable for the user
       // create comment in user
       await _db
-          .collection("users")
+          .collection(country)
+          .doc("users")
+          .collection("users-active")
           .doc(userId)
           .collection("messages-received")
           .doc(message.id)
@@ -235,8 +252,14 @@ class MessageProvider with ChangeNotifier {
   // ----- UPDATES -----
   Future<void> updateSingleValueInUserDocument(
       String _userId, String _fieldName, dynamic _value) async {
+    String _country = Utils.getUserCountry();
     // Update the value
-    await _db.collection("users").doc(_userId).update({
+    await _db
+        .collection(_country)
+        .doc("users")
+        .collection("users-active")
+        .doc(_userId)
+        .update({
       _fieldName: _value,
       // Specify the field you want to update and the new value
     }).then((_) {
@@ -267,9 +290,12 @@ class MessageProvider with ChangeNotifier {
   }
 
   Future<List<Message>> getUserMessagesSent(String _userId) async {
+    String _country = Utils.getUserCountry();
     try {
       QuerySnapshot querySnapshot = await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userId)
           .collection("messages-sent")
           .get();
@@ -285,9 +311,12 @@ class MessageProvider with ChangeNotifier {
   }
 
   Future<List<Message>> getUserMessagesReceived(String _userId) async {
+    String _country = Utils.getUserCountry();
     try {
       QuerySnapshot querySnapshot = await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userId)
           .collection("messages-received")
           .orderBy("timestamp", descending: true)
@@ -308,7 +337,9 @@ class MessageProvider with ChangeNotifier {
     String _country = Utils.getUserCountry();
     try {
       DocumentSnapshot snapshot = await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userId)
           .collection("messages-received")
           .doc(_documentId)
@@ -324,7 +355,9 @@ class MessageProvider with ChangeNotifier {
     String _country = Utils.getUserCountry();
     try {
       DocumentSnapshot snapshot = await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_userId)
           .collection("messages-comments-board")
           .doc(_documentId)

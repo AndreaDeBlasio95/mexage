@@ -6,7 +6,6 @@ import 'package:uuid/uuid.dart';
 import '../models/user_model.dart';
 import '../utils/utils.dart';
 
-
 class UserProvider extends ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -15,37 +14,47 @@ class UserProvider extends ChangeNotifier {
   String get userName => _userName;
 
   // ----- GETTERS -----
-  Future<String> getUserName (String _userId, context) async {
-    final SignInProvider signInProvider = Provider.of<SignInProvider>(context, listen: false);
+  Future<String> getUserName(String _userId, context) async {
+    final SignInProvider signInProvider =
+        Provider.of<SignInProvider>(context, listen: false);
     UserModel _userM = await getUser(signInProvider.currentUser!.uid);
     _userName = _userM.userName;
     notifyListeners();
     return _userName;
   }
+
   // -------------------
   // ----- SETTERS -----
   Future<bool> checkCanSendMessage(context) async {
     // getting current user
-    final SignInProvider signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    final SignInProvider signInProvider =
+        Provider.of<SignInProvider>(context, listen: false);
     UserModel _userM = await getUser(signInProvider.currentUser!.uid);
-    if (_userM.messagesSent == 0){
+    if (_userM.messagesSent == 0) {
       return true;
     }
     // getting last message sent
-    String lastMessageSent = Utils.timestampToDate(_userM.timestampLastSentMessage);
+    String lastMessageSent =
+        Utils.timestampToDate(_userM.timestampLastSentMessage);
     // getting current date
     String currentDate = Utils.timestampToDate(Timestamp.now());
     // checking if last message sent is today
     return lastMessageSent != currentDate;
   }
+
   // --------------------
   Future<void> registerOrGetUser(context) async {
+    String _country = Utils.getUserCountry();
     SignInProvider _user = Provider.of<SignInProvider>(context, listen: false);
     _user = Provider.of<SignInProvider>(context, listen: false);
 
     try {
-      DocumentSnapshot userSnapshot =
-          await _db.collection("users").doc(_user.currentUser!.uid).get();
+      DocumentSnapshot userSnapshot = await _db
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
+          .doc(_user.currentUser!.uid)
+          .get();
 
       if (userSnapshot.exists) {
         // User already exists, retrieve their data
@@ -61,12 +70,19 @@ class UserProvider extends ChangeNotifier {
 
         UserModel newUser = createUserModelToSendToFirestore(_user, _userName);
         notifyListeners(); // Notify listeners about the change
-
         await _db
-            .collection("users")
+            .collection(_country)
+            .doc("users")
+            .collection("users-active")
             .doc(_user.currentUser!.uid)
             .set(newUser.toJson());
       }
+      await _db.collection(_country).doc("users").set(
+        {
+          "total": FieldValue.increment(1),
+        },
+        SetOptions(merge: true),
+      );
     } catch (e) {
       // create user model
       var _randomValue = Uuid().v4().toString();
@@ -76,7 +92,9 @@ class UserProvider extends ChangeNotifier {
       notifyListeners(); // Notify listeners about the change
 
       await _db
-          .collection("users")
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
           .doc(_user.currentUser!.uid)
           .set(newUser.toJson());
     }
@@ -100,14 +118,20 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<UserModel> getUser(String uid) async {
+    String _country = Utils.getUserCountry();
     try {
       while (true) {
         // Get user data from Firestore
-        DocumentSnapshot userSnapshot =
-        await _db.collection("users").doc(uid).get();
+        DocumentSnapshot userSnapshot = await _db
+            .collection(_country)
+            .doc("users")
+            .collection("users-active")
+            .doc(uid)
+            .get();
         if (userSnapshot.exists) {
           // User exists, convert data to UserModel and return
-          return UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>);
+          return UserModel.fromJson(
+              userSnapshot.data() as Map<String, dynamic>);
         } else {
           // User doesn't exist
           // Wait for some time before retrying
@@ -116,28 +140,6 @@ class UserProvider extends ChangeNotifier {
       }
     } catch (e) {
       print('Error while getting user data: $e');
-      // Optionally, you can throw an error or handle it differently based on your requirements
-      rethrow;
-    }
-  }
-
-  Future<void> updateUser(UserModel user, String collectionPath) async {
-    try {
-      // Update user data in Firestore
-      await _db.collection(collectionPath).doc(user.uid).update(user.toJson());
-    } catch (e) {
-      print('Error updating user: $e');
-      // Optionally, you can throw an error or handle it differently based on your requirements
-      rethrow;
-    }
-  }
-
-  Future<void> deleteUser(String uid, String collectionPath) async {
-    try {
-      // Delete user data from Firestore
-      await _db.collection(collectionPath).doc(uid).delete();
-    } catch (e) {
-      print('Error deleting user: $e');
       // Optionally, you can throw an error or handle it differently based on your requirements
       rethrow;
     }
