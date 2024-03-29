@@ -114,7 +114,7 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       print('First Login, user will be load in a few seconds $e');
       // Optionally, you can throw an error or handle it differently based on your requirements
-      throw e;
+      rethrow;
     }
   }
 
@@ -125,7 +125,7 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       print('Error updating user: $e');
       // Optionally, you can throw an error or handle it differently based on your requirements
-      throw e;
+      rethrow;
     }
   }
 
@@ -136,7 +136,7 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       print('Error deleting user: $e');
       // Optionally, you can throw an error or handle it differently based on your requirements
-      throw e;
+      rethrow;
     }
   }
 }

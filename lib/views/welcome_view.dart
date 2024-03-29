@@ -24,22 +24,6 @@ class _WelcomeViewState extends State<WelcomeView> {
   void initState() {
     super.initState();
     isUserLogged();
-    /*
-    // Listen to the auth state changes
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-        // Perform actions if the user is signed out
-      } else {
-        print('User is signed in!');
-        Navigator.pushNamed(context, '/home');
-        // Perform actions if the user is signed in, such as redirecting to a home screen
-      }
-    });
-
-     */
-
-    //WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
   }
 
   Future<void> isUserLogged() async {
@@ -53,55 +37,11 @@ class _WelcomeViewState extends State<WelcomeView> {
     } else {
       setState(() {
         _isLoading = false;
-        checkTheme();
+        //checkTheme();
       });
     }
   }
 
-  /*
-  Future<User?> _handleSignIn() async {
-    try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
-
-        final UserCredential authResult =
-            await _auth.signInWithCredential(credential);
-        final User? user = authResult.user;
-
-        setState(() {
-          marginValueRegisterNow = 6;
-          marginValueOpenBottle = 6;
-        });
-        print("User Name: ${user!.displayName}");
-
-        return user;
-      } else {
-        setState(() {
-          marginValueRegisterNow = 6;
-          marginValueOpenBottle = 6;
-        });
-        print("User cancelled the login");
-
-        return null;
-      }
-    } catch (error) {
-      setState(() {
-        marginValueRegisterNow = 6;
-        marginValueOpenBottle = 6;
-      });
-      print("Error signing in with Google: $error");
-      return null;
-    }
-  }
-*/
   // theme ---
   void checkTheme() {
     themeColorSelected =

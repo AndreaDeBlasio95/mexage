@@ -80,7 +80,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
                       ? _messageExist
                           ? Colors.transparent
                           : themeProvider.cCardColorToOpened
-                      : Color(0xFF1CFEBA),
+                      : Color(0xFF7CCE00),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Card(

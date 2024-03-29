@@ -20,7 +20,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
 
   late SignInProvider _signProvider;
   late UserProvider _userProvider;
-  String _userName = "";
+  late String _userName = "";
 
   @override
   void initState() {
@@ -36,6 +36,13 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     setState(() {
       _userName = _userName;
     });
+    print(_userName);
+  }
+
+  @override
+  void dispose() {
+    // Dispose any resources if necessary
+    super.dispose();
   }
 
   @override
@@ -104,23 +111,8 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                     },
                   ),
                 ),
-                _userName != "" ? FutureBuilder<bool>(
-                  future: _userProvider.checkCanSendMessage(context),
-                  builder: (context, snapshot) {
-                    // Checking connection state
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      // Still loading
-                      return Container();
-                    } else if (snapshot.hasError) {
-                      // If an error occurred
-                      return Container();
-                    } else {
-                      // Data is loaded
-                      final canSendMessage = snapshot.data ?? false;
-                      return canSendMessage ? const CreateNewMessage() : Container();
-                    }
-                  },
-                ) : Container(),
+                // Use _userName here
+                _buildFutureCanSendMessage()
               ],
             ),
           ),
@@ -148,5 +140,26 @@ class _MessagesSentViewState extends State<MessagesSentView> {
         );
       },
     );
+  }
+
+  Widget _buildFutureCanSendMessage () {
+    return _userName != ""
+        ? FutureBuilder<bool>(
+      future: _userProvider.checkCanSendMessage(context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Still loading
+          return Container();
+        } else if (snapshot.hasError) {
+          // If an error occurred
+          return Container();
+        } else {
+          // Data is loaded
+          final canSendMessage = snapshot.data ?? false;
+          return canSendMessage ? const CreateNewMessage() : Container();
+        }
+      },
+    )
+        : Container();
   }
 }
