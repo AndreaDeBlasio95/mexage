@@ -43,7 +43,7 @@ class MessageCardSent extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     margin: const EdgeInsets.only(top: 8, bottom: 8),
                     decoration: BoxDecoration(
-                      color: themeProvider.cIcons,
+                      color: Colors.grey.shade600,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: _buildTrailingLikesWidget(themeProvider),
@@ -73,7 +73,7 @@ class MessageCardSent extends StatelessWidget {
       Utils.formatNumber(message.likes),
       style: TextStyle(
         fontFamily: 'nunito',
-        color: themeProvider.cTextNormal,
+        color: Colors.grey.shade300,
         fontSize: 14,
         fontVariations: const [
           FontVariation('wght', 800),

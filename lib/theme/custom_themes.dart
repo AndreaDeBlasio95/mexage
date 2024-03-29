@@ -218,7 +218,7 @@ class CustomThemes with ChangeNotifier {
     tTextSmall = TextStyle(
       fontFamily: 'nunito',
       color: cTextDisabled,
-      fontSize: 10,
+      fontSize: 12,
       fontVariations: const [
         FontVariation('wght', 600),
       ],
