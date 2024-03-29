@@ -64,7 +64,7 @@ class MessageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addComment(String _collectionReference, String _userId, String _userName, String _content,
+  Future<void> addComment(String _userIdOriginalMessage, String _collectionReference, String _userId, String _userName, String _content,
       String _originalMessage, int _commentType, bool _isLikedOrDislike) async {
     // _commentType 0 = dislike skipped, 1 = dislike commented, 2 = like skipped, 3 = like commented
     // _collectionReference = "trending" or "random"
@@ -98,6 +98,16 @@ class MessageProvider with ChangeNotifier {
           .collection(_country)
           .doc(_collectionReference)
           .collection("messages")
+          .doc(_originalMessage)
+          .update({
+        booleanField: FieldValue.increment(1),
+        "rank": FieldValue.increment(_commentType)
+      });
+      // update user message sent
+      await _db
+          .collection("users")
+          .doc(_userIdOriginalMessage)
+          .collection("messages-sent")
           .doc(_originalMessage)
           .update({
         booleanField: FieldValue.increment(1),

@@ -36,6 +36,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
             PageRouteBuilder(
               pageBuilder: (_, __, ___) =>
                   MessageView(
+                    userIdOriginalMessage: widget.message.userId,
                       collectionReference: widget.collectionReference,
                       originalMessageId: widget.message.id,
                       userId: widget.message.userId,

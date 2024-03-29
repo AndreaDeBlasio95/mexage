@@ -56,7 +56,6 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
         _colors = setColorByTag();
       });
     }
-    print(_tagNewOrYour);
 
     if (widget.message.userId == signInProvider.currentUser!.uid) {
       return true;

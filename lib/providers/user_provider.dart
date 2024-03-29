@@ -101,18 +101,21 @@ class UserProvider extends ChangeNotifier {
 
   Future<UserModel> getUser(String uid) async {
     try {
-      // Get user data from Firestore
-      DocumentSnapshot userSnapshot =
-          await _db.collection("users").doc(uid).get();
-      if (userSnapshot.exists) {
-        // User exists, convert data to UserModel and return
-        return UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>);
-      } else {
-        // User doesn't exist
-        throw Exception('User not found');
+      while (true) {
+        // Get user data from Firestore
+        DocumentSnapshot userSnapshot =
+        await _db.collection("users").doc(uid).get();
+        if (userSnapshot.exists) {
+          // User exists, convert data to UserModel and return
+          return UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>);
+        } else {
+          // User doesn't exist
+          // Wait for some time before retrying
+          await Future.delayed(const Duration(milliseconds: 500));
+        }
       }
     } catch (e) {
-      print('First Login, user will be load in a few seconds $e');
+      print('Error while getting user data: $e');
       // Optionally, you can throw an error or handle it differently based on your requirements
       rethrow;
     }

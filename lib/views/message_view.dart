@@ -8,6 +8,7 @@ import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
 
 class MessageView extends StatefulWidget {
+  final String userIdOriginalMessage;
   final String collectionReference; // random or trending
   final String originalMessageId;
   final String userId;
@@ -17,6 +18,7 @@ class MessageView extends StatefulWidget {
 
   const MessageView({
     super.key,
+    required this.userIdOriginalMessage,
     required this.collectionReference,
     required this.message,
     required this.themeProvider,
@@ -326,6 +328,7 @@ class _MessageViewState extends State<MessageView>
         }
       });
       await messageProvider.addComment(
+          widget.userIdOriginalMessage,
           widget.collectionReference,
           signInProvider.currentUser!.uid,
           userProvider.userName,
@@ -351,6 +354,7 @@ class _MessageViewState extends State<MessageView>
         }
       });
       await messageProvider.addComment(
+          widget.userIdOriginalMessage,
           widget.collectionReference,
           signInProvider.currentUser!.uid,
           userProvider.userName,
