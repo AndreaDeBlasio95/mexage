@@ -352,9 +352,11 @@ class _MessageViewState extends State<MessageView>
         if (!likeToSentToProvider) {
           // disliked and skipped
           _commentType = 0;
+          _textEditingController.clear();
         } else {
           // liked and skipped
           _commentType = 2;
+          _textEditingController.clear();
         }
       });
       await messageProvider.addComment(
@@ -362,7 +364,7 @@ class _MessageViewState extends State<MessageView>
           widget.collectionReference,
           signInProvider.currentUser!.uid,
           userProvider.userName,
-          _textEditingController.text,
+          "",
           widget.originalMessageId,
           _commentType,
           likeToSentToProvider);
