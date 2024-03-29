@@ -20,11 +20,26 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
   late Future<bool> _messageExistFuture;
   bool _messageExist = false;
   String _tagNewOrYour = "New";
+  List<Color> _colors = [];
 
   @override
   void initState() {
     super.initState();
+    _colors.add(const Color(0xFF1AADF6));
+    _colors.add(const Color(0xFF0885C4));
     _messageExistFuture = messageExistInUserCollection();
+  }
+
+  List<Color> setColorByTag() {
+    List<Color> colors = [];
+    if (_tagNewOrYour == "Your"){
+      colors.add(const Color(0xFF7CCE00));
+      colors.add(const Color(0xFF70B627));
+    } else if (_tagNewOrYour == "New") {
+      colors.add(const Color(0xFF1AADF6));
+      colors.add(const Color(0xFF0885C4));
+    }
+    return colors;
   }
 
   Future<bool> messageExistInUserCollection() async {
@@ -34,6 +49,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
     if (widget.message.userId == signInProvider.currentUser!.uid) {
       setState(() {
         _tagNewOrYour = "Your";
+        _colors = setColorByTag();
       });
     }
     print(_tagNewOrYour);
@@ -73,16 +89,10 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
               collectionReference: 'trending',
               message: widget.message,
               isLiked: _messageExist,
+              colorCard: _colors[0],
+              colorCardOutline: _colors[1],
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                decoration: BoxDecoration(
-                  color: _tagNewOrYour == "New"
-                      ? _messageExist
-                          ? Colors.transparent
-                          : themeProvider.cCardColorToOpened
-                      : Color(0xFF7CCE00),
-                  borderRadius: BorderRadius.circular(12),
-                ),
                 child: Card(
                   elevation: 0,
                   color: Colors.transparent,

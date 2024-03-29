@@ -164,9 +164,9 @@ class CustomThemes with ChangeNotifier {
       cTextCommentBold = const Color(0xFF505B63);
       cTextUsername = const Color(0xFF54ADEF);
       cCardColorToOpen = const Color(0xFFECF8FE);
-      cCardColorToOpened = const Color(0xFF7368F5);
+      cCardColorToOpened = const Color(0xFF1AADF6);
       cCardColorToOpenOutline = const Color(0xFFC4EAFB);
-      cCardColorToOpenedOutline = const Color(0xFF4E3FF3);
+      cCardColorToOpenedOutline = const Color(0xFF0885C4);
       cTextCard = const Color(0xFF1AADF6);
       cTextTag = const Color(0xFF454F54);
     } else if (value == 1) {

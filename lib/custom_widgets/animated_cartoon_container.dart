@@ -10,8 +10,10 @@ class AnimatedCartoonContainer extends StatefulWidget {
   final String collectionReference;
   final Message message;
   final bool isLiked;
+  final Color? colorCard;
+  final Color? colorCardOutline;
 
-  const AnimatedCartoonContainer({super.key, required this.collectionReference, required this.child, required this.message, required this.isLiked});
+  const AnimatedCartoonContainer({super.key, required this.collectionReference, required this.child, required this.message, required this.isLiked, this.colorCard, this.colorCardOutline});
 
   @override
   _AnimatedCartoonContainerState createState() => _AnimatedCartoonContainerState();
@@ -79,7 +81,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
           curve: Curves.ease,
           margin: EdgeInsets.only(bottom: _isPressed ? 0 : _shadowSize, top: _isPressed ? _shadowSize : 0,),
           decoration: BoxDecoration(
-            color: themeProvider.cCardColorToOpenOutline,
+            color: widget.colorCardOutline ?? themeProvider.cCardColorToOpenOutline,
             borderRadius: BorderRadius.circular(20),
           ),
           child: AnimatedContainer(
@@ -88,7 +90,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
             padding: EdgeInsets.only(bottom: _isPressed ? _shadowSize : 0),
             margin: EdgeInsets.only(bottom: _isPressed ? 0 : _shadowSize),
             decoration: BoxDecoration(
-              color: themeProvider.cCardColorToOpen,
+              color: widget.colorCard ?? themeProvider.cCardColorToOpen,
               borderRadius: BorderRadius.circular(18),
             ),
             child: widget.child,
