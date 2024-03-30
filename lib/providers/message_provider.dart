@@ -424,6 +424,15 @@ class MessageProvider with ChangeNotifier {
    */
 
   Future<void> adminSetTopLikedMessages() async {
+    // we can call this once per week:
+    String currentWeek = Utils.getCurrentWeekYearFormat();
+    // Check if the backup collection exists
+    QuerySnapshot _backupCollection = await _db.collection("IT").doc(currentWeek).collection("messages").limit(1).get();
+    if (_backupCollection.docs.isNotEmpty) {
+      print("Backup collection exists, aborting operation.");
+      return;
+    }
+    
     String _country = Utils.getUserCountry();
     await copyCollectionTrending(_country);
 

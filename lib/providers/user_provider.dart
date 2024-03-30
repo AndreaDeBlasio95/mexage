@@ -76,13 +76,15 @@ class UserProvider extends ChangeNotifier {
             .collection("users-active")
             .doc(_user.currentUser!.uid)
             .set(newUser.toJson());
+
+        // increment total users count
+        await _db.collection(_country).doc("users").set(
+          {
+            "total": FieldValue.increment(1),
+          },
+          SetOptions(merge: true),
+        );
       }
-      await _db.collection(_country).doc("users").set(
-        {
-          "total": FieldValue.increment(1),
-        },
-        SetOptions(merge: true),
-      );
     } catch (e) {
       // create user model
       var _randomValue = Uuid().v4().toString();
