@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/message_card_received.dart';
+import 'package:mexage/custom_widgets/my-rive-animation.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -86,7 +87,8 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
                             Container(
                               height: MediaQuery.of(context).size.height * 0.05,
                             ),
-                            Image.asset("images/icon-palm.png", height: 250),
+                            //Image.asset("images/icon-palm.png", height: 250),
+                            RiveAnimationBottle(),
                           ],
                         );
                       } else {
