@@ -36,7 +36,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
           _controller = SimpleAnimation('3 - Open Bottle');
           break;
         case 3:
-          _controller = SimpleAnimation('4 - Pergamena');
+          _controller = SimpleAnimation('4 - Open Parchment');
           break;
       }
     });
