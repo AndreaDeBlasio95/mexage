@@ -19,7 +19,7 @@ class CreateNewMessage extends StatelessWidget {
           await messageProvider.addMessage(signInProvider.currentUser!.uid, userProvider.userName, "Message sent from 'Sent View' by ${userProvider.userName}");
         },
         child: Container(
-          color: Colors.transparent,
+          margin: const EdgeInsets.all(8),
           alignment: Alignment.bottomRight,
           child: Container(
             margin: const EdgeInsets.only(bottom: 8),
@@ -37,7 +37,7 @@ class CreateNewMessage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(22),
               ),
               child: Image.asset(
-                'images/icon-send-message.png',
+                'images/icon-parchment.png',
                 height: 50,
                 width: 50,
               ),

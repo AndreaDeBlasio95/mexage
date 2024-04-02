@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mexage/custom_widgets/animated_cartoon_container_new.dart';
 import 'package:mexage/custom_widgets/create_new_message.dart';
 import 'package:mexage/custom_widgets/message_card_sent.dart';
 import 'package:mexage/providers/user_provider.dart';
@@ -17,7 +18,6 @@ class MessagesSentView extends StatefulWidget {
 }
 
 class _MessagesSentViewState extends State<MessagesSentView> {
-
   late SignInProvider _signProvider;
   late UserProvider _userProvider;
   late String _userName = "";
@@ -31,12 +31,24 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     refreshUsername();
   }
 
-  Future<void> refreshUsername () async {
-    _userName = await _userProvider.getUserName(_signProvider.currentUser!.uid, context);
+  Future<void> refreshUsername() async {
+    _userName = await _userProvider.getUserName(
+        _signProvider.currentUser!.uid, context);
     setState(() {
       _userName = _userName;
     });
     print(_userName);
+  }
+
+  Future<void> sendMessage() async {
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    final messageProvider =
+        Provider.of<MessageProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await messageProvider.addMessage(
+        signInProvider.currentUser!.uid,
+        userProvider.userName,
+        "Message sent from 'Sent View' by ${userProvider.userName}");
   }
 
   @override
@@ -47,7 +59,6 @@ class _MessagesSentViewState extends State<MessagesSentView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<CustomThemes>(builder: (context, themeProvider, _) {
       return WillPopScope(
         onWillPop: () async {
@@ -90,7 +101,11 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                               height: MediaQuery.of(context).size.height * 0.05,
                             ),
                             Container(
-                              child: Text("It's a bit empty here!\nLet's send your first bottle!", style: themeProvider.tTextNormal, textAlign: TextAlign.center,),
+                              child: Text(
+                                "It's a bit empty here!\nLet's send your first bottle!",
+                                style: themeProvider.tTextNormal,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             Container(
                               height: MediaQuery.of(context).size.height * 0.05,
@@ -112,10 +127,11 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                   ),
                 ),
                 // Use _userName here
-                _buildFutureCanSendMessage()
+                //_buildFutureCanSendMessage()
               ],
             ),
           ),
+          floatingActionButton: _buildFutureCanSendMessage(themeProvider),
         ),
       );
     });
@@ -142,24 +158,46 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     );
   }
 
-  Widget _buildFutureCanSendMessage () {
+  Widget _buildFutureCanSendMessage(CustomThemes themeProvider) {
     return _userName != ""
         ? FutureBuilder<bool>(
-      future: _userProvider.checkCanSendMessage(context),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // Still loading
-          return Container();
-        } else if (snapshot.hasError) {
-          // If an error occurred
-          return Container();
-        } else {
-          // Data is loaded
-          final canSendMessage = snapshot.data ?? false;
-          return canSendMessage ? const CreateNewMessage() : Container();
-        }
-      },
-    )
+            future: _userProvider.checkCanSendMessage(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Still loading
+                return Container();
+              } else if (snapshot.hasError) {
+                // If an error occurred
+                return Container();
+              } else {
+                // Data is loaded
+                final canSendMessage = snapshot.data ?? false;
+                return canSendMessage ? Container(
+                  height: 80,
+                  width: 80,
+                  child: FloatingActionButton(
+                    elevation: 10,
+                    backgroundColor: Colors.transparent,
+                    onPressed: () {
+                      // this button will not work because we use onTap on the AnimatedCartoonContainerNew
+                    },
+                    child: AnimatedCartoonContainerNew(
+                      colorCard: themeProvider.cCardColorToOpen,
+                      colorCardOutline: themeProvider.cCardColorToOpenOutline,
+                      child: Image.asset(
+                        'images/icon-parchment.png',
+                        height: 70,
+                        width: 70,
+                      ),
+                      callbackFunction: () async {
+                        await sendMessage();
+                      },
+                    ),
+                  ),
+                ) : Container();
+              }
+            },
+          )
         : Container();
   }
 }

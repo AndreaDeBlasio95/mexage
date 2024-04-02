@@ -250,8 +250,10 @@ class CustomThemes with ChangeNotifier {
     tTextTabBar = TextStyle(
       fontFamily: 'nunito',
       color: cTextTabBar,
-      fontWeight: FontWeight.w600,
       fontSize: 16,
+      fontVariations: const [
+        FontVariation('wght', 500),
+      ],
     );
     tTextTitleDrawer = TextStyle(
       fontFamily: 'nunito',

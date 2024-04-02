@@ -4,7 +4,7 @@ import '../theme/custom_themes.dart';
 
 class AnimatedCartoonContainerNew extends StatefulWidget {
   final Widget child;
-  final Future<Null> Function() callbackFunction;
+  final Future<void> Function() callbackFunction;
   final Color? colorCard;
   final Color? colorCardOutline;
 
