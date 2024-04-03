@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/animated_cartoon_container_new.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +23,7 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   int? themeColorSelected; // Default theme index
   String? userName = "";
+  double paddingVerticalRow = 4.0;
 
   @override
   void initState() {
@@ -65,61 +68,64 @@ class _CustomDrawerState extends State<CustomDrawer> {
           const SizedBox(height: 24),
           Container(
               padding: const EdgeInsets.only(left: 8),
-              child: Text("Profile", style: themeProvider.tTextTitleDrawer)),
+              child: Text("Account", style: themeProvider.tTextTitleDrawer)),
           const SizedBox(height: 12),
-          AnimatedCartoonContainerNew(
-            child: Card(
-              elevation: 0,
-              color: Colors.transparent,
-              child: ListTile(
-                leading: Icon(Icons.person, color: themeProvider.cIcons),
-                title: Text(
-                  _userProvider.userName,
-                  style: themeProvider.tTextTabBar,
-                  overflow: TextOverflow.ellipsis,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: themeProvider.cIcons,
+                width: 2,
+              ),
+            ),
+            child: Column(
+              children: [
+                // nickname
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      Icon(Icons.person, color: themeProvider.cIcons),
+                      const SizedBox(width: 16),
+                      Flexible(
+                        child: Text(
+                          _userProvider.userName,
+                          style: themeProvider.tTextDrawer,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
                 ),
-                onTap: () async {
-                  // Handle the tap
-                  //   Navigator.pop(context); // Close the drawer
-                },
-              ),
-            ),
-            callbackFunction: () async {
-              printH();
-            },
-            colorCard: themeProvider.cCardColorToOpen,
-            colorCardOutline: themeProvider.cCardColorToOpenOutline,
-          ),
-          Card(
-            elevation: 0,
-            color: themeProvider.cCardDrawer,
-            child: ListTile(
-              leading: Icon(Icons.person, color: themeProvider.cIcons),
-              title: Text(
-                _userProvider.userName,
-                style: themeProvider.tTextMessageCardDrawer,
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () {
-                // Handle the tap
-                Navigator.pop(context); // Close the drawer
-              },
-            ),
-          ),
-          Card(
-            elevation: 0,
-            color: themeProvider.cCardDrawer,
-            child: ListTile(
-              leading: Icon(Icons.email, color: themeProvider.cIcons),
-              title: Text(
-                '${_signInProvider.currentUser!.email}',
-                style: themeProvider.tTextMessageCardDrawer,
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () {
-                // Handle the tap
-                Navigator.pop(context); // Close the drawer
-              },
+                const SizedBox(height: 8),
+                Container(
+                  height: 1,
+                  color: themeProvider.cIcons,
+                ),
+                const SizedBox(height: 8),
+                // email
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      Icon(Icons.email_rounded, color: themeProvider.cIcons),
+                      const SizedBox(width: 16),
+                      Flexible(
+                        child: Text(
+                          "${_signInProvider.currentUser!.email}",
+                          style: themeProvider.tTextDrawer,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           // end profile
@@ -129,53 +135,105 @@ class _CustomDrawerState extends State<CustomDrawer> {
               padding: const EdgeInsets.only(left: 8),
               child: Text("Settings", style: themeProvider.tTextTitleDrawer)),
           const SizedBox(height: 12),
-          Card(
-            elevation: 0,
-            color: themeProvider.cCardDrawer,
-            child: ListTile(
-              leading: Icon(Icons.notifications, color: themeProvider.cIcons),
-              title: Text('Notifications',
-                  style: themeProvider.tTextMessageCardDrawer),
-              onTap: () {
-                // Handle the tap
-                Navigator.pop(context); // Close the drawer
-              },
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: themeProvider.cIcons,
+                width: 2,
+              ),
             ),
-          ),
-          Card(
-            elevation: 0,
-            color: themeProvider.cCardDrawer,
-            child: ListTile(
-              leading: Icon(Icons.security, color: themeProvider.cIcons),
-              title:
-                  Text('Security', style: themeProvider.tTextMessageCardDrawer),
-              onTap: () {
-                // Handle the tap
-                Navigator.pop(context); // Close the drawer
-              },
-            ),
-          ),
-          Card(
-            elevation: 0,
-            color: themeProvider.cCardDrawer,
-            child: ListTile(
-              leading: themeColorSelected == 0
-                  ? Icon(Icons.light_mode, color: themeProvider.cIcons)
-                  : Icon(Icons.dark_mode, color: themeProvider.cIcons),
-              title: Text('Switch Theme',
-                  style: themeProvider.tTextMessageCardDrawer),
-              onTap: () {
-                // Handle the tap
-                if (themeColorSelected == 0) {
-                  setTheme(1);
-                  widget.onThemeChange(
-                      1); // Use the callback with the new theme value
-                } else {
-                  setTheme(0);
-                  widget.onThemeChange(
-                      0); // Use the callback with the new theme value
-                }
-              },
+            child: Column(
+              children: [
+                // nickname
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      Icon(Icons.notifications, color: themeProvider.cIcons),
+                      const SizedBox(width: 16),
+                      Flexible(
+                        child: Text(
+                          "Notification",
+                          style: themeProvider.tTextDrawer,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  height: 1,
+                  color: themeProvider.cIcons,
+                ),
+                const SizedBox(height: 8),
+                // email
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      Icon(Icons.security_rounded, color: themeProvider.cIcons),
+                      const SizedBox(width: 16),
+                      Flexible(
+                        child: Text(
+                          "Security",
+                          style: themeProvider.tTextDrawer,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  height: 1,
+                  color: themeProvider.cIcons,
+                ),
+                const SizedBox(height: 8),
+                // email
+                InkWell(
+                  onTap: () {
+                    // Handle the tap
+                    if (themeColorSelected == 0) {
+                      setTheme(1);
+                      widget.onThemeChange(
+                          1); // Use the callback with the new theme value
+                    } else {
+                      setTheme(0);
+                      widget.onThemeChange(
+                          0); // Use the callback with the new theme value
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        themeColorSelected == 0
+                            ? Icon(Icons.light_mode,
+                                color: themeProvider.cIcons)
+                            : Icon(Icons.dark_mode,
+                                color: themeProvider.cIcons),
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: Text(
+                            "Switch Theme",
+                            style: themeProvider.tTextDrawer,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           // end theme
@@ -191,10 +249,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
             color: themeProvider.cRed,
             child: ListTile(
               leading: themeColorSelected == 0
-                  ? Icon(Icons.logout_rounded, color: Colors.white)
-                  : Icon(Icons.logout_rounded, color: Colors.white),
-              title:
-                  Text('Logout', style: themeProvider.tTextMessageCardDrawer),
+                  ? const Icon(Icons.logout_rounded, color: Colors.white)
+                  : const Icon(Icons.logout_rounded, color: Colors.white),
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  fontFamily: 'nunito',
+                  color: Colors.grey.shade200,
+                  fontSize: 18,
+                  fontVariations: const [
+                    FontVariation('wght', 700),
+                  ],
+                ),
+              ),
               onTap: () async {
                 await _signInProvider.handleSignOut();
                 if (mounted) {

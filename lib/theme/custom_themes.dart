@@ -36,6 +36,7 @@ class CustomThemes with ChangeNotifier {
   Color cCardColorToOpened =Colors.black;
   Color cCardColorToOpenOutline = Colors.black;
   Color cCardColorToOpenedOutline = Colors.black;
+  Color cTextDrawer = Colors.black;
 
   // --- TEXT STYLES ---
   TextStyle tTextAppBar = const TextStyle(
@@ -134,6 +135,11 @@ class CustomThemes with ChangeNotifier {
     color: Colors.grey,
     fontSize: 14,
   );
+  TextStyle tTextDrawer = const TextStyle(
+    fontFamily: 'nunito',
+    color: Colors.grey,
+    fontSize: 14,
+  );
 
   int get currentTheme => _theme;
 
@@ -169,6 +175,7 @@ class CustomThemes with ChangeNotifier {
       cCardColorToOpenedOutline = const Color(0xFF0885C4);
       cTextCard = const Color(0xFF1AADF6);
       cTextTag = const Color(0xFF454F54);
+      cTextDrawer = const Color(0xFF4b4b4b);
     } else if (value == 1) {
       // --- DARK ---
       cBackGround = const Color(0xFF141F23);
@@ -198,6 +205,7 @@ class CustomThemes with ChangeNotifier {
       cCardColorToOpenedOutline = const Color(0xFF4E3FF3);
       cTextCard = const Color(0xFF093247);
       cTextTag = const Color(0xFF212F37);
+      cTextDrawer = Colors.grey.shade200;
     }
     setTextStyles(value);
     notifyListeners();
@@ -265,7 +273,7 @@ class CustomThemes with ChangeNotifier {
     );
      tTextMessageCardDrawer = TextStyle(
       fontFamily: 'nunito',
-      color: cTextBold,
+      color: cTextDrawer,
       fontSize: 16,
       fontVariations: const [
         FontVariation('wght', 500),
@@ -346,6 +354,14 @@ class CustomThemes with ChangeNotifier {
       fontFamily: 'nunito',
       color: cTextTag,
       fontSize: 14,
+      fontVariations: const [
+        FontVariation('wght', 700),
+      ],
+    );
+    tTextDrawer = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextDrawer,
+      fontSize: 16,
       fontVariations: const [
         FontVariation('wght', 700),
       ],
