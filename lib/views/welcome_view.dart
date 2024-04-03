@@ -158,7 +158,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.blue.withOpacity(0.2),
+                                color: const Color(0xFF1AADF6).withOpacity(0.2),
                                 spreadRadius: 1,
                                 blurRadius: 5,
                                 offset: const Offset(0, 10),

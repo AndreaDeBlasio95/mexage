@@ -23,6 +23,27 @@ class UserProvider extends ChangeNotifier {
     return _userName;
   }
 
+  Future<String> getPrivacyPolicy () async {
+    try {
+      DocumentSnapshot privacyDoc = await _db
+          .collection("App-Data")
+          .doc("privacy-policy")
+          .get();
+      if (privacyDoc.exists) {
+        // Explicitly cast the data to Map<String, dynamic>
+        var data = privacyDoc.data() as Map<String, dynamic>?;
+        // Now you can safely access the 'privacy-policy' field.
+        // Make sure to replace 'privacy-policy' with the actual field name containing the policy text.
+        return data?["text"] ??
+            ""; // Corrected to use "text" as the field name based on context
+      }
+    } catch (e) {
+      print('Error while getting privacy policy: $e');
+      rethrow; // Rethrow to allow handling upstream.
+    }
+    return ""; // Return an empty string if the document does not exist or any error occurs.
+  }
+
   // -------------------
   // ----- SETTERS -----
   Future<bool> checkCanSendMessage(context) async {

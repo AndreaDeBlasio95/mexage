@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mexage/custom_widgets/security_view.dart';
 import 'package:mexage/providers/message_provider.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         '/onboard': (context) => OnboardingView(), // Replace SecondPage with the name of your second page widget
         '/login': (context) => const WelcomeView(), // Replace SecondPage with the name of your second page widget
         '/home': (context) => HomeView(), // Replace SecondPage with the name of your second page widget
+        '/privacy-policy': (context) => SecurityView(), // Replace SecondPage with the name of your second page widget
       },
       title: 'SeaBottle',
       debugShowCheckedModeBanner: false,

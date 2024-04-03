@@ -1,11 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mexage/custom_widgets/animated_cartoon_container_new.dart';
+import 'package:mexage/custom_widgets/custom_snack_bar.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../providers/sign_in_provider.dart';
 import '../providers/user_provider.dart';
 import '../theme/custom_themes.dart';
+import '../utils/utils.dart';
 
 class CustomDrawer extends StatefulWidget {
   final Function(int) onThemeChange;
@@ -24,12 +28,29 @@ class _CustomDrawerState extends State<CustomDrawer> {
   int? themeColorSelected; // Default theme index
   String? userName = "";
   double paddingVerticalRow = 4.0;
+  String notificationStatus = "Off";
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
-    //getUserName();
+    loadNotificationPermissionStatus();
+  }
+
+  // Load the notification permission status
+  void loadNotificationPermissionStatus() async {
+    var status = await Permission.notification.status;
+    if (status.isGranted) {
+      // If permission is granted, set the switch to on
+      setState(() {
+        notificationStatus = "On";
+      });
+    } else {
+      // If permission is not granted, keep the switch off
+      setState(() {
+        notificationStatus = "Off";
+      });
+    }
   }
 
   void checkTheme() {
@@ -82,22 +103,33 @@ class _CustomDrawerState extends State<CustomDrawer> {
             child: Column(
               children: [
                 // nickname
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 8),
-                      Icon(Icons.person, color: themeProvider.cIcons),
-                      const SizedBox(width: 16),
-                      Flexible(
-                        child: Text(
-                          _userProvider.userName,
-                          style: themeProvider.tTextDrawer,
-                          overflow: TextOverflow.ellipsis,
+                InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await Clipboard.setData(
+                        ClipboardData(text: _userProvider.userName));
+                    if (mounted) {
+                      CustomSnackBar.showSnackbar(
+                          context, "Username copied", themeProvider);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        Icon(Icons.person, color: themeProvider.cIcons),
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: Text(
+                            _userProvider.userName,
+                            style: themeProvider.tTextDrawer,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                    ],
+                        const SizedBox(width: 8),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -107,22 +139,33 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 const SizedBox(height: 8),
                 // email
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 8),
-                      Icon(Icons.email_rounded, color: themeProvider.cIcons),
-                      const SizedBox(width: 16),
-                      Flexible(
-                        child: Text(
-                          "${_signInProvider.currentUser!.email}",
-                          style: themeProvider.tTextDrawer,
-                          overflow: TextOverflow.ellipsis,
+                InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await Clipboard.setData(
+                        ClipboardData(text: "${_signInProvider.currentUser!.email}"));
+                    if (mounted) {
+                      CustomSnackBar.showSnackbar(
+                          context, "Email copied", themeProvider);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        Icon(Icons.email_rounded, color: themeProvider.cIcons),
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: Text(
+                            "${_signInProvider.currentUser!.email}",
+                            style: themeProvider.tTextDrawer,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                    ],
+                        const SizedBox(width: 8),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -154,10 +197,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       const SizedBox(width: 8),
                       Icon(Icons.notifications, color: themeProvider.cIcons),
                       const SizedBox(width: 16),
-                      Flexible(
+                      Expanded(
                         child: Text(
                           "Notification",
                           style: themeProvider.tTextDrawer,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          notificationStatus,
+                          style: themeProvider.tTextTimestamp,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -172,22 +227,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 const SizedBox(height: 8),
                 // email
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 8),
-                      Icon(Icons.security_rounded, color: themeProvider.cIcons),
-                      const SizedBox(width: 16),
-                      Flexible(
-                        child: Text(
-                          "Security",
-                          style: themeProvider.tTextDrawer,
-                          overflow: TextOverflow.ellipsis,
+                InkWell(
+                  onTap: ()  {
+                    Navigator.pushNamed(context, '/privacy-policy');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: paddingVerticalRow),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        Icon(Icons.security_rounded, color: themeProvider.cIcons),
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: Text(
+                            "Security",
+                            style: themeProvider.tTextDrawer,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                    ],
+                        const SizedBox(width: 8),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
