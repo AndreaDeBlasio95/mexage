@@ -250,6 +250,8 @@ class MessageProvider with ChangeNotifier {
           .doc(message.id)
           .set(message
               .toJson()); // Use set instead of add to specify the document ID
+      updateSingleValueInUserDocument(
+          userId, "timestampLastReceivedMessage", Timestamp.now());
       return message;
     }
   }
