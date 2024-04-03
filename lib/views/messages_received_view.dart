@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../custom_widgets/message_card_sent.dart';
+import '../custom_widgets/new_message_received_screen.dart';
 import '../models/message_model.dart';
 import '../providers/message_provider.dart';
 import '../providers/sign_in_provider.dart';
@@ -19,7 +20,6 @@ class MessagesReceivedView extends StatefulWidget {
 }
 
 class _MessagesReceivedViewState extends State<MessagesReceivedView> {
-
   late SignInProvider _signProvider;
   late UserProvider _userProvider;
   String _userName = "";
@@ -33,13 +33,13 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
     refreshUsername();
   }
 
-  void refreshUsername () async {
-    _userName = await _userProvider.getUserName(_signProvider.currentUser!.uid, context);
+  void refreshUsername() async {
+    _userName = await _userProvider.getUserName(
+        _signProvider.currentUser!.uid, context);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<CustomThemes>(builder: (context, themeProvider, _) {
       return WillPopScope(
         onWillPop: () async {
@@ -60,50 +60,7 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Expanded(
-                  child: FutureBuilder<List<Message>>(
-                    future: Provider.of<MessageProvider>(context)
-                        .getUserMessagesReceived(_signProvider.currentUser!.uid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // Display shimmer effect while loading
-                        return _buildShimmerEffect();
-                      } else if (snapshot.hasError) {
-                        // Handle error case
-                        return Container(
-                          child: Text('Error: ${snapshot.error}'),
-                        );
-                      } else if (snapshot.data == null ||
-                          snapshot.data!.isEmpty) {
-                        // Handle case when there are no messages
-                        return Column(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.05,
-                            ),
-                            Container(
-                              child: Text("Next message at 07.00 a.m. and 07.00 p.m.", style: themeProvider.tTextNormal, textAlign: TextAlign.center,),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.05,
-                            ),
-                            //Image.asset("images/icon-palm.png", height: 250),
-                            RiveAnimationBottle(),
-                          ],
-                        );
-                      } else {
-                        // Display list of messages
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            Message message = snapshot.data![index];
-                            return MessageCardReceived(message: message);
-                          },
-                        );
-                      }
-                    },
-                  ),
-                ),
+                _buildUserCanReceiveMessage(themeProvider),
                 /*
                 FutureBuilder<bool>(
                   future: _userProvider.checkCanSendMessage(context),
@@ -149,6 +106,89 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildUserCanReceiveMessage(CustomThemes themeProvider) {
+    return FutureBuilder<bool>(
+      future: _userProvider.userCanGetMessage(
+          _signProvider.currentUser!.uid, context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Return a loading indicator while waiting for the result
+          return Container();
+        } else {
+          // Handle the result
+          if (snapshot.hasError) {
+            // Handle error state
+            return Text('Error: ${snapshot.error}');
+          } else {
+            bool canGetMessage = snapshot.data!;
+            if (canGetMessage) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => NewMessageReceivedScreen(userId: _signProvider.currentUser!.uid),
+                ));
+              });
+              return const Text("User can receive message");
+            } else {
+              // Return an empty container as we're navigating to a new screen
+              return Container();
+            }
+          }
+        }
+      },
+    );
+  }
+
+  Widget _buildMessageReceivedList(CustomThemes themeProvider) {
+    return Expanded(
+      child: FutureBuilder<List<Message>>(
+        future: Provider.of<MessageProvider>(context)
+            .getUserMessagesReceived(_signProvider.currentUser!.uid),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Display shimmer effect while loading
+            return _buildShimmerEffect();
+          } else if (snapshot.hasError) {
+            // Handle error case
+            return Container(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+            // Handle case when there are no messages
+            return Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                Container(
+                  child: Text(
+                    "Next message at 07.00 a.m. and 07.00 p.m.",
+                    style: themeProvider.tTextNormal,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                //Image.asset("images/icon-palm.png", height: 250),
+                RiveAnimationBottle(
+                    userId: _signProvider.currentUser!.uid),
+              ],
+            );
+          } else {
+            // Display list of messages
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                Message message = snapshot.data![index];
+                return MessageCardReceived(message: message);
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }

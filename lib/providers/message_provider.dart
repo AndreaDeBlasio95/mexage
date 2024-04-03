@@ -222,10 +222,15 @@ class MessageProvider with ChangeNotifier {
     // Check if the document exists in messages-received collection
     bool documentExists =
         await checkIfDocumentExistsInUserCollection(message.id, userId);
-    print("Document exists: $documentExists");
+    print("Document exists in user's collection: $documentExists");
 
-    bool isMyMessage = message.userId == userId;
-    print("It's my message $isMyMessage");
+    bool isMyMessage;
+    if (message.userId == userId) {
+      isMyMessage = true;
+    } else {
+      isMyMessage = false;
+    }
+    print("It's my message: $isMyMessage");
 
     if (documentExists || isMyMessage) {
       print(

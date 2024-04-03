@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:mexage/models/message_model.dart';
+import 'package:mexage/views/message_view.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 
+import '../providers/message_provider.dart';
+
 class RiveAnimationBottle extends StatefulWidget {
+  final String userId;
+
+  const RiveAnimationBottle({super.key, required this.userId});
+
   @override
-  _RiveAnimationBottleState createState() => _RiveAnimationBottleState();
+  State<RiveAnimationBottle> createState() =>
+      _RiveAnimationBottleState();
 }
 
 class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
@@ -64,6 +74,14 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
           case 7:
             _controller = SimpleAnimation('4 - Open Parchment');
             break;
+          case 8:
+          /*
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MessageView(userIdOriginalMessage: userIdOriginalMessage, collectionReference: collectionReference, message: message, themeProvider: themeProvider, originalMessageId: originalMessageId, isLiked: isLiked, userId: userId),
+            ));
+
+             */
+            break;
         }
 
         // Attach the listener to the new controller
@@ -84,7 +102,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
       onTap: _toggleAnimation, // Change animation on tap
       child: Stack(
         children: [
-          Container(
+          _animationIndex < 8 ? Container(
             height: 400,
             width: 400,
             child: RiveAnimation.asset(
@@ -93,9 +111,40 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
               controllers: [_controller], // Provide the current controller
               fit: BoxFit.fitWidth,
             ),
-          ),
+          ) : _buildGetNextMessage(),
         ],
       ),
+    );
+  }
+
+  Widget _buildGetNextMessage() {
+    final messageProvider = Provider.of<MessageProvider>(context, listen: false);
+
+    return FutureBuilder<Message?>(
+      future: messageProvider.getNextMessage(widget.userId, 0, null),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Return a loading indicator while waiting for the result
+          return Container();
+        } else {
+          // Handle the result
+          if (snapshot.hasError) {
+            // Handle error state
+            return Text('Error: ${snapshot.error}');
+          } else {
+            // Use the fetched message data
+            Message? message = snapshot.data;
+            print(widget.userId);
+            if (message != null) {
+              // If message is not null, you can use its data
+              return Text('Message received: ${message.content}');
+            } else {
+              // Handle case where no message is received
+              return Text('No message received');
+            }
+          }
+        }
+      },
     );
   }
 }

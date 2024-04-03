@@ -70,4 +70,47 @@ class Utils {
     DateTime firstDayOfYear = DateTime(date.year, 1, 1);
     return date.difference(firstDayOfYear).inDays + 1;
   }
+
+  static bool isBefore7AM(Timestamp timestampLastReceivedMessage) {
+    try {
+      DateTime lastReceivedTime = timestampLastReceivedMessage.toDate();
+      // Check if the hour is before 7:00 AM
+      return lastReceivedTime.hour < 7;
+    } catch (e) {
+      print('Error checking if before 7 AM: $e');
+      // If any error occurs, return false
+      return false;
+    }
+  }
+
+  static bool isSameDay(Timestamp timestampLastReceivedMessage) {
+    try {
+      DateTime lastReceivedTime = timestampLastReceivedMessage.toDate();
+      // Get current date
+      DateTime now = DateTime.now();
+      if (lastReceivedTime.day == now.day) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error checking if same day: $e');
+      // If any error occurs, return false
+      return false;
+    }
+  }
+
+  static Timestamp yesterdayTimestamp(Timestamp currentTimestamp) {
+    try {
+      DateTime currentDate = currentTimestamp.toDate();
+      // Subtract one day from the current date
+      DateTime yesterday = currentDate.subtract(Duration(days: 1));
+      // Convert yesterday's DateTime to Timestamp
+      return Timestamp.fromDate(yesterday);
+    } catch (e) {
+      print('Error calculating yesterday: $e');
+      // If any error occurs, return null
+      return Timestamp.now();
+    }
+  }
 }

@@ -10,8 +10,10 @@ class UserProvider extends ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   String _userName = "";
-
   String get userName => _userName;
+
+  bool _canGetMessage = false;
+  bool get canGetMessage => _canGetMessage;
 
   // ----- GETTERS -----
   Future<String> getUserName(String _userId, context) async {
@@ -21,6 +23,23 @@ class UserProvider extends ChangeNotifier {
     _userName = _userM.userName;
     notifyListeners();
     return _userName;
+  }
+  Future<bool> userCanGetMessage(String _userId, context) async {
+    final SignInProvider signInProvider =
+    Provider.of<SignInProvider>(context, listen: false);
+    UserModel _userM = await getUser(signInProvider.currentUser!.uid);
+
+    Timestamp _timestampLastReceivedMessage = _userM.timestampLastReceivedMessage;
+    bool isTheSameDay = Utils.isSameDay(_timestampLastReceivedMessage);
+    bool isBefore7AM = Utils.isBefore7AM(_timestampLastReceivedMessage);
+    if (!isTheSameDay && !isBefore7AM) {
+      _canGetMessage = true;
+      notifyListeners();
+      return _canGetMessage;
+    }
+    _canGetMessage = false;
+    notifyListeners();
+    return _canGetMessage;
   }
 
   Future<String> getPrivacyPolicy () async {
@@ -135,6 +154,7 @@ class UserProvider extends ChangeNotifier {
       likes: 0,
       messagesSent: 0,
       accountStatus: 0,
+      timestampLastReceivedMessage: Utils.yesterdayTimestamp(Timestamp.now()),
       timestampLastSentMessage: Timestamp.now(),
     );
     return newUser;
