@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/onboard': (context) => OnboardingView(), // Replace SecondPage with the name of your second page widget
         '/login': (context) => const WelcomeView(), // Replace SecondPage with the name of your second page widget
-        '/home': (context) => HomeView(), // Replace SecondPage with the name of your second page widget
-        '/received': (context) => const MessagesReceivedView(), // Replace SecondPage with the name of your second page widget
+        '/home': (context) => HomeView(initialIndex: 1,), // Replace SecondPage with the name of your second page widget
+        '/received': (context) => MessagesReceivedView(), // Replace SecondPage with the name of your second page widget
         '/privacy-policy': (context) => SecurityView(), // Replace SecondPage with the name of your second page widget
       },
       title: 'SeaBottle',

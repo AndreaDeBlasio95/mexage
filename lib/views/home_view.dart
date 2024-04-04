@@ -8,6 +8,10 @@ import '../custom_widgets/home_drawer.dart';
 import 'messages_received_view.dart';
 
 class HomeView extends StatefulWidget {
+  final int? initialIndex;
+
+  const HomeView({super.key, this.initialIndex});
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }
@@ -34,14 +38,18 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
     setState(() {
-      _selectedIndex = 1;
+      if (widget.initialIndex != null || widget.initialIndex! == 2) {
+        _selectedIndex = widget.initialIndex!;
+      }
     });
   }
 
   Future<void> checkTheme() async {
     if (mounted) {
       themeColorSelected =
-          Provider.of<CustomThemes>(context, listen: false).currentTheme;
+          Provider
+              .of<CustomThemes>(context, listen: false)
+              .currentTheme;
 
       if (themeColorSelected == null) {
         Provider.of<CustomThemes>(context, listen: false).setTheme(1);
@@ -94,23 +102,23 @@ class _HomeViewState extends State<HomeView> {
             const SizedBox(width: 4),
             themeColorSelected == 1
                 ? SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: Image.asset(
-                      'images/icon-sea-bottle-2.png',
-                      fit: BoxFit.fitHeight,
-                      color: themeProvider.cTextTitle,
-                    ),
-                  )
+              height: 20,
+              width: 20,
+              child: Image.asset(
+                'images/icon-sea-bottle-2.png',
+                fit: BoxFit.fitHeight,
+                color: themeProvider.cTextTitle,
+              ),
+            )
                 : SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: Image.asset(
-                      'images/icon-sea-bottle-2.png',
-                      fit: BoxFit.fitHeight,
-                      color: themeProvider.cTextTitle,
-                    ),
-                  ),
+              height: 20,
+              width: 20,
+              child: Image.asset(
+                'images/icon-sea-bottle-2.png',
+                fit: BoxFit.fitHeight,
+                color: themeProvider.cTextTitle,
+              ),
+            ),
             const SizedBox(width: 50),
           ],
         ),
@@ -160,9 +168,7 @@ class _HomeViewState extends State<HomeView> {
           onTap: _onItemTapped,
         ),
       ),
-      body: _isLoading
-          ? Container()
-          : _widgetOptions.elementAt(_selectedIndex),
+      body: _isLoading ? Container() : _widgetOptions.elementAt(_selectedIndex),
     );
   }
 }

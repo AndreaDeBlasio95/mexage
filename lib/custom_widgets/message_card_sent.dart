@@ -20,7 +20,8 @@ class MessageCardSent extends StatelessWidget {
     return AnimatedCartoonContainer(
       collectionReference: 'random',
       message: message,
-      isLiked: false, // todo: change this
+      receivedMessage: false,
+      isLiked: false,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: Card(

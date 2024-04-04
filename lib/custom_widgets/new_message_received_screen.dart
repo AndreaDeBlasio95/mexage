@@ -1,8 +1,8 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mexage/custom_widgets/my-rive-animation.dart';
+import 'package:mexage/custom_widgets/bottle_message.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/custom_themes.dart';
 
 class NewMessageReceivedScreen extends StatefulWidget {
   final String userId;
@@ -15,24 +15,19 @@ class NewMessageReceivedScreen extends StatefulWidget {
 }
 
 class _NewMessageReceivedScreenState extends State<NewMessageReceivedScreen> {
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<CustomThemes>(context, listen: false);
+
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        return true;
       },
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                ),
-                RiveAnimationBottle(userId: widget.userId),
-              ],
-            ),
-          ),
+        body: Container(
+          padding: const EdgeInsets.all(16),
+          child: RiveAnimationBottle(userId: widget.userId),
         ),
       ),
     );

@@ -102,7 +102,8 @@ class MessageProvider with ChangeNotifier {
       } else {
         booleanField = "dislikes";
       }
-      // update likes in original message
+      // UPDATING GLOBAL COLLECTION: TRENDING OR RANDOM
+      // update likes and rank in original message
       await _db
           .collection(_country)
           .doc(_collectionReference)
@@ -112,6 +113,19 @@ class MessageProvider with ChangeNotifier {
         booleanField: FieldValue.increment(1),
         "rank": FieldValue.increment(_commentType)
       });
+      // ------------------------------------------------
+      // UPDATING USER ORIGINAL MESSAGE
+      // update user message sent
+      await _db
+          .collection(_country)
+          .doc("users")
+          .collection("users-active")
+          .doc(_userIdOriginalMessage)
+          .collection("messages-sent")
+          .doc(_originalMessage)
+          .collection("comments")
+          .doc(messageId)
+          .set(message.toJson());
       // update user message sent
       await _db
           .collection(_country)
@@ -134,6 +148,8 @@ class MessageProvider with ChangeNotifier {
           .doc(messageId)
           .set(message
               .toJson()); // Use set instead of add to specify the document ID
+      // ------------------------------------------------
+      // UPDATING USER RECEIVER COMMENT
       // create comment in user
       await _db
           .collection(_country)
@@ -146,19 +162,24 @@ class MessageProvider with ChangeNotifier {
           .doc(messageId)
           .set(message
               .toJson()); // Use set instead of add to specify the document ID
-      // update a collection to know if the user has commented on the message
-      await _db
-          .collection(_country)
-          .doc("users")
-          .collection("users-active")
-          .doc(_userId)
-          .collection("messages-comments-board")
-          .doc(_originalMessage)
-          .set({'commented': true});
-      await updateSingleValueInUserDocument(
-          _userId, "timestampLastSentMessage", Timestamp.now());
-      await updateSingleValueInUserDocument(
-          _userId, "messagesSent", FieldValue.increment(1));
+      // ------------------------------------------------
+      // UPDATING TRENDING COLLECTION
+      // Only if the addComment is from trending -------------------------------
+      if (_collectionReference == "trending") {
+        // update a collection to know if the user has commented on the message
+        await _db
+            .collection(_country)
+            .doc("users")
+            .collection("users-active")
+            .doc(_userId)
+            .collection("messages-comments-board")
+            .doc(_originalMessage)
+            .set({'commented': true});
+        await updateSingleValueInUserDocument(
+            _userId, "timestampLastSentMessage", Timestamp.now());
+        await updateSingleValueInUserDocument(
+            _userId, "messagesSent", FieldValue.increment(1));
+      }
     } catch (e) {
       print("Error adding message: $e");
     }
@@ -171,6 +192,35 @@ class MessageProvider with ChangeNotifier {
     Query query = _db
         .collection(_country)
         .doc("trending")
+        .collection("messages")
+        .doc(_originalMessageId)
+        .collection("comments")
+        .orderBy("likes", descending: true)
+        .orderBy('timestamp')
+        .limit(10);
+
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+
+    QuerySnapshot querySnapshot = await query.get();
+
+    // Check if the comments collection exists
+    if (querySnapshot.docs.isEmpty) {
+      print("comments collection doesn't exist or is empty");
+      return [];
+    }
+
+    return querySnapshot.docs;
+  }
+
+  Future<List<DocumentSnapshot>> fetchCommentFromRandom(
+      String _originalMessageId, String _userId,
+      {DocumentSnapshot? startAfter}) async {
+    String _country = Utils.getUserCountry();
+    Query query = _db
+        .collection(_country)
+        .doc("random")
         .collection("messages")
         .doc(_originalMessageId)
         .collection("comments")

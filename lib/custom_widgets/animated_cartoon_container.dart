@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mexage/custom_widgets/message_received_response_view.dart';
 import 'package:provider/provider.dart';
 
 import '../models/message_model.dart';
@@ -10,10 +11,11 @@ class AnimatedCartoonContainer extends StatefulWidget {
   final String collectionReference;
   final Message message;
   final bool isLiked;
+  final bool? receivedMessage;
   final Color? colorCard;
   final Color? colorCardOutline;
 
-  const AnimatedCartoonContainer({super.key, required this.collectionReference, required this.child, required this.message, required this.isLiked, this.colorCard, this.colorCardOutline});
+  const AnimatedCartoonContainer({super.key, required this.collectionReference, required this.child, required this.message, required this.isLiked, this.receivedMessage, this.colorCard, this.colorCardOutline});
 
   @override
   _AnimatedCartoonContainerState createState() => _AnimatedCartoonContainerState();
@@ -35,7 +37,15 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
             context,
             PageRouteBuilder(
               pageBuilder: (_, __, ___) =>
-                  MessageView(
+                  widget.receivedMessage! ? MessageReceivedResponseView(
+                      userIdOriginalMessage: widget.message.userId,
+                      collectionReference: widget.collectionReference,
+                      originalMessageId: widget.message.id,
+                      userId: widget.message.userId,
+                      message: widget.message.content,
+                      isLiked: widget.isLiked,
+                      themeProvider: themeProvider)
+                      : MessageView(
                     userIdOriginalMessage: widget.message.userId,
                       collectionReference: widget.collectionReference,
                       originalMessageId: widget.message.id,

@@ -1,6 +1,3 @@
-
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +19,8 @@ class MessageCardReceived extends StatelessWidget {
     return AnimatedCartoonContainer(
       collectionReference: 'random',
       message: message,
-      isLiked: true, // todo: change this
+      isLiked: true,
+      receivedMessage: true,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: Card(

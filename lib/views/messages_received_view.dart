@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/message_card_received.dart';
-import 'package:mexage/custom_widgets/my-rive-animation.dart';
+import 'package:mexage/custom_widgets/bottle_message.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../custom_widgets/message_card_sent.dart';
 import '../custom_widgets/new_message_received_screen.dart';
 import '../models/message_model.dart';
 import '../providers/message_provider.dart';

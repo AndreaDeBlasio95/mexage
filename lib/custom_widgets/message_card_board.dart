@@ -101,6 +101,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
               collectionReference: 'trending',
               message: widget.message,
               isLiked: _messageExist,
+              receivedMessage: false,
               colorCard: _colors[0],
               colorCardOutline: _colors[1],
               child: Container(

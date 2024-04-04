@@ -2,12 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:mexage/custom_widgets/message_received_response_view.dart';
 import 'package:mexage/models/message_model.dart';
 import 'package:mexage/views/message_view.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 
 import '../providers/message_provider.dart';
+import '../providers/sign_in_provider.dart';
+import '../theme/custom_themes.dart';
 
 class RiveAnimationBottle extends StatefulWidget {
   final String userId;
@@ -102,7 +105,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggleAnimation, // Change animation on tap
-      child: _animationIndex < 8
+      child: _animationIndex < 0
           ? Column(
               children: [
                 const Text(
@@ -133,17 +136,15 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
                 ),
               ],
             )
-          : Column(
-              children: [
-                _buildGetNextMessage(),
-              ],
-            ),
+          : _buildGetNextMessage(),
     );
   }
 
   Widget _buildGetNextMessage() {
     final messageProvider =
         Provider.of<MessageProvider>(context, listen: false);
+    final themeProvider = Provider.of<CustomThemes>(context, listen: false);
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
 
     return FutureBuilder<Message?>(
       future: messageProvider.getNextMessage(widget.userId, 0, null),
@@ -159,10 +160,24 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
           } else {
             // Use the fetched message data
             Message? message = snapshot.data;
-            print(widget.userId);
+
             if (message != null) {
-              // If message is not null, you can use its data
-              return Text('Message received: ${message.content}');
+              {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MessageReceivedResponseView(
+                      userIdOriginalMessage: message.userId,
+                      collectionReference: "random",
+                      message: message.content,
+                      themeProvider: themeProvider,
+                      originalMessageId: message.id,
+                      isLiked: false,
+                      userId: signInProvider.currentUser!.uid,
+                    ),
+                  ));
+                });
+                return Container();
+              }
             } else {
               // Handle case where no message is received
               return const Text('No message received');
