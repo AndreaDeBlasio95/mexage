@@ -123,12 +123,7 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
           } else {
             bool canGetMessage = snapshot.data!;
             if (canGetMessage) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => NewMessageReceivedScreen(userId: _signProvider.currentUser!.uid),
-                ));
-              });
-              return const Text("User can receive message");
+              return _buildButtonNewMessage(themeProvider);
             } else {
               // Return an empty container as we're navigating to a new screen
               return _buildMessageReceivedList(themeProvider);
@@ -137,6 +132,27 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
         }
       },
     );
+  }
+
+  Widget _buildButtonNewMessage(CustomThemes themeProvider) {
+    return GestureDetector(
+        onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => NewMessageReceivedScreen(
+                    userId: _signProvider.currentUser!.uid),
+              ));
+        },
+        child: Container(
+          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: themeProvider.cCardColorToOpened,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Text(
+              "New Message",
+              style: themeProvider.tTextCardWhite,
+            )));
   }
 
   Widget _buildMessageReceivedList(CustomThemes themeProvider) {
@@ -171,8 +187,7 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
                 //Image.asset("images/icon-palm.png", height: 250),
-                RiveAnimationBottle(
-                    userId: _signProvider.currentUser!.uid),
+                RiveAnimationBottle(userId: _signProvider.currentUser!.uid),
               ],
             );
           } else {
