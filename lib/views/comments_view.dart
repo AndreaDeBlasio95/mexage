@@ -41,7 +41,7 @@ class _CommentsViewState extends State<CommentsView> {
     if (messageProvider == null) return;
     _isLoading = true;
     List<DocumentSnapshot> newComments =
-        await messageProvider!.fetchCommentsFromTrending(
+        await messageProvider!.fetchCommentFromRandom(
       widget.originalMessageId,
       widget.userId,
     );

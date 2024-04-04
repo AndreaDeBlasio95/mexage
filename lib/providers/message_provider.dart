@@ -224,8 +224,7 @@ class MessageProvider with ChangeNotifier {
         .collection("messages")
         .doc(_originalMessageId)
         .collection("comments")
-        .orderBy("likes", descending: true)
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .limit(10);
 
     if (startAfter != null) {

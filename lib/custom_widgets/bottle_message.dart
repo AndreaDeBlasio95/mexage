@@ -105,7 +105,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggleAnimation, // Change animation on tap
-      child: _animationIndex < 0
+      child: _animationIndex < 8
           ? Column(
               children: [
                 const Text(

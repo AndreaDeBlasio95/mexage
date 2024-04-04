@@ -78,7 +78,6 @@ class _MessageViewState extends State<MessageView>
         _canSubmit = true;
       });
     }
-    print("Collection Reference ${widget.collectionReference}");
   }
 
   @override

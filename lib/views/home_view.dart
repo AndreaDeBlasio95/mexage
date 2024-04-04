@@ -38,9 +38,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => checkTheme());
     setState(() {
-      if (widget.initialIndex != null || widget.initialIndex! == 2) {
-        _selectedIndex = widget.initialIndex!;
-      }
+        _selectedIndex = 1;
     });
   }
 

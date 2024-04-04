@@ -4,7 +4,6 @@ import 'package:mexage/custom_widgets/comment_received.dart';
 import 'package:mexage/custom_widgets/custom_snack_bar.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
-import 'package:mexage/views/comments_view.dart';
 import 'package:provider/provider.dart';
 import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';

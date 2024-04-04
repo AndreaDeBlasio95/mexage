@@ -24,7 +24,7 @@ class AnimatedCartoonContainer extends StatefulWidget {
 class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
   bool _isPressed = false;
   final double _shadowSize = 6.0;
-
+  
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
@@ -37,7 +37,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
             context,
             PageRouteBuilder(
               pageBuilder: (_, __, ___) =>
-                  widget.receivedMessage! ? MessageReceivedResponseView(
+                  widget.receivedMessage! == true ? MessageReceivedResponseView(
                       userIdOriginalMessage: widget.message.userId,
                       collectionReference: widget.collectionReference,
                       originalMessageId: widget.message.id,
