@@ -133,7 +133,7 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
               return const Text("User can receive message");
             } else {
               // Return an empty container as we're navigating to a new screen
-              return Container();
+              return _buildMessageReceivedList(themeProvider);
             }
           }
         }

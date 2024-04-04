@@ -22,7 +22,7 @@ class MessageCardReceived extends StatelessWidget {
     return AnimatedCartoonContainer(
       collectionReference: 'random',
       message: message,
-      isLiked: false, // todo: change this
+      isLiked: true, // todo: change this
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: Card(
@@ -53,38 +53,6 @@ class MessageCardReceived extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTrailingWidget() {
-    if (message.likes == 0) {
-      return Icon(
-        Icons.thumb_up_alt_outlined,
-        color: Colors.grey.shade200,
-        size: 20,
-      );
-    }
-    if (message.likes == 1) {
-      return Icon(Icons.thumb_up_alt_rounded,
-          color: Colors.grey.shade200, size: 20);
-    }
-    if (message.likes == 2) {
-      return Icon(Icons.thumb_down, color: Colors.grey.shade200, size: 20);
-    }
-    return const SizedBox();
-  }
-
-  Widget _buildTrailingLikesWidget() {
-    return Text(
-      Utils.formatNumber(message.likes),
-      style: const TextStyle(
-        fontFamily: 'nunito',
-        color: Colors.white,
-        fontSize: 14,
-        fontVariations: [
-          FontVariation('wght', 800),
-        ],
       ),
     );
   }

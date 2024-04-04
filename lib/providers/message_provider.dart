@@ -124,7 +124,7 @@ class MessageProvider with ChangeNotifier {
         booleanField: FieldValue.increment(1),
         "rank": FieldValue.increment(_commentType)
       });
-      // create comment in trending
+      // create comment in trending or random collection
       await _db
           .collection(_country)
           .doc(_collectionReference)
@@ -140,7 +140,9 @@ class MessageProvider with ChangeNotifier {
           .doc("users")
           .collection("users-active")
           .doc(_userId)
-          .collection("messages-comments")
+          .collection("messages-received")
+          .doc(_originalMessage)
+          .collection("comments")
           .doc(messageId)
           .set(message
               .toJson()); // Use set instead of add to specify the document ID
@@ -434,12 +436,17 @@ class MessageProvider with ChangeNotifier {
     // we can call this once per week:
     String currentWeek = Utils.getCurrentWeekYearFormat();
     // Check if the backup collection exists
-    QuerySnapshot _backupCollection = await _db.collection("IT").doc(currentWeek).collection("messages").limit(1).get();
+    QuerySnapshot _backupCollection = await _db
+        .collection("IT")
+        .doc(currentWeek)
+        .collection("messages")
+        .limit(1)
+        .get();
     if (_backupCollection.docs.isNotEmpty) {
       print("Backup collection exists, aborting operation.");
       return;
     }
-    
+
     String _country = Utils.getUserCountry();
     await copyCollectionTrending(_country);
 

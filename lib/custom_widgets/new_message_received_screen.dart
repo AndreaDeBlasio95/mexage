@@ -29,17 +29,6 @@ class _NewMessageReceivedScreenState extends State<NewMessageReceivedScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.1,
                 ),
-                const Text("Tap the Bottle!", style: TextStyle(
-                  fontFamily: 'nunito',
-                  color: Color(0xFF141F23),
-                  fontSize: 22,
-                  fontVariations: [
-                    FontVariation('wght', 700),
-                  ],
-                ),),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                ),
                 RiveAnimationBottle(userId: widget.userId),
               ],
             ),

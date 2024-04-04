@@ -263,9 +263,9 @@ class _MessageViewState extends State<MessageView>
                                                         vertical: 8,
                                                         horizontal: 16),
                                                 child: Text(
-                                                  'Submit',
+                                                  'Reply',
                                                   style: widget
-                                                      .themeProvider.tTextCard, textAlign: TextAlign.center,
+                                                      .themeProvider.tTextCardWhite, textAlign: TextAlign.center,
                                                 )),
                                             callbackFunction: () async {
                                               await addCommentCallback(true);

@@ -31,6 +31,7 @@ class CustomThemes with ChangeNotifier {
   Color cTextCommentBold = Colors.black;
   Color cTextUsername = Colors.black;
   Color cTextCard = Colors.black;
+  Color cTextCardWhite = Colors.black;
   Color cTextTag = Colors.black;
   Color cCardColorToOpen =Colors.black;
   Color cCardColorToOpened =Colors.black;
@@ -130,6 +131,11 @@ class CustomThemes with ChangeNotifier {
     color: Colors.white,
     fontSize: 18,
   );
+  TextStyle tTextCardWhite = const TextStyle(
+    fontFamily: 'nunito',
+    color: Colors.white,
+    fontSize: 18,
+  );
   TextStyle tTextTag = const TextStyle(
     fontFamily: 'nunito',
     color: Colors.grey,
@@ -174,6 +180,7 @@ class CustomThemes with ChangeNotifier {
       cCardColorToOpenOutline = const Color(0xFFC4EAFB);
       cCardColorToOpenedOutline = const Color(0xFF0885C4);
       cTextCard = const Color(0xFF1AADF6);
+      cTextCardWhite = Colors.white;
       cTextTag = const Color(0xFF454F54);
       cTextDrawer = const Color(0xFF4b4b4b);
     } else if (value == 1) {
@@ -204,6 +211,7 @@ class CustomThemes with ChangeNotifier {
       cCardColorToOpenOutline = const Color(0xFF495662);
       cCardColorToOpenedOutline = const Color(0xFF4E3FF3);
       cTextCard = const Color(0xFF093247);
+      cTextCardWhite = Colors.white;
       cTextTag = const Color(0xFF212F37);
       cTextDrawer = Colors.grey.shade200;
     }
@@ -348,6 +356,14 @@ class CustomThemes with ChangeNotifier {
       fontSize: 16,
       fontVariations: const [
         FontVariation('wght', 700),
+      ],
+    );
+    tTextCardWhite = TextStyle(
+      fontFamily: 'nunito',
+      color: cTextCardWhite,
+      fontSize: 16,
+      fontVariations: const [
+        FontVariation('wght', 800),
       ],
     );
     tTextTag = TextStyle(

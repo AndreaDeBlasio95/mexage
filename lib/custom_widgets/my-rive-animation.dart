@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:mexage/models/message_model.dart';
@@ -13,14 +15,14 @@ class RiveAnimationBottle extends StatefulWidget {
   const RiveAnimationBottle({super.key, required this.userId});
 
   @override
-  State<RiveAnimationBottle> createState() =>
-      _RiveAnimationBottleState();
+  State<RiveAnimationBottle> createState() => _RiveAnimationBottleState();
 }
 
 class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
   late SimpleAnimation _controller;
   int _animationIndex = 0; // Track the current animation index
-  bool _isAnimationComplete = true; // Track if the current animation is complete
+  bool _isAnimationComplete =
+      true; // Track if the current animation is complete
 
   @override
   void initState() {
@@ -75,7 +77,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
             _controller = SimpleAnimation('4 - Open Parchment');
             break;
           case 8:
-          /*
+            /*
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => MessageView(userIdOriginalMessage: userIdOriginalMessage, collectionReference: collectionReference, message: message, themeProvider: themeProvider, originalMessageId: originalMessageId, isLiked: isLiked, userId: userId),
             ));
@@ -100,25 +102,48 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggleAnimation, // Change animation on tap
-      child: Stack(
-        children: [
-          _animationIndex < 8 ? Container(
-            height: 400,
-            width: 400,
-            child: RiveAnimation.asset(
-              "animations/animation.riv",
-              artboard: 'New Artboard',
-              controllers: [_controller], // Provide the current controller
-              fit: BoxFit.fitWidth,
+      child: _animationIndex < 8
+          ? Column(
+              children: [
+                const Text(
+                  "Tap the Bottle!",
+                  style: TextStyle(
+                    fontFamily: 'nunito',
+                    color: Color(0xFF141F23),
+                    fontSize: 22,
+                    fontVariations: [
+                      FontVariation('wght', 700),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                Container(
+                  height: 400,
+                  width: 400,
+                  child: RiveAnimation.asset(
+                    "animations/animation.riv",
+                    artboard: 'New Artboard',
+                    controllers: [
+                      _controller
+                    ], // Provide the current controller
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              children: [
+                _buildGetNextMessage(),
+              ],
             ),
-          ) : _buildGetNextMessage(),
-        ],
-      ),
     );
   }
 
   Widget _buildGetNextMessage() {
-    final messageProvider = Provider.of<MessageProvider>(context, listen: false);
+    final messageProvider =
+        Provider.of<MessageProvider>(context, listen: false);
 
     return FutureBuilder<Message?>(
       future: messageProvider.getNextMessage(widget.userId, 0, null),
@@ -140,7 +165,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
               return Text('Message received: ${message.content}');
             } else {
               // Handle case where no message is received
-              return Text('No message received');
+              return const Text('No message received');
             }
           }
         }
