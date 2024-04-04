@@ -51,7 +51,9 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
       setState(() {
         _isAnimationComplete = false; // Reset the completion flag
         // Increment the animation index with each tap
-        _animationIndex++;
+        if (_animationIndex < 9) {
+          _animationIndex++;
+        }
 
         // Determine the animation based on the current index
         switch (_animationIndex) {
@@ -80,12 +82,16 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
             _controller = SimpleAnimation('4 - Open Parchment');
             break;
           case 8:
+            print("8");
             /*
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => MessageView(userIdOriginalMessage: userIdOriginalMessage, collectionReference: collectionReference, message: message, themeProvider: themeProvider, originalMessageId: originalMessageId, isLiked: isLiked, userId: userId),
             ));
 
              */
+            break;
+          case 9:
+            print("9");
             break;
         }
 
@@ -103,40 +109,40 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _toggleAnimation, // Change animation on tap
-      child: _animationIndex < 8
-          ? Column(
-              children: [
-                const Text(
-                  "Tap the Bottle!",
-                  style: TextStyle(
-                    fontFamily: 'nunito',
-                    color: Color(0xFF141F23),
-                    fontSize: 22,
-                    fontVariations: [
-                      FontVariation('wght', 700),
-                    ],
+    return (_animationIndex >=8 && !_isAnimationComplete)
+          ? Container(child: _buildGetNextMessage())
+          : GestureDetector(
+              onTap: _toggleAnimation, // Change animation on tap
+              child: Column(
+                children: [
+                  const Text(
+                    "Tap the Bottle!",
+                    style: TextStyle(
+                      fontFamily: 'nunito',
+                      color: Color(0xFF141F23),
+                      fontSize: 22,
+                      fontVariations: [
+                        FontVariation('wght', 700),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                ),
-                Container(
-                  height: 400,
-                  width: 400,
-                  child: RiveAnimation.asset(
-                    "animations/animation.riv",
-                    artboard: 'New Artboard',
-                    controllers: [
-                      _controller
-                    ], // Provide the current controller
-                    fit: BoxFit.fitWidth,
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
                   ),
-                ),
-              ],
-            )
-          : _buildGetNextMessage(),
+                  Container(
+                    height: 400,
+                    width: 400,
+                    child: RiveAnimation.asset(
+                      "animations/animation.riv",
+                      artboard: 'New Artboard',
+                      controllers: [
+                        _controller
+                      ], // Provide the current controller
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                ],
+              ),
     );
   }
 

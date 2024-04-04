@@ -15,20 +15,15 @@ class NewMessageReceivedScreen extends StatefulWidget {
 }
 
 class _NewMessageReceivedScreenState extends State<NewMessageReceivedScreen> {
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
 
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
-      child: Scaffold(
-        body: Container(
-          padding: const EdgeInsets.all(16),
-          child: RiveAnimationBottle(userId: widget.userId),
-        ),
+    return Scaffold(
+      body: Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+        padding: const EdgeInsets.all(16),
+        child: RiveAnimationBottle(userId: widget.userId),
       ),
     );
   }

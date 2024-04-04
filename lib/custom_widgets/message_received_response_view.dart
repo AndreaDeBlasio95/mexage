@@ -66,14 +66,17 @@ class _MessageReceivedResponseViewState
     return WillPopScope(
       onWillPop: () async {
         // When navigating back, toggle the flag to call the function
-        Provider.of<MessageProvider>(context, listen: false).refreshData(
-            widget.originalMessageId, signInProvider.currentUser!.uid);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeView(initialIndex: 2), // Setting initial index to 2
-          ),
-        );
+        if (!widget.isLiked) {
+          Provider.of<MessageProvider>(context, listen: false).refreshData(
+              widget.originalMessageId, signInProvider.currentUser!.uid);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+              const HomeView(initialIndex: 2), // Setting initial index to 2
+            ),
+          );
+        }
         return true; // Return true to allow pop
       },
       child: Scaffold(
