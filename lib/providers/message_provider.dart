@@ -151,22 +151,22 @@ class MessageProvider with ChangeNotifier {
       // ------------------------------------------------
       // UPDATING USER RECEIVER COMMENT
       // create comment in user
-      await _db
-          .collection(_country)
-          .doc("users")
-          .collection("users-active")
-          .doc(_userId)
-          .collection("messages-received")
-          .doc(_originalMessage)
-          .collection("comments")
-          .doc(messageId)
-          .set(message
-              .toJson()); // Use set instead of add to specify the document ID
+      if (_collectionReference == "random") {
+        await _db
+            .collection(_country)
+            .doc("users")
+            .collection("users-active")
+            .doc(_userId)
+            .collection("messages-received")
+            .doc(_originalMessage)
+            .collection("comments")
+            .doc(messageId)
+            .set(message
+            .toJson()); // Use set instead of add to specify the document ID
+      }
       // ------------------------------------------------
       // UPDATING TRENDING COLLECTION
       // Only if the addComment is from trending -------------------------------
-      if (_collectionReference == "trending") {
-        // update a collection to know if the user has commented on the message
         await _db
             .collection(_country)
             .doc("users")
@@ -179,7 +179,6 @@ class MessageProvider with ChangeNotifier {
             _userId, "timestampLastSentMessage", Timestamp.now());
         await updateSingleValueInUserDocument(
             _userId, "messagesSent", FieldValue.increment(1));
-      }
     } catch (e) {
       print("Error adding message: $e");
     }
@@ -242,6 +241,33 @@ class MessageProvider with ChangeNotifier {
     return querySnapshot.docs;
   }
 
+  Future<List<DocumentSnapshot>> fetchCommentsMessageSent(
+      String _originalMessageId, String _userId,
+      {DocumentSnapshot? startAfter}) async {
+    String _country = Utils.getUserCountry();
+    Query query = _db
+        .collection(_country)
+        .doc("users")
+        .collection("users-active")
+        .doc(_userId).collection("messages-sent").doc(_originalMessageId)
+        .collection("comments")
+        .orderBy('timestamp', descending: true)
+        .limit(10);
+
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+
+    QuerySnapshot querySnapshot = await query.get();
+
+    // Check if the comments collection exists
+    if (querySnapshot.docs.isEmpty) {
+      print("comments collection doesn't exist or is empty");
+      return [];
+    }
+
+    return querySnapshot.docs;
+  }
   // Receive the message
   Future<Message?> getNextMessage(
       String userId, int limitIteration, DocumentSnapshot? lastDocument) async {

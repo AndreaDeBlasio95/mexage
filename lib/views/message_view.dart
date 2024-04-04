@@ -9,6 +9,7 @@ import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
 
 class MessageView extends StatefulWidget {
+  final int type; // 1 = Sent, 2 = Received, 3 = Board
   final String userIdOriginalMessage;
   final String collectionReference; // random or trending
   final String originalMessageId;
@@ -19,6 +20,7 @@ class MessageView extends StatefulWidget {
 
   const MessageView({
     super.key,
+    required this.type,
     required this.userIdOriginalMessage,
     required this.collectionReference,
     required this.message,
@@ -293,6 +295,7 @@ class _MessageViewState extends State<MessageView>
                                       )
                                     : Container()
                                 : CommentsView(
+                              type: widget.type,
                                     originalMessageId: widget.originalMessageId,
                                     userId: widget.userId,
                                     themeProvider: widget.themeProvider),
@@ -321,6 +324,7 @@ class _MessageViewState extends State<MessageView>
   }
 
   Widget _buildMessageViewWithoutInteraction() {
+    print('buildMessageViewWithoutInteraction');
     return Column(
       children: [
         Container(
@@ -331,6 +335,7 @@ class _MessageViewState extends State<MessageView>
         ),
         const SizedBox(height: 32),
         CommentsView(
+          type: widget.type,
             originalMessageId: widget.originalMessageId,
             userId: widget.userId,
             themeProvider: widget.themeProvider),

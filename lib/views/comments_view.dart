@@ -7,12 +7,14 @@ import '../providers/message_provider.dart';
 import '../theme/custom_themes.dart';
 
 class CommentsView extends StatefulWidget {
+  final int type; // 1 = Sent, 2 = Received, 3 = Board
   final String originalMessageId;
   final String userId;
   final CustomThemes themeProvider;
 
   const CommentsView(
       {super.key,
+      required this.type,
       required this.originalMessageId,
       required this.userId,
       required this.themeProvider});
@@ -40,15 +42,28 @@ class _CommentsViewState extends State<CommentsView> {
   Future<void> _loadInitialComments() async {
     if (messageProvider == null) return;
     _isLoading = true;
-    List<DocumentSnapshot> newComments =
-        await messageProvider!.fetchCommentFromRandom(
-      widget.originalMessageId,
-      widget.userId,
-    );
-    setState(() {
-      _comments = newComments;
-      _isLoading = false;
-    });
+    if (widget.type == 2) {
+      List<DocumentSnapshot> newComments =
+      await messageProvider!.fetchCommentsMessageSent(
+        widget.originalMessageId,
+        widget.userId,
+      );
+      setState(() {
+        _comments = newComments;
+        _isLoading = false;
+      });
+    }
+    if (widget.type == 3) {
+      List<DocumentSnapshot> newComments =
+      await messageProvider!.fetchCommentsFromTrending(
+        widget.originalMessageId,
+        widget.userId,
+      );
+      setState(() {
+        _comments = newComments;
+        _isLoading = false;
+      });
+    }
   }
 
   void _loadMoreComments() async {

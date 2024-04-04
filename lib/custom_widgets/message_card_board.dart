@@ -99,6 +99,7 @@ class _MessageCardBoardState extends State<MessageCardBoard> {
             }
             return AnimatedCartoonContainer(
               collectionReference: 'trending',
+              type: 3,
               message: widget.message,
               isLiked: _messageExist,
               receivedMessage: false,

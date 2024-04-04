@@ -8,6 +8,7 @@ import '../views/message_view.dart';
 
 class AnimatedCartoonContainer extends StatefulWidget {
   final Widget child;
+  final int type; // 1 = Received, 2 = Sent, 3 = Board
   final String collectionReference;
   final Message message;
   final bool isLiked;
@@ -15,7 +16,7 @@ class AnimatedCartoonContainer extends StatefulWidget {
   final Color? colorCard;
   final Color? colorCardOutline;
 
-  const AnimatedCartoonContainer({super.key, required this.collectionReference, required this.child, required this.message, required this.isLiked, this.receivedMessage, this.colorCard, this.colorCardOutline});
+  const AnimatedCartoonContainer({super.key, required this.collectionReference, required this.type, required this.child, required this.message, required this.isLiked, this.receivedMessage, this.colorCard, this.colorCardOutline});
 
   @override
   _AnimatedCartoonContainerState createState() => _AnimatedCartoonContainerState();
@@ -28,7 +29,6 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
-
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: GestureDetector(
@@ -46,6 +46,7 @@ class _AnimatedCartoonContainerState extends State<AnimatedCartoonContainer> {
                       isLiked: widget.isLiked,
                       themeProvider: themeProvider)
                       : MessageView(
+                    type: widget.type,
                     userIdOriginalMessage: widget.message.userId,
                       collectionReference: widget.collectionReference,
                       originalMessageId: widget.message.id,

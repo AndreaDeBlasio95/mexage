@@ -18,6 +18,7 @@ class MessageCardReceived extends StatelessWidget {
 
     return AnimatedCartoonContainer(
       collectionReference: 'random',
+      type: 1,
       message: message,
       isLiked: true,
       receivedMessage: true,

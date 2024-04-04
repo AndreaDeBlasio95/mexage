@@ -122,6 +122,7 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
             return Text('Error: ${snapshot.error}');
           } else {
             bool canGetMessage = snapshot.data!;
+            print(canGetMessage);
             if (canGetMessage) {
               return _buildButtonNewMessage(themeProvider);
             } else {

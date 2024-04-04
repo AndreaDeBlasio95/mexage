@@ -19,6 +19,7 @@ class MessageCardSent extends StatelessWidget {
 
     return AnimatedCartoonContainer(
       collectionReference: 'random',
+      type: 2,
       message: message,
       receivedMessage: false,
       isLiked: false,
