@@ -298,6 +298,7 @@ class _MessageViewState extends State<MessageView>
                               type: widget.type,
                                     originalMessageId: widget.originalMessageId,
                                     userId: widget.userId,
+                                    originalUserId: widget.userIdOriginalMessage,
                                     themeProvider: widget.themeProvider),
                             const SizedBox(height: 36),
                           ],
@@ -338,6 +339,7 @@ class _MessageViewState extends State<MessageView>
           type: widget.type,
             originalMessageId: widget.originalMessageId,
             userId: widget.userId,
+            originalUserId: widget.userIdOriginalMessage,
             themeProvider: widget.themeProvider),
       ],
     );

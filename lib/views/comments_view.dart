@@ -10,6 +10,7 @@ class CommentsView extends StatefulWidget {
   final int type; // 1 = Sent, 2 = Received, 3 = Board
   final String originalMessageId;
   final String userId;
+  final String originalUserId;
   final CustomThemes themeProvider;
 
   const CommentsView(
@@ -17,6 +18,7 @@ class CommentsView extends StatefulWidget {
       required this.type,
       required this.originalMessageId,
       required this.userId,
+      required this.originalUserId,
       required this.themeProvider});
 
   @override
@@ -57,6 +59,7 @@ class _CommentsViewState extends State<CommentsView> {
       List<DocumentSnapshot> newComments =
       await messageProvider!.fetchCommentsFromTrending(
         widget.originalMessageId,
+        widget.originalUserId,
         widget.userId,
       );
       setState(() {
@@ -70,7 +73,7 @@ class _CommentsViewState extends State<CommentsView> {
     if (_isLoading || !_hasMore) return;
     _isLoading = true;
     List<DocumentSnapshot> newComments = await messageProvider!
-        .fetchCommentsFromTrending(widget.originalMessageId, widget.userId,
+        .fetchCommentsFromTrending(widget.originalMessageId, widget.originalUserId, widget.userId,
             startAfter: _comments.last);
     setState(() {
       _comments.addAll(newComments);

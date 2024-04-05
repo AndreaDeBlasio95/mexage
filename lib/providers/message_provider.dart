@@ -185,17 +185,16 @@ class MessageProvider with ChangeNotifier {
   }
 
   Future<List<DocumentSnapshot>> fetchCommentsFromTrending(
-      String _originalMessageId, String _userId,
+      String _originalMessageId, String _originalUserId, String _userId,
       {DocumentSnapshot? startAfter}) async {
     String _country = Utils.getUserCountry();
     Query query = _db
         .collection(_country)
-        .doc("trending")
-        .collection("messages")
-        .doc(_originalMessageId)
+        .doc("users")
+        .collection("users-active")
+        .doc(_originalUserId).collection("messages-sent").doc(_originalMessageId)
         .collection("comments")
-        .orderBy("likes", descending: true)
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .limit(10);
 
     if (startAfter != null) {

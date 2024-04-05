@@ -55,7 +55,7 @@ class _CommentReceivedViewState extends State<CommentReceivedView> {
     if (_isLoading || !_hasMore) return;
     _isLoading = true;
     List<DocumentSnapshot> newComments = await messageProvider!
-        .fetchCommentsFromTrending(widget.originalMessageId, widget.userId,
+        .fetchCommentsFromTrending(widget.originalMessageId, widget.originalMessageId, widget.userId,
         startAfter: _comments.last);
     setState(() {
       _comments.addAll(newComments);
