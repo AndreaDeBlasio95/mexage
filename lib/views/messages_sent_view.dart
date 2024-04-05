@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mexage/custom_widgets/animated_cartoon_container_new.dart';
-import 'package:mexage/custom_widgets/create_new_message.dart';
 import 'package:mexage/custom_widgets/message_card_sent.dart';
+import 'package:mexage/custom_widgets/message_send_screen.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -187,7 +187,13 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                   width: 70,
                 ),
                 callbackFunction: () async {
-                  await sendMessage();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MessageSendScreen(themeProvider: themeProvider),
+                    ),
+                  );
+                  //await sendMessage();
                 },
               ),
             ),

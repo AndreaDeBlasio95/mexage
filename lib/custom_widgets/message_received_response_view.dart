@@ -302,12 +302,13 @@ class _MessageReceivedResponseViewState
     return Column(
       children: [
         Container(
+          width: double.infinity,
           child: Text(
             widget.message,
             style: widget.themeProvider.tTextNormal,
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 64),
         Text("Comments", style: widget.themeProvider.tTextCommentBold,),
         const SizedBox(height: 12),
         CommentReceivedView(

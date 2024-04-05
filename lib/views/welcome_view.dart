@@ -148,11 +148,8 @@ class _WelcomeViewState extends State<WelcomeView> {
                           });
                         },
                         child: Container(
-                          margin: marginValueRegisterNow > 0
-                              ? const EdgeInsets.only(
-                                  left: 16, right: 16, bottom: 8, top: 0)
-                              : const EdgeInsets.only(
-                                  left: 16, right: 16, bottom: 8, top: 6),
+                          margin: const EdgeInsets.only(
+                                  left: 16, right: 16, bottom: 8, top: 0),
                           decoration: BoxDecoration(
                             color: const Color(0xFF1AADF6),
                             borderRadius: BorderRadius.circular(24),
@@ -160,19 +157,19 @@ class _WelcomeViewState extends State<WelcomeView> {
                               BoxShadow(
                                 color: const Color(0xFF1AADF6).withOpacity(0.2),
                                 spreadRadius: 1,
-                                blurRadius: 5,
+                                blurRadius: 10,
                                 offset: const Offset(0, 10),
                               ),
                             ],
                           ),
                           child: Container(
-                            margin: marginValueRegisterNow > 0
-                                ? const EdgeInsets.only(
-                                    left: 2, right: 2, top: 1, bottom: 6)
-                                : const EdgeInsets.only(bottom: 0),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(22),
+                              border: Border.all(
+                                color: const Color(0xFF1AADF6).withOpacity(0.2),
+                                width: 1,
+                              ),
                             ),
                             child: Card(
                               elevation: 0,
@@ -189,7 +186,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                                     style: TextStyle(
                                       fontFamily: 'nunito',
                                       color: Color(0xFF141F23),
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontVariations: [
                                         FontVariation('wght', 800),
                                       ],

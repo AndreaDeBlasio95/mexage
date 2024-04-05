@@ -325,6 +325,9 @@ class CustomThemes with ChangeNotifier {
       fontFamily: 'nunito',
       color: cTextDisabled,
       fontSize: 16,
+      fontVariations: const [
+        FontVariation('wght', 600),
+      ],
     );
     tTextSnackBar = TextStyle(
       fontFamily: 'nunito',
