@@ -294,12 +294,7 @@ class _MessageViewState extends State<MessageView>
                                         ],
                                       )
                                     : Container()
-                                : CommentsView(
-                              type: widget.type,
-                                    originalMessageId: widget.originalMessageId,
-                                    userId: widget.userId,
-                                    originalUserId: widget.userIdOriginalMessage,
-                                    themeProvider: widget.themeProvider),
+                                : _buildMessageViewCommentsAfterResponse(),
                             const SizedBox(height: 36),
                           ],
                         )
@@ -325,7 +320,6 @@ class _MessageViewState extends State<MessageView>
   }
 
   Widget _buildMessageViewWithoutInteraction() {
-    print('buildMessageViewWithoutInteraction');
     return Column(
       children: [
         Container(
@@ -335,8 +329,26 @@ class _MessageViewState extends State<MessageView>
           ),
         ),
         const SizedBox(height: 32),
+        Text("Comments", style: widget.themeProvider.tTextCommentBold,),
+        const SizedBox(height: 12),
         CommentsView(
           type: widget.type,
+            originalMessageId: widget.originalMessageId,
+            userId: widget.userId,
+            originalUserId: widget.userIdOriginalMessage,
+            themeProvider: widget.themeProvider),
+      ],
+    );
+  }
+
+  Widget _buildMessageViewCommentsAfterResponse() {
+    return Column(
+      children: [
+        const SizedBox(height: 32),
+        Text("Comments", style: widget.themeProvider.tTextCommentBold,),
+        const SizedBox(height: 12),
+        CommentsView(
+            type: widget.type,
             originalMessageId: widget.originalMessageId,
             userId: widget.userId,
             originalUserId: widget.userIdOriginalMessage,

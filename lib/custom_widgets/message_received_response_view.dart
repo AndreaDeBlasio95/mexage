@@ -308,6 +308,8 @@ class _MessageReceivedResponseViewState
           ),
         ),
         const SizedBox(height: 32),
+        Text("Comments", style: widget.themeProvider.tTextCommentBold,),
+        const SizedBox(height: 12),
         CommentReceivedView(
             originalMessageId: widget.originalMessageId,
             userId: widget.userId,

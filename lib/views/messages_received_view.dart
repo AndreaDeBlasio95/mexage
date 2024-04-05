@@ -138,20 +138,21 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
   Widget _buildButtonNewMessage(CustomThemes themeProvider) {
     return GestureDetector(
         onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => NewMessageReceivedScreen(
-                    userId: _signProvider.currentUser!.uid),
-              ));
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NewMessageReceivedScreen(
+                userId: _signProvider.currentUser!.uid),
+          ));
         },
         child: Container(
-          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: themeProvider.cCardColorToOpened,
               borderRadius: BorderRadius.circular(24),
             ),
             child: Text(
-              "New Message",
+              "New Bottle!",
               style: themeProvider.tTextCardWhite,
             )));
   }

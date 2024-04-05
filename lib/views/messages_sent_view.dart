@@ -21,6 +21,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
   late SignInProvider _signProvider;
   late UserProvider _userProvider;
   late String _userName = "";
+  late bool _canSendMessage = false;
 
   @override
   void initState() {
@@ -29,6 +30,14 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     _signProvider = Provider.of<SignInProvider>(context, listen: false);
     _userProvider = Provider.of<UserProvider>(context, listen: false);
     refreshUsername();
+    checkCanSendMessage();
+  }
+
+  Future<void> checkCanSendMessage() async {
+    final canSendMessage = await _userProvider.checkCanSendMessage(context);
+    setState(() {
+      _canSendMessage = canSendMessage;
+    });
   }
 
   Future<void> refreshUsername() async {
@@ -131,7 +140,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
               ],
             ),
           ),
-          floatingActionButton: _buildFutureCanSendMessage(themeProvider),
+          floatingActionButton: _buildFloatingActionButton(themeProvider),
         ),
       );
     });
@@ -158,45 +167,30 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     );
   }
 
-  Widget _buildFutureCanSendMessage(CustomThemes themeProvider) {
-    return _userName != ""
-        ? FutureBuilder<bool>(
-            future: _userProvider.checkCanSendMessage(context),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // Still loading
-                return Container();
-              } else if (snapshot.hasError) {
-                // If an error occurred
-                return Container();
-              } else {
-                // Data is loaded
-                final canSendMessage = snapshot.data ?? false;
-                return canSendMessage ? Container(
-                  height: 80,
-                  width: 80,
-                  child: FloatingActionButton(
-                    elevation: 10,
-                    backgroundColor: Colors.transparent,
-                    onPressed: () {
-                      // this button will not work because we use onTap on the AnimatedCartoonContainerNew
-                    },
-                    child: AnimatedCartoonContainerNew(
-                      colorCard: themeProvider.cCardColorToOpen,
-                      colorCardOutline: themeProvider.cCardColorToOpenOutline,
-                      child: Image.asset(
-                        'images/icon-parchment.png',
-                        height: 70,
-                        width: 70,
-                      ),
-                      callbackFunction: () async {
-                        await sendMessage();
-                      },
-                    ),
-                  ),
-                ) : Container();
-              }
-            },
+  Widget _buildFloatingActionButton(CustomThemes themeProvider) {
+    return _canSendMessage
+        ? Container(
+            height: 80,
+            width: 80,
+            child: FloatingActionButton(
+              elevation: 10,
+              backgroundColor: Colors.transparent,
+              onPressed: () {
+                // this button will not work because we use onTap on the AnimatedCartoonContainerNew
+              },
+              child: AnimatedCartoonContainerNew(
+                colorCard: themeProvider.cCardColorToOpen,
+                colorCardOutline: themeProvider.cCardColorToOpenOutline,
+                child: Image.asset(
+                  'images/icon-parchment.png',
+                  height: 70,
+                  width: 70,
+                ),
+                callbackFunction: () async {
+                  await sendMessage();
+                },
+              ),
+            ),
           )
         : Container();
   }
