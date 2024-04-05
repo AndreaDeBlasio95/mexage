@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:mexage/custom_widgets/message_received_response_view.dart';
 import 'package:mexage/models/message_model.dart';
-import 'package:mexage/views/message_view.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 
@@ -51,7 +50,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
       setState(() {
         _isAnimationComplete = false; // Reset the completion flag
         // Increment the animation index with each tap
-        if (_animationIndex < 9) {
+        if (_animationIndex < 8) {
           _animationIndex++;
         }
 
@@ -109,40 +108,44 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
 
   @override
   Widget build(BuildContext context) {
-    return (_animationIndex >=8 && !_isAnimationComplete)
-          ? Container(child: _buildGetNextMessage())
-          : GestureDetector(
-              onTap: _toggleAnimation, // Change animation on tap
-              child: Column(
-                children: [
-                  const Text(
-                    "Tap the Bottle!",
-                    style: TextStyle(
-                      fontFamily: 'nunito',
-                      color: Color(0xFF141F23),
-                      fontSize: 22,
-                      fontVariations: [
-                        FontVariation('wght', 700),
-                      ],
-                    ),
+    return (_animationIndex >= 8 && !_isAnimationComplete)
+        ? Container(child: _buildGetNextMessage())
+        : Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+        padding: const EdgeInsets.all(16),
+        child: GestureDetector(
+            onTap: _toggleAnimation, // Change animation on tap
+            child: Column(
+              children: [
+                const Text(
+                  "Tap the Bottle!",
+                  style: TextStyle(
+                    fontFamily: 'nunito',
+                    color: Color(0xFF141F23),
+                    fontSize: 22,
+                    fontVariations: [
+                      FontVariation('wght', 700),
+                    ],
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                Container(
+                  height: 400,
+                  width: 400,
+                  child: RiveAnimation.asset(
+                    "animations/animation.riv",
+                    artboard: 'New Artboard',
+                    controllers: [
+                      _controller
+                    ], // Provide the current controller
+                    fit: BoxFit.fitWidth,
                   ),
-                  Container(
-                    height: 400,
-                    width: 400,
-                    child: RiveAnimation.asset(
-                      "animations/animation.riv",
-                      artboard: 'New Artboard',
-                      controllers: [
-                        _controller
-                      ], // Provide the current controller
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
+            ),
+          )
     );
   }
 
@@ -166,28 +169,19 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
           } else {
             // Use the fetched message data
             Message? message = snapshot.data;
-
-            if (message != null) {
-              {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MessageReceivedResponseView(
-                      userIdOriginalMessage: message.userId,
-                      collectionReference: "random",
-                      message: message.content,
-                      themeProvider: themeProvider,
-                      originalMessageId: message.id,
-                      isLiked: false,
-                      userId: signInProvider.currentUser!.uid,
-                    ),
-                  ));
-                });
-                return Container();
-              }
-            } else {
-              // Handle case where no message is received
-              return const Text('No message received');
+            int countTap = 0;
+            if (message != null && countTap == 0) {
+              return MessageReceivedResponseView(
+                userIdOriginalMessage: message.userId,
+                collectionReference: "random",
+                message: message.content,
+                themeProvider: themeProvider,
+                originalMessageId: message.id,
+                isLiked: false,
+                userId: signInProvider.currentUser!.uid,
+              );
             }
+            return Container();
           }
         }
       },
