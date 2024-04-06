@@ -31,6 +31,14 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     _userProvider = Provider.of<UserProvider>(context, listen: false);
     refreshUsername();
     checkCanSendMessage();
+    getMessageSent(); // Add this line
+  }
+
+  Future<void> getMessageSent() async {
+    setState(() {
+      Provider.of<MessageProvider>(context)
+          .getUserMessagesSent(_signProvider.currentUser!.uid);
+    });
   }
 
   Future<void> checkCanSendMessage() async {
@@ -90,9 +98,11 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                 const SizedBox(height: 8),
                 Expanded(
                   child: FutureBuilder<List<Message>>(
-                    future: Provider.of<MessageProvider>(context)
+                    future:
+                    Provider.of<MessageProvider>(context)
                         .getUserMessagesSent(_signProvider.currentUser!.uid),
                     builder: (context, snapshot) {
+
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         // Display shimmer effect while loading
                         return _buildShimmerEffect();
@@ -190,7 +200,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MessageSendScreen(themeProvider: themeProvider),
+                      builder: (context) => MessageSendScreen(themeProvider: themeProvider, callbackFunction: getMessageSent),
                     ),
                   );
                   //await sendMessage();

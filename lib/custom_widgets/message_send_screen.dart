@@ -9,8 +9,9 @@ import 'animated_cartoon_container_new.dart';
 
 class MessageSendScreen extends StatefulWidget {
   final CustomThemes themeProvider;
+  final Function callbackFunction; // Add this line
 
-  const MessageSendScreen({Key? key, required this.themeProvider}) : super(key: key);
+  const MessageSendScreen({Key? key, required this.themeProvider, required this.callbackFunction}) : super(key: key);
 
   @override
   State<MessageSendScreen> createState() => _MessageSendScreenState();
@@ -20,6 +21,7 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
   late TextEditingController _textEditingController;
   bool _isComposing = false;
   late bool _canSendMessage = false;
+  bool _messageSent = false;
 
   @override
   void initState() {
@@ -59,6 +61,7 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
   }
 
   Future<void> sendMessage() async {
+    _messageSent = true;
     closeKeyboard();
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     final messageProvider =
@@ -81,7 +84,9 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
     return WillPopScope(
       onWillPop: () async {
         // When navigating back, toggle the flag to call the function
-        Provider.of<UserProvider>(context, listen: false).checkCanSendMessage(context);
+        if (_messageSent) {
+          widget.callbackFunction();
+        }
         return true; // Return true to allow pop
       },
       child: Scaffold(
