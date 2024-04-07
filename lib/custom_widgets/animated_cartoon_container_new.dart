@@ -19,6 +19,14 @@ class _AnimatedCartoonContainerNewState extends State<AnimatedCartoonContainerNe
   final double _shadowSize = 6.0;
   bool _isButtonActive = true; // State variable to track button activity
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);

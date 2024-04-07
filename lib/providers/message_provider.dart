@@ -175,8 +175,8 @@ class MessageProvider with ChangeNotifier {
             .collection("messages-comments-board")
             .doc(_originalMessage)
             .set({'commented': true});
-        await updateSingleValueInUserDocument(
-            _userId, "timestampLastSentMessage", Timestamp.now());
+        //await updateSingleValueInUserDocument(
+      //    _userId, "timestampLastSentMessage", Timestamp.now());
         await updateSingleValueInUserDocument(
             _userId, "messagesSent", FieldValue.increment(1));
     } catch (e) {

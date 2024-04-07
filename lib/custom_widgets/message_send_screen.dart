@@ -83,10 +83,6 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // When navigating back, toggle the flag to call the function
-        if (_messageSent) {
-          widget.callbackFunction();
-        }
         return true; // Return true to allow pop
       },
       child: Scaffold(
@@ -125,6 +121,7 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
                   if (_isComposing && _canSendMessage) {
                     _canSendMessage = false;
                     await sendMessage();
+                    widget.callbackFunction(); // Call the function
                     if (mounted){
                       Navigator.pop(context);
                     }

@@ -22,6 +22,9 @@ class _MessagesSentViewState extends State<MessagesSentView> {
   late UserProvider _userProvider;
   late String _userName = "";
   late bool _canSendMessage = false;
+  Future<List<Message>> _messagesFuture = Future.value([]); // Initialize with an empty list
+  int countDisableSendMessageCallback = 0;
+  bool resetCanBePressed = false;
 
   @override
   void initState() {
@@ -31,20 +34,46 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     _userProvider = Provider.of<UserProvider>(context, listen: false);
     refreshUsername();
     checkCanSendMessage();
-    getMessageSent(); // Add this line
+    _messagesFuture = getMessageSent();
   }
 
-  Future<void> getMessageSent() async {
-    setState(() {
-      Provider.of<MessageProvider>(context)
+  Future<List<Message>> getMessageSent() async {
+    print(_messagesFuture);
+    countDisableSendMessageCallback ++;
+    print(countDisableSendMessageCallback);
+    try {
+      final messages = await Provider.of<MessageProvider>(context, listen: false)
           .getUserMessagesSent(_signProvider.currentUser!.uid);
-    });
+
+      if (messages != null && messages is List<Message>) {
+        setState(() {
+          _messagesFuture = Future.value(messages);
+        });
+        return messages;
+      } else {
+        // Return an empty list if messages is null or not a List<Message>
+        print('Received unexpected data format for messages: $messages');
+        setState(() {
+          _messagesFuture = Future.value([]); // Update _messagesFuture with an empty list
+        });
+        return []; // Return an empty list
+      }
+    } catch (error) {
+      print('Error fetching messages: $error');
+      throw error;
+    }
   }
 
   Future<void> checkCanSendMessage() async {
     final canSendMessage = await _userProvider.checkCanSendMessage(context);
     setState(() {
       _canSendMessage = canSendMessage;
+    });
+  }
+
+  void resetCanBePressedButton () {
+    setState(() {
+      resetCanBePressed = true;
     });
   }
 
@@ -98,9 +127,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
                 const SizedBox(height: 8),
                 Expanded(
                   child: FutureBuilder<List<Message>>(
-                    future:
-                    Provider.of<MessageProvider>(context)
-                        .getUserMessagesSent(_signProvider.currentUser!.uid),
+                    future: _messagesFuture, // Step 2: Use the future variable
                     builder: (context, snapshot) {
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -178,7 +205,7 @@ class _MessagesSentViewState extends State<MessagesSentView> {
   }
 
   Widget _buildFloatingActionButton(CustomThemes themeProvider) {
-    return _canSendMessage
+    return _canSendMessage && countDisableSendMessageCallback <= 1
         ? Container(
             height: 80,
             width: 80,

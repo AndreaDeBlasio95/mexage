@@ -3,6 +3,7 @@ import 'package:mexage/custom_widgets/message_card_received.dart';
 import 'package:mexage/custom_widgets/bottle_message.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import '../custom_widgets/animated_cartoon_container_new.dart';
 import '../custom_widgets/new_message_received_screen.dart';
 import '../models/message_model.dart';
 import '../providers/message_provider.dart';
@@ -137,24 +138,40 @@ class _MessagesReceivedViewState extends State<MessagesReceivedView> {
 
   Widget _buildButtonNewMessage(CustomThemes themeProvider) {
     return GestureDetector(
-        onTap: () {
+      onTap: () {
+        /*
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => NewMessageReceivedScreen(
                 userId: _signProvider.currentUser!.uid),
           ));
-        },
-        child: Container(
-            margin:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: themeProvider.cCardColorToOpened,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Text(
-              "New Bottle!",
-              style: themeProvider.tTextCardWhite,
-            )));
+           */
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.15, vertical: MediaQuery.of(context).size.height * 0.3),
+        child: AnimatedCartoonContainerNew(
+          colorCard: themeProvider.cCardColorToOpen,
+          colorCardOutline: themeProvider.cCardColorToOpenOutline,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'images/icon-parchment.png',
+                height: 42,
+                width: 42,
+              ),
+              const SizedBox(width: 12),
+              Text("New Bottle!", style: themeProvider.tTextCard,),
+            ],
+          ),
+          callbackFunction: () async {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => NewMessageReceivedScreen(
+                  userId: _signProvider.currentUser!.uid),
+            ));
+          },
+        ),
+      ),
+    );
   }
 
   Widget _buildMessageReceivedList(CustomThemes themeProvider) {
