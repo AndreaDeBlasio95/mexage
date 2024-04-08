@@ -12,6 +12,7 @@ import 'package:mexage/views/onboarding_view.dart';
 import 'package:mexage/views/welcome_view.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'custom_widgets/loading_shared_prefs_view.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -38,8 +39,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/onboard': (context) => OnboardingView(), // Replace SecondPage with the name of your second page widget
         '/login': (context) => const WelcomeView(), // Replace SecondPage with the name of your second page widget
-        '/home': (context) => HomeView(initialIndex: 1,), // Replace SecondPage with the name of your second page widget
-        '/received': (context) => MessagesReceivedView(), // Replace SecondPage with the name of your second page widget
+        '/home': (context) => const HomeView(initialIndex: 1,), // Replace SecondPage with the name of your second page widget
+        '/received': (context) => const MessagesReceivedView(), // Replace SecondPage with the name of your second page widget
         '/privacy-policy': (context) => SecurityView(), // Replace SecondPage with the name of your second page widget
       },
       title: 'SeaBottle',
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: OnboardingView(),
+      home: const LoadingSharedPrefsView(),
     );
   }
 }

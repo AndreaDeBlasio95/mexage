@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 import '../theme/custom_themes.dart';
 
@@ -21,11 +22,15 @@ class _WelcomeViewState extends State<WelcomeView> {
   int themeColorSelected = 0; // 0 for light, 1 for dark
   double marginValueOpenBottle = 6;
   double marginValueRegisterNow = 6;
+  // animation
+  late SimpleAnimation _controller;
+  int _animationIndex = 0; // Track the current animation index
 
   @override
   void initState() {
     super.initState();
     isUserLogged();
+    _controller = SimpleAnimation('1 - Idle');
   }
 
   Future<void> isUserLogged() async {
@@ -62,6 +67,11 @@ class _WelcomeViewState extends State<WelcomeView> {
     }
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   // end theme ---
   @override
   Widget build(BuildContext context) {
@@ -83,17 +93,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                      ),
-                      Container(
-                        child: Image.asset(
-                          'images/icon-sea-bottle.png',
-                          height: 200,
-                          width: 200,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
+                      Container(height: MediaQuery.of(context).size.height * 0.1,),
                       const Text(
                         'SeaBottle',
                         style: TextStyle(
@@ -120,16 +120,24 @@ class _WelcomeViewState extends State<WelcomeView> {
                         ),
                       ),
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.13,
+                        height: 300,
+                        width: 350,
+                        child: RiveAnimation.asset(
+                          "animations/animation.riv",
+                          artboard: 'New Artboard',
+                          controllers: [
+                            _controller
+                          ], // Provide the current controller
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
-                      const SizedBox(height: 8),
                       // Sign In With Google -----
                       GestureDetector(
                         onTap: () async {
                           marginValueRegisterNow = 0;
                           User? _user = await _signInProvider.handleSignIn();
                           UserProvider _userProvider =
-                              Provider.of<UserProvider>(context, listen: false);
+                          Provider.of<UserProvider>(context, listen: false);
                           if (_user != null) {
                             _userProvider.registerOrGetUser(context);
                           }
@@ -149,7 +157,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                         },
                         child: Container(
                           margin: const EdgeInsets.only(
-                                  left: 16, right: 16, bottom: 8, top: 0),
+                              left: 16, right: 16, bottom: 8, top: 0),
                           decoration: BoxDecoration(
                             color: const Color(0xFF1AADF6),
                             borderRadius: BorderRadius.circular(24),

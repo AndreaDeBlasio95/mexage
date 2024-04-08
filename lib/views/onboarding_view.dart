@@ -33,7 +33,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   @override
   void initState() {
     super.initState();
-    loadSharedPrefs();
+    //loadSharedPrefs();
   }
 
   void loadSharedPrefs() async {
