@@ -131,6 +131,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                           fit: BoxFit.fitWidth,
                         ),
                       ),
+                      Container(height: MediaQuery.of(context).size.height * 0.15,),
                       // Sign In With Google -----
                       GestureDetector(
                         onTap: () async {
