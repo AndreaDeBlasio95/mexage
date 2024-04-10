@@ -12,6 +12,7 @@ class Message {
   int dislikes;
   bool isComment;
   String originalMessageId;
+  //int dailyCounter;
   final Timestamp timestamp;
 
   Message({

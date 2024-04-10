@@ -155,7 +155,7 @@ class UserProvider extends ChangeNotifier {
       messagesSent: 0,
       accountStatus: 0,
       timestampLastReceivedMessage: Utils.yesterdayTimestamp(Timestamp.now()),
-      timestampLastSentMessage: Timestamp.now(),
+      timestampLastSentMessage: Utils.yesterdayTimestamp(Timestamp.now()),
     );
     return newUser;
   }

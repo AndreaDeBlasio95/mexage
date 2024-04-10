@@ -2,14 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:mexage/custom_widgets/animated_cartoon_container_new.dart';
 import 'package:mexage/custom_widgets/message_received_response_view.dart';
 import 'package:mexage/models/message_model.dart';
 import 'package:provider/provider.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as Rive;
 
 import '../providers/message_provider.dart';
 import '../providers/sign_in_provider.dart';
 import '../theme/custom_themes.dart';
+import '../views/home_view.dart';
 
 class RiveAnimationBottle extends StatefulWidget {
   final String userId;
@@ -21,7 +23,7 @@ class RiveAnimationBottle extends StatefulWidget {
 }
 
 class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
-  late SimpleAnimation _controller;
+  late Rive.SimpleAnimation _controller;
   int _animationIndex = 0; // Track the current animation index
   bool _isAnimationComplete =
       true; // Track if the current animation is complete
@@ -30,7 +32,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
   void initState() {
     super.initState();
     // Initialize with the first animation
-    _controller = SimpleAnimation('1 - Idle');
+    _controller = Rive.SimpleAnimation('1 - Idle');
     _controller.isActiveChanged.addListener(_checkAnimationComplete);
   }
 
@@ -57,28 +59,28 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
         // Determine the animation based on the current index
         switch (_animationIndex) {
           case 0:
-            _controller = SimpleAnimation('1 - Idle');
+            _controller = Rive.SimpleAnimation('1 - Idle');
             break;
           case 1:
-            _controller = SimpleAnimation('2 - Solo Bottle');
+            _controller = Rive.SimpleAnimation('2 - Solo Bottle');
             break;
           case 2:
-            _controller = SimpleAnimation('3-1 - Open Bottle');
+            _controller = Rive.SimpleAnimation('3-1 - Open Bottle');
             break;
           case 3:
-            _controller = SimpleAnimation('3-2 - Open Bottle');
+            _controller = Rive.SimpleAnimation('3-2 - Open Bottle');
             break;
           case 4:
-            _controller = SimpleAnimation('3-3 - Open Bottle');
+            _controller = Rive.SimpleAnimation('3-3 - Open Bottle');
             break;
           case 5:
-            _controller = SimpleAnimation('3-4 - Open Bottle');
+            _controller = Rive.SimpleAnimation('3-4 - Open Bottle');
             break;
           case 6:
-            _controller = SimpleAnimation('3-5 - Open Bottle');
+            _controller = Rive.SimpleAnimation('3-5 - Open Bottle');
             break;
           case 7:
-            _controller = SimpleAnimation('4 - Open Parchment');
+            _controller = Rive.SimpleAnimation('4 - Open Parchment');
             break;
           case 8:
             print("8");
@@ -100,6 +102,16 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
     }
   }
 
+  Future<void> _goHome() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const HomeView(initialIndex: 2), // Setting initial index to 2
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _controller.isActiveChanged.removeListener(_checkAnimationComplete);
@@ -111,42 +123,67 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
     return (_animationIndex >= 8 && !_isAnimationComplete)
         ? Container(child: _buildGetNextMessage())
         : Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
-        padding: const EdgeInsets.all(16),
-        child: GestureDetector(
-            onTap: _toggleAnimation, // Change animation on tap
-            child: Column(
-              children: [
-                const Text(
-                  "Tap the Bottle!",
-                  style: TextStyle(
-                    fontFamily: 'nunito',
-                    color: Color(0xFF141F23),
-                    fontSize: 22,
-                    fontVariations: [
-                      FontVariation('wght', 700),
-                    ],
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+            padding: const EdgeInsets.all(16),
+            child: GestureDetector(
+              onTap: _toggleAnimation, // Change animation on tap
+              child: Column(
+                children: [
+                  const Text(
+                    "Tap the Bottle!",
+                    style: TextStyle(
+                      fontFamily: 'nunito',
+                      color: Color(0xFF141F23),
+                      fontSize: 22,
+                      fontVariations: [
+                        FontVariation('wght', 700),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                ),
-                Container(
-                  height: 400,
-                  width: 400,
-                  child: RiveAnimation.asset(
-                    "animations/animation.riv",
-                    artboard: 'New Artboard',
-                    controllers: [
-                      _controller
-                    ], // Provide the current controller
-                    fit: BoxFit.fitWidth,
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
                   ),
-                ),
-              ],
-            ),
-          )
-    );
+                  Container(
+                    height: 400,
+                    width: MediaQuery.of(context).size.width,
+                    child: Stack(
+                      children: [
+                        Rive.RiveAnimation.asset(
+                          "animations/animation.riv",
+                          artboard: 'New Artboard',
+                          controllers: [
+                            _controller
+                          ], // Provide the current controller
+                          fit: BoxFit.fitWidth,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                                  Colors.white.withOpacity(1),
+                                  // You can adjust the opacity here
+                                  Colors.white.withOpacity(0),
+                                  // You can adjust the opacity here
+                                ],
+                                stops: const [0.0, 0.5],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ));
   }
 
   Widget _buildGetNextMessage() {
@@ -181,7 +218,30 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
                 userId: signInProvider.currentUser!.uid,
               );
             }
-            return Container();
+            return Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.2),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "No Messages Found!",
+                    style: themeProvider.tTextGrey,
+                  ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  AnimatedCartoonContainerNew(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        child: Text("Go Back", style: themeProvider.tTextCard,),
+                      ),
+                      callbackFunction: _goHome),
+                ],
+              ),
+            );
           }
         }
       },
