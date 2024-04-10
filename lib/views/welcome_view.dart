@@ -1,13 +1,11 @@
 import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mexage/providers/sign_in_provider.dart';
 import 'package:mexage/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:rive/rive.dart';
-
+import 'package:rive/rive.dart' as Rive;
+import 'package:flutter/material.dart';
 import '../theme/custom_themes.dart';
 
 class WelcomeView extends StatefulWidget {
@@ -22,15 +20,16 @@ class _WelcomeViewState extends State<WelcomeView> {
   int themeColorSelected = 0; // 0 for light, 1 for dark
   double marginValueOpenBottle = 6;
   double marginValueRegisterNow = 6;
+
   // animation
-  late SimpleAnimation _controller;
+  late Rive.SimpleAnimation _controller;
   int _animationIndex = 0; // Track the current animation index
 
   @override
   void initState() {
     super.initState();
     isUserLogged();
-    _controller = SimpleAnimation('1 - Idle');
+    _controller = Rive.SimpleAnimation('1 - Idle');
   }
 
   Future<void> isUserLogged() async {
@@ -72,6 +71,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     _controller.dispose();
     super.dispose();
   }
+
   // end theme ---
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,9 @@ class _WelcomeViewState extends State<WelcomeView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(height: MediaQuery.of(context).size.height * 0.1,),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                      ),
                       const Text(
                         'SeaBottle',
                         style: TextStyle(
@@ -121,24 +123,49 @@ class _WelcomeViewState extends State<WelcomeView> {
                       ),
                       Container(
                         height: 300,
-                        width: 350,
-                        child: RiveAnimation.asset(
-                          "animations/animation.riv",
-                          artboard: 'New Artboard',
-                          controllers: [
-                            _controller
-                          ], // Provide the current controller
-                          fit: BoxFit.fitWidth,
+                        width: MediaQuery.of(context).size.width,
+                        child: Stack(
+                          children: [
+                            Rive.RiveAnimation.asset(
+                              "animations/animation.riv",
+                              artboard: 'New Artboard',
+                              controllers: [
+                                _controller
+                              ], // Provide the current controller
+                              fit: BoxFit.fitWidth,
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                    colors: [
+                                      Colors.white.withOpacity(1), // You can adjust the opacity here
+                                      Colors.white.withOpacity(0), // You can adjust the opacity here
+                                    ],
+                                    stops: const [0.0, 0.3],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(height: MediaQuery.of(context).size.height * 0.15,),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                      ),
                       // Sign In With Google -----
                       GestureDetector(
                         onTap: () async {
                           marginValueRegisterNow = 0;
                           User? _user = await _signInProvider.handleSignIn();
                           UserProvider _userProvider =
-                          Provider.of<UserProvider>(context, listen: false);
+                              Provider.of<UserProvider>(context, listen: false);
                           if (_user != null) {
                             _userProvider.registerOrGetUser(context);
                           }

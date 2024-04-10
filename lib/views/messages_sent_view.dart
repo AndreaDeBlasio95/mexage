@@ -86,17 +86,6 @@ class _MessagesSentViewState extends State<MessagesSentView> {
     print(_userName);
   }
 
-  Future<void> sendMessage() async {
-    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
-    final messageProvider =
-        Provider.of<MessageProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await messageProvider.addMessage(
-        signInProvider.currentUser!.uid,
-        userProvider.userName,
-        "Message sent from 'Sent View' by ${userProvider.userName}");
-  }
-
   @override
   void dispose() {
     // Dispose any resources if necessary
