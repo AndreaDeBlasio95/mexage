@@ -39,7 +39,7 @@ class CommentCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
       decoration: BoxDecoration(
-        color: themeProvider.cCardDrawer.withOpacity(0.1),
+        color: themeProvider.cCardDrawer.withOpacity(0.8),
         borderRadius: BorderRadius.circular(16),
         border: isMyComment ? Border.all(color: randomColor, width: 1) : Border.all(color: Colors.transparent, width: 0)
       ),

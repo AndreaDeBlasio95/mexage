@@ -163,7 +163,7 @@ class CustomThemes with ChangeNotifier {
       cTextTabBar = const Color(0xFF7699D4); // vista blue
       cTextDisabled = const Color(0xFF939393); // Payne's grey
       cIcons = const Color(0xFFDCD9FC); // tropical indigo
-      cCardDrawer = const Color(0xFF54ADEF); // Argentinian blue
+      cCardDrawer = const Color(0xFFECF6FD); // Argentinian blue
       cCardDrawerShadow = const Color(0xFF329BEC);
       cTextWelcomeTitle = const Color(0xFF7D53DE); // Medium slate blue
       cTextNavigationSelected = const Color(0xFF137DCD);

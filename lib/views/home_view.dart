@@ -98,23 +98,17 @@ class _HomeViewState extends State<HomeView> {
               style: themeProvider.tTextAppBar,
             ),
             const SizedBox(width: 4),
-            themeColorSelected == 1
-                ? SizedBox(
-              height: 20,
-              width: 20,
-              child: Image.asset(
-                'images/icon-sea-bottle-2.png',
-                fit: BoxFit.fitHeight,
-                color: themeProvider.cTextTitle,
-              ),
-            )
-                : SizedBox(
-              height: 20,
-              width: 20,
-              child: Image.asset(
-                'images/icon-sea-bottle-2.png',
-                fit: BoxFit.fitHeight,
-                color: themeProvider.cTextTitle,
+            Transform.rotate(
+              angle: -0.5,
+              child: Container(
+                padding: const EdgeInsets.only(bottom: 4),
+                height: 32,
+                width: 32,
+                child: Image.asset(
+                  'images/icon-sea-bottle-128.png',
+                  fit: BoxFit.fitHeight,
+                  color: themeProvider.cTextTitle,
+                ),
               ),
             ),
             const SizedBox(width: 50),

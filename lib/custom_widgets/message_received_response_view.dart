@@ -73,7 +73,7 @@ class _MessageReceivedResponseViewState
             context,
             MaterialPageRoute(
               builder: (context) =>
-              const HomeView(initialIndex: 2), // Setting initial index to 2
+                  const HomeView(initialIndex: 2), // Setting initial index to 2
             ),
           );
         }
@@ -88,202 +88,210 @@ class _MessageReceivedResponseViewState
         ),
         body: SingleChildScrollView(
           child: Container(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 8),
-                  child: !widget.isLiked
-                      ? Column(
-                          children: [
-                            // Display the message content
-                            _isToggleAnimation
-                                ? Container(
-                                    width: double.infinity,
-                                    child: Text(
-                                      widget.message,
-                                      style: widget.themeProvider.tTextNormal,
-                                      textAlign: TextAlign.start,
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 8),
+              child: !widget.isLiked
+                  ? Column(
+                      children: [
+                        // Display the message content
+                        _isToggleAnimation
+                            ? Container(
+                                width: double.infinity,
+                                child: Text(
+                                  widget.message,
+                                  style: widget.themeProvider.tTextNormal,
+                                  textAlign: TextAlign.start,
+                                ),
+                              )
+                            : Container(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
+                                child: Text(
+                                  widget.message,
+                                  style: widget.themeProvider.tTextNormal,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                        const SizedBox(height: 32),
+                        // Display the rate message text
+                        !_isToggleAnimation
+                            ? Container(
+                                child: Text(
+                                  "Rate the message",
+                                  style: widget.themeProvider.tTextNormal,
+                                ),
+                              )
+                            : Container(),
+                        const SizedBox(height: 32),
+                        // Display the like and dislike buttons
+                        !_isSubmitted
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _isToggleAnimation
+                                      ? Container()
+                                      : GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _isToggleAnimation = true;
+                                              _isLiked = true;
+                                              // pass this into buttons: submit and skip
+                                              likeToSentToProvider = true;
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.thumb_up_alt_outlined,
+                                            color: widget
+                                                .themeProvider.cTextNormal,
+                                            size: 36,
+                                          ),
+                                        ),
+                                  _isToggleAnimation
+                                      ? Container()
+                                      : GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _isToggleAnimation = true;
+                                              _isLiked = true;
+                                              // pass this into buttons: submit and skip
+                                              likeToSentToProvider = false;
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.thumb_down_off_alt_outlined,
+                                            color: widget
+                                                .themeProvider.cTextDisabled,
+                                            size: 36,
+                                          ),
+                                        ),
+                                ],
+                              )
+                            : Container(),
+                        const SizedBox(height: 24),
+                        !_isSubmitted
+                            ? _isLiked
+                                ? TextField(
+                                    controller: _textEditingController,
+                                    decoration: InputDecoration(
+                                      hintText: 'Enter your text',
+                                      hintStyle:
+                                          widget.themeProvider.tTextDisabled,
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: widget.themeProvider
+                                                .cTextDisabled), // Underline color
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: widget.themeProvider
+                                                .cCardDrawer), // Focused underline color
+                                      ),
                                     ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _charCount = value.length;
+                                        if (_charCount > 200) {
+                                          // Limit the text to 500 characters
+                                          _textEditingController.text =
+                                              _textEditingController.text
+                                                  .substring(0, 200);
+                                          _textEditingController.selection =
+                                              const TextSelection.collapsed(
+                                                  offset: 200);
+                                          _charCount = 200;
+                                        }
+                                        if (_charCount >= 0 &&
+                                            _charCount <= 200) {
+                                          _canSubmit = true;
+                                        } else {
+                                          _canSubmit = false;
+                                        }
+                                      });
+                                    },
+                                    maxLines: null,
+                                    style: widget.themeProvider
+                                        .tTextNormal, // Text color
                                   )
-                                : Container(
-                                    width: double.infinity,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.6,
-                                    child: Text(
-                                      widget.message,
-                                      style: widget.themeProvider.tTextNormal,
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                            const SizedBox(height: 32),
-                            // Display the rate message text
-                            !_isToggleAnimation
-                                ? Container(
-                                    child: Text(
-                                      "Rate the message",
-                                      style: widget.themeProvider.tTextNormal,
-                                    ),
+                                : Container()
+                            : Container(),
+                        const SizedBox(height: 12),
+                        !_isSubmitted
+                            ? _isLiked
+                                ? Text(
+                                    'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
+                                    style: widget.themeProvider.tTextSmall,
+                                    textAlign: TextAlign.center,
                                   )
-                                : Container(),
-                            const SizedBox(height: 32),
-                            // Display the like and dislike buttons
-                            !_isSubmitted
+                                : Container()
+                            : Container(),
+                        const SizedBox(height: 12),
+                        !_isSubmitted
+                            ? _isLiked
                                 ? Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _isToggleAnimation
-                                          ? Container()
-                                          : GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _isToggleAnimation = true;
-                                                  _isLiked = true;
-                                                  // pass this into buttons: submit and skip
-                                                  likeToSentToProvider = true;
-                                                });
-                                              },
-                                              child: Icon(
-                                                Icons.thumb_up_alt_outlined,
-                                                color: widget
-                                                    .themeProvider.cTextNormal,
-                                                size: 36,
-                                              ),
-                                            ),
-                                      _isToggleAnimation
-                                          ? Container()
-                                          : GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  _isToggleAnimation = true;
-                                                  _isLiked = true;
-                                                  // pass this into buttons: submit and skip
-                                                  likeToSentToProvider = false;
-                                                });
-                                              },
-                                              child: Icon(
-                                                Icons
-                                                    .thumb_down_off_alt_outlined,
-                                                color: widget.themeProvider
-                                                    .cTextDisabled,
-                                                size: 36,
-                                              ),
-                                            ),
+                                      AnimatedCartoonContainerNew(
+                                          child: Container(
+                                              width: 120,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 8, horizontal: 16),
+                                              child: Text(
+                                                'Reply',
+                                                style: widget.themeProvider
+                                                    .tTextCardWhite,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          callbackFunction: () async {
+                                            await addCommentCallback(true);
+                                          },
+                                          colorCard: widget
+                                              .themeProvider.cCardColorToOpened,
+                                          colorCardOutline: widget.themeProvider
+                                              .cCardColorToOpenedOutline),
+                                      AnimatedCartoonContainerNew(
+                                        child: Container(
+                                            width: 120,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8, horizontal: 16),
+                                            child: Text(
+                                              'Skip',
+                                              style: widget
+                                                  .themeProvider.tTextCard,
+                                              textAlign: TextAlign.center,
+                                            )),
+                                        callbackFunction: () async {
+                                          await addCommentCallback(false);
+                                        },
+                                      ),
                                     ],
                                   )
-                                : Container(),
-                            const SizedBox(height: 24),
-                            !_isSubmitted
-                                ? _isLiked
-                                    ? TextField(
-                                        controller: _textEditingController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Enter your text',
-                                          hintStyle: widget
-                                              .themeProvider.tTextDisabled,
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: widget.themeProvider
-                                                    .cTextDisabled), // Underline color
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: widget.themeProvider
-                                                    .cCardDrawer), // Focused underline color
-                                          ),
-                                        ),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _charCount = value.length;
-                                            if (_charCount > 200) {
-                                              // Limit the text to 500 characters
-                                              _textEditingController.text =
-                                                  _textEditingController.text
-                                                      .substring(0, 200);
-                                              _textEditingController.selection =
-                                                  const TextSelection.collapsed(
-                                                      offset: 200);
-                                              _charCount = 200;
-                                            }
-                                            if (_charCount >= 0 &&
-                                                _charCount <= 200) {
-                                              _canSubmit = true;
-                                            } else {
-                                              _canSubmit = false;
-                                            }
-                                          });
-                                        },
-                                        maxLines: null,
-                                        style: widget.themeProvider
-                                            .tTextNormal, // Text color
-                                      )
-                                    : Container()
-                                : Container(),
-                            const SizedBox(height: 12),
-                            !_isSubmitted
-                                ? _isLiked
-                                    ? Text(
-                                        'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
-                                        style: widget.themeProvider.tTextSmall,
-                                        textAlign: TextAlign.center,
-                                      )
-                                    : Container()
-                                : Container(),
-                            const SizedBox(height: 12),
-                            !_isSubmitted
-                                ? _isLiked
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          AnimatedCartoonContainerNew(
-                                              child: Container(
-                                                  width: 120,
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 16),
-                                                  child: Text(
-                                                    'Reply',
-                                                    style: widget.themeProvider
-                                                        .tTextCardWhite,
-                                                    textAlign: TextAlign.center,
-                                                  )),
-                                              callbackFunction: () async {
-                                                await addCommentCallback(true);
-                                              },
-                                              colorCard: widget.themeProvider
-                                                  .cCardColorToOpened,
-                                              colorCardOutline: widget
-                                                  .themeProvider
-                                                  .cCardColorToOpenedOutline),
-                                          AnimatedCartoonContainerNew(
-                                            child: Container(
-                                                width: 120,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 8,
-                                                        horizontal: 16),
-                                                child: Text(
-                                                  'Skip',
-                                                  style: widget
-                                                      .themeProvider.tTextCard,
-                                                  textAlign: TextAlign.center,
-                                                )),
-                                            callbackFunction: () async {
-                                              await addCommentCallback(false);
-                                            },
-                                          ),
-                                        ],
-                                      )
-                                    : Container()
-                                : CommentReceivedView(
-                                    originalMessageId: widget.originalMessageId,
-                                    userId: widget.userId,
-                                    themeProvider: widget.themeProvider),
-                            const SizedBox(height: 36),
-                          ],
-                        )
-                      : Container(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 8),
-                          child: _buildMessageViewWithoutInteraction())),
+                                : Container()
+                            : Container(
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 64),
+                                    Text(
+                                      "Comments",
+                                      style: widget.themeProvider.tTextCommentBold,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    CommentReceivedView(
+                                        originalMessageId:
+                                            widget.originalMessageId,
+                                        userId: widget.userId,
+                                        themeProvider: widget.themeProvider),
+                                  ],
+                                ),
+                              ),
+                        const SizedBox(height: 36),
+                      ],
+                    )
+                  : Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 20, top: 8),
+                      child: _buildMessageViewWithoutInteraction())),
         ),
       ),
     );
@@ -309,7 +317,10 @@ class _MessageReceivedResponseViewState
           ),
         ),
         const SizedBox(height: 64),
-        Text("Comments", style: widget.themeProvider.tTextCommentBold,),
+        Text(
+          "Comments",
+          style: widget.themeProvider.tTextCommentBold,
+        ),
         const SizedBox(height: 12),
         CommentReceivedView(
             originalMessageId: widget.originalMessageId,
