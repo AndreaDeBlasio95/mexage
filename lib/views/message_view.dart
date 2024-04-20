@@ -215,25 +215,31 @@ class _MessageViewState extends State<MessageView>
                                         onChanged: (value) {
                                           setState(() {
                                             _charCount = value.length;
-                                            if (_charCount > 200) {
+                                            if (_charCount > 300) {
                                               // Limit the text to 500 characters
                                               _textEditingController.text =
                                                   _textEditingController.text
-                                                      .substring(0, 200);
+                                                      .substring(0, 300);
                                               _textEditingController.selection =
                                                   const TextSelection.collapsed(
-                                                      offset: 200);
-                                              _charCount = 200;
+                                                      offset: 300);
+                                              _charCount = 300;
                                             }
                                             if (_charCount >= 0 &&
-                                                _charCount <= 200) {
+                                                _charCount <= 300) {
                                               _canSubmit = true;
                                             } else {
                                               _canSubmit = false;
                                             }
                                           });
                                         },
+                                        keyboardType: TextInputType.multiline,
+                                        // Enable multiline
                                         maxLines: null,
+                                        // Allow unlimited number of lines
+                                        minLines: 1,
+                                        // Minimum number of lines to display
+                                        textInputAction: TextInputAction.done,
                                         style: widget.themeProvider
                                             .tTextNormal, // Text color
                                       )
@@ -243,7 +249,7 @@ class _MessageViewState extends State<MessageView>
                             !_isSubmitted
                                 ? _isLiked
                                     ? Text(
-                                        'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
+                                        'Character count: $_charCount / 300',
                                         style: widget.themeProvider.tTextSmall,
                                         textAlign: TextAlign.center,
                                       )
@@ -257,35 +263,37 @@ class _MessageViewState extends State<MessageView>
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           AnimatedCartoonContainerNew(
+                                              child: Container(
+                                                  width: 120,
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 16),
+                                                  child: Text(
+                                                    'Reply',
+                                                    style: widget.themeProvider
+                                                        .tTextCardWhite,
+                                                    textAlign: TextAlign.center,
+                                                  )),
+                                              callbackFunction: () async {
+                                                await addCommentCallback(true);
+                                              },
+                                              colorCard: widget.themeProvider
+                                                  .cCardColorToOpened,
+                                              colorCardOutline: widget
+                                                  .themeProvider
+                                                  .cCardColorToOpenedOutline),
+                                          AnimatedCartoonContainerNew(
                                             child: Container(
                                                 width: 120,
                                                 padding:
-                                                     EdgeInsets.symmetric(
+                                                    const EdgeInsets.symmetric(
                                                         vertical: 8,
                                                         horizontal: 16),
                                                 child: Text(
-                                                  'Reply',
-                                                  style: widget
-                                                      .themeProvider.tTextCardWhite, textAlign: TextAlign.center,
-                                                )),
-                                            callbackFunction: () async {
-                                              await addCommentCallback(true);
-                                            },
-                                            colorCard: widget.themeProvider
-                                                .cCardColorToOpened,
-                                            colorCardOutline: widget.themeProvider.cCardColorToOpenedOutline
-                                          ),
-                                          AnimatedCartoonContainerNew(
-                                            child: Container(
-                                              width: 120,
-                                                padding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 8,
-                                                    horizontal: 16),
-                                                child: Text(
                                                   'Skip',
                                                   style: widget
-                                                      .themeProvider.tTextCard, textAlign: TextAlign.center,
+                                                      .themeProvider.tTextCard,
+                                                  textAlign: TextAlign.center,
                                                 )),
                                             callbackFunction: () async {
                                               await addCommentCallback(false);
@@ -330,10 +338,13 @@ class _MessageViewState extends State<MessageView>
           ),
         ),
         const SizedBox(height: 64),
-        Text("Comments", style: widget.themeProvider.tTextCommentBold,),
+        Text(
+          "Comments",
+          style: widget.themeProvider.tTextCommentBold,
+        ),
         const SizedBox(height: 12),
         CommentsView(
-          type: widget.type,
+            type: widget.type,
             originalMessageId: widget.originalMessageId,
             userId: widget.userId,
             originalUserId: widget.userIdOriginalMessage,
@@ -346,7 +357,10 @@ class _MessageViewState extends State<MessageView>
     return Column(
       children: [
         const SizedBox(height: 64),
-        Text("Comments", style: widget.themeProvider.tTextCommentBold,),
+        Text(
+          "Comments",
+          style: widget.themeProvider.tTextCommentBold,
+        ),
         const SizedBox(height: 12),
         CommentsView(
             type: widget.type,

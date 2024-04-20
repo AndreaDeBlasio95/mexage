@@ -46,6 +46,8 @@ class _BoardViewState extends State<BoardView> {
                 ],
               ),
             ),
+            // TODO: here is the chat gpt api button
+
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
                 final signInProvider =
@@ -57,8 +59,8 @@ class _BoardViewState extends State<BoardView> {
                 final messageProvider =
                     Provider.of<MessageProvider>(context, listen: false);
 
-                await messageProvider.addMessage(signInProvider.currentUser!.uid,
-                    userProvider.userName, 'Message by ${userProvider.userName} - ${DateTime.now()}');
+                //await messageProvider.addMessage(signInProvider.currentUser!.uid,
+                //    userProvider.userName, 'Message by ${userProvider.userName} - ${DateTime.now()}');
 
                 await messageProvider.adminSetTopLikedMessages();
 

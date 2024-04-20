@@ -80,9 +80,11 @@ class _MessagesSentViewState extends State<MessagesSentView> {
   Future<void> refreshUsername() async {
     _userName = await _userProvider.getUserName(
         _signProvider.currentUser!.uid, context);
-    setState(() {
-      _userName = _userName;
-    });
+    if (mounted) {
+      setState(() {
+        _userName = _userName;
+      });
+    }
     print(_userName);
   }
 

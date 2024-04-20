@@ -280,13 +280,11 @@ class MessageProvider with ChangeNotifier {
         .doc('random')
         .collection('messages')
         .orderBy('timestamp')
-        .limit(1);
-
-    if (lastDocument != null) {
-      query = query.startAfterDocument(lastDocument);
-    }
+        .startAfter([lastDocument != null ? lastDocument['timestamp'] : null]) // Start after the last document's timestamp
+        .limit(1); // Limit the query to fetch only 1 document
 
     QuerySnapshot querySnapshot = await query.get();
+
 
     if (querySnapshot.docs.isEmpty) {
       return null; // No more documents to fetch
@@ -300,12 +298,7 @@ class MessageProvider with ChangeNotifier {
         await checkIfDocumentExistsInUserCollection(message.id, userId);
     print("Document exists in user's collection: $documentExists");
 
-    bool isMyMessage;
-    if (message.userId == userId) {
-      isMyMessage = true;
-    } else {
-      isMyMessage = false;
-    }
+    bool isMyMessage = message.userId == userId;
     print("It's my message: $isMyMessage");
 
     if (documentExists || isMyMessage) {

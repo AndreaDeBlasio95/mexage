@@ -37,6 +37,8 @@ class MessageReceivedResponseView extends StatefulWidget {
 class _MessageReceivedResponseViewState
     extends State<MessageReceivedResponseView> {
   final TextEditingController _textEditingController = TextEditingController();
+  FocusNode _textFieldFocusNode = FocusNode();
+
   bool _isToggleAnimation = false;
   bool _isLiked = false;
   int _charCount = 0;
@@ -49,8 +51,13 @@ class _MessageReceivedResponseViewState
   @override
   void initState() {
     super.initState();
-
+    _textFieldFocusNode.addListener(() {
+      if (_textFieldFocusNode.hasFocus) {
+        // Prevent any unwanted widget rebuilds or state changes when focus is gained
+      }
+    });
     _charCount = 0;
+    print("RECEIVING MESSAGE");
   }
 
   @override
@@ -172,6 +179,7 @@ class _MessageReceivedResponseViewState
                         !_isSubmitted
                             ? _isLiked
                                 ? TextField(
+                                    focusNode: _textFieldFocusNode,
                                     controller: _textEditingController,
                                     decoration: InputDecoration(
                                       hintText: 'Enter your text',
@@ -191,25 +199,31 @@ class _MessageReceivedResponseViewState
                                     onChanged: (value) {
                                       setState(() {
                                         _charCount = value.length;
-                                        if (_charCount > 200) {
+                                        if (_charCount > 300) {
                                           // Limit the text to 500 characters
                                           _textEditingController.text =
                                               _textEditingController.text
-                                                  .substring(0, 200);
+                                                  .substring(0, 300);
                                           _textEditingController.selection =
                                               const TextSelection.collapsed(
-                                                  offset: 200);
-                                          _charCount = 200;
+                                                  offset: 300);
+                                          _charCount = 300;
                                         }
                                         if (_charCount >= 0 &&
-                                            _charCount <= 200) {
+                                            _charCount <= 300) {
                                           _canSubmit = true;
                                         } else {
                                           _canSubmit = false;
                                         }
                                       });
                                     },
+                                    keyboardType: TextInputType.multiline,
+                                    // Enable multiline
                                     maxLines: null,
+                                    // Allow unlimited number of lines
+                                    minLines: 1,
+                                    // Minimum number of lines to display
+                                    textInputAction: TextInputAction.done,
                                     style: widget.themeProvider
                                         .tTextNormal, // Text color
                                   )
@@ -219,7 +233,7 @@ class _MessageReceivedResponseViewState
                         !_isSubmitted
                             ? _isLiked
                                 ? Text(
-                                    'Character count: $_charCount / 200 \nCharacter min: 50 - Character max: 200',
+                                    'Character count: $_charCount / 300',
                                     style: widget.themeProvider.tTextSmall,
                                     textAlign: TextAlign.center,
                                   )
@@ -274,7 +288,8 @@ class _MessageReceivedResponseViewState
                                     const SizedBox(height: 64),
                                     Text(
                                       "Comments",
-                                      style: widget.themeProvider.tTextCommentBold,
+                                      style:
+                                          widget.themeProvider.tTextCommentBold,
                                     ),
                                     const SizedBox(height: 12),
                                     CommentReceivedView(
@@ -299,11 +314,11 @@ class _MessageReceivedResponseViewState
 
   Future<void> addCommentCallback(bool _value) async {
     await addComment(_value);
-    if (mounted) {
-      setState(() {
-        _textEditingController.clear();
-      });
-    }
+    // Reset text controller and update state after comment is submitted or skipped
+    _textEditingController.clear();
+    setState(() {
+      _isSubmitted = true;
+    });
   }
 
   Widget _buildMessageViewWithoutInteraction() {
@@ -350,6 +365,8 @@ class _MessageReceivedResponseViewState
           _textEditingController.clear();
         }
       });
+      // the same as above
+      //   int _commentType = _skipOrSubmit ? (_isLiked ? 3 : 1) : (_isLiked ? 2 : 0);
       await messageProvider.addComment(
           widget.userIdOriginalMessage,
           widget.collectionReference,

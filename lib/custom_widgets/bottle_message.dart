@@ -26,7 +26,9 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
   late Rive.SimpleAnimation _controller;
   int _animationIndex = 0; // Track the current animation index
   bool _isAnimationComplete =
-      true; // Track if the current animation is complete
+  true; // Track if the current animation is complete
+  Message? _nextMessage;
+  bool _isLoading = true; // To manage loading state
 
   @override
   void initState() {
@@ -34,6 +36,33 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
     // Initialize with the first animation
     _controller = Rive.SimpleAnimation('1 - Idle');
     _controller.isActiveChanged.addListener(_checkAnimationComplete);
+    _fetchData(); // Fetch data synchronously or simulate it
+  }
+
+  Future<void> _fetchData() async {
+    // Asynchronously fetch data
+    final messageProvider = Provider.of<MessageProvider>(context, listen: false);
+    try {
+      Message? message = await messageProvider.getNextMessage(widget.userId, 0, null);
+      if (mounted) {
+        setState(() {
+          _nextMessage = message;
+          _isLoading = false; // Update loading state synchronously
+          if (_nextMessage != null) {
+            print("Message Content: ${_nextMessage!.content}");
+          } else {
+            print("No message found");
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false; // Even on error, update loading state
+          print("Failed to fetch message: $e");
+        });
+      }
+    }
   }
 
   void _checkAnimationComplete() {
@@ -91,9 +120,6 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
 
              */
             break;
-          case 9:
-            print("9");
-            break;
         }
 
         // Attach the listener to the new controller
@@ -107,7 +133,7 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            const HomeView(initialIndex: 2), // Setting initial index to 2
+        const HomeView(initialIndex: 2), // Setting initial index to 2
       ),
     );
   }
@@ -120,75 +146,88 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<CustomThemes>(context, listen: false);
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+
     return (_animationIndex >= 8 && !_isAnimationComplete)
-        ? Container(child: _buildGetNextMessage())
+        ? Container(child: _nextMessage != null ? _buildGetNextMessage(
+        _nextMessage, themeProvider, signInProvider) : _buildGoHome(themeProvider))
         : Container(
-            margin:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
-            padding: const EdgeInsets.all(16),
-            child: GestureDetector(
-              onTap: _toggleAnimation, // Change animation on tap
-              child: Column(
-                children: [
-                  const Text(
-                    "Tap the Bottle!",
-                    style: TextStyle(
-                      fontFamily: 'nunito',
-                      color: Color(0xFF141F23),
-                      fontSize: 22,
-                      fontVariations: [
-                        FontVariation('wght', 700),
-                      ],
+        margin:
+        EdgeInsets.only(top: MediaQuery
+            .of(context)
+            .size
+            .height * 0.2),
+        padding: const EdgeInsets.all(16),
+        child: GestureDetector(
+          onTap: _toggleAnimation, // Change animation on tap
+          child: Column(
+            children: [
+              const Text(
+                "Tap the Bottle!",
+                style: TextStyle(
+                  fontFamily: 'nunito',
+                  color: Color(0xFF141F23),
+                  fontSize: 22,
+                  fontVariations: [
+                    FontVariation('wght', 700),
+                  ],
+                ),
+              ),
+              Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.1,
+              ),
+              Container(
+                height: 400,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: Stack(
+                  children: [
+                    Rive.RiveAnimation.asset(
+                      "animations/animation.riv",
+                      artboard: 'New Artboard',
+                      controllers: [
+                        _controller
+                      ], // Provide the current controller
+                      fit: BoxFit.fitWidth,
                     ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                  ),
-                  Container(
-                    height: 400,
-                    width: MediaQuery.of(context).size.width,
-                    child: Stack(
-                      children: [
-                        Rive.RiveAnimation.asset(
-                          "animations/animation.riv",
-                          artboard: 'New Artboard',
-                          controllers: [
-                            _controller
-                          ], // Provide the current controller
-                          fit: BoxFit.fitWidth,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                colors: [
-                                  Colors.white.withOpacity(1),
-                                  // You can adjust the opacity here
-                                  Colors.white.withOpacity(0),
-                                  // You can adjust the opacity here
-                                ],
-                                stops: const [0.0, 0.5],
-                              ),
-                            ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              Colors.white.withOpacity(1),
+                              // You can adjust the opacity here
+                              Colors.white.withOpacity(0),
+                              // You can adjust the opacity here
+                            ],
+                            stops: const [0.0, 0.5],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ));
+            ],
+          ),
+        ));
   }
 
-  Widget _buildGetNextMessage() {
+  Widget _buildGetNextMessageFuture() {
     final messageProvider =
-        Provider.of<MessageProvider>(context, listen: false);
+    Provider.of<MessageProvider>(context, listen: false);
     final themeProvider = Provider.of<CustomThemes>(context, listen: false);
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
 
@@ -198,53 +237,87 @@ class _RiveAnimationBottleState extends State<RiveAnimationBottle> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Return a loading indicator while waiting for the result
           return Container();
+        } else if (snapshot.hasData) {
+          // Use the fetched message data
+          Message? message = snapshot.data;
+          return _buildGetNextMessage(message, themeProvider, signInProvider);
+        } else if (snapshot.hasError) {
+          // Handle error state
+          return Text('Error: ${snapshot.error}');
         } else {
-          // Handle the result
-          if (snapshot.hasError) {
-            // Handle error state
-            return Text('Error: ${snapshot.error}');
-          } else {
-            // Use the fetched message data
-            Message? message = snapshot.data;
-            int countTap = 0;
-            if (message != null && countTap == 0) {
-              return MessageReceivedResponseView(
-                userIdOriginalMessage: message.userId,
-                collectionReference: "random",
-                message: message.content,
-                themeProvider: themeProvider,
-                originalMessageId: message.id,
-                isLiked: false,
-                userId: signInProvider.currentUser!.uid,
-              );
-            }
-            return Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.2),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "No Messages Found!",
-                    style: themeProvider.tTextGrey,
+          // No data received
+          return Container(
+            width: double.infinity,
+            margin:
+            EdgeInsets.only(top: MediaQuery
+                .of(context)
+                .size
+                .height * 0.2),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "No Messages Found!",
+                  style: themeProvider.tTextGrey,
+                ),
+                const SizedBox(height: 32),
+                AnimatedCartoonContainerNew(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Text("Go Back", style: themeProvider.tTextCard),
                   ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  AnimatedCartoonContainerNew(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        child: Text("Go Back", style: themeProvider.tTextCard,),
-                      ),
-                      callbackFunction: _goHome),
-                ],
-              ),
-            );
-          }
+                  callbackFunction: _goHome,
+                ),
+              ],
+            ),
+          );
         }
       },
+    );
+  }
+
+  Widget _buildGetNextMessage(Message? message, CustomThemes themeProvider,
+      SignInProvider signInProvider) {
+    //int countTap = 0;
+    //if (message != null && countTap == 0) {
+    return MessageReceivedResponseView(
+      userIdOriginalMessage: message!.userId,
+      collectionReference: "random",
+      message: message.content,
+      themeProvider: themeProvider,
+      originalMessageId: message.id,
+      isLiked: false,
+      userId: signInProvider.currentUser!.uid,
+    );
+  }
+
+  Widget _buildGoHome(CustomThemes themeProvider) {
+    return Container(
+      width: double.infinity,
+      margin:
+      EdgeInsets.only(top: MediaQuery
+          .of(context)
+          .size
+          .height * 0.2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "No Messages Found!",
+            style: themeProvider.tTextGrey,
+          ),
+          const SizedBox(height: 32),
+          AnimatedCartoonContainerNew(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Text("Go Back", style: themeProvider.tTextCard),
+            ),
+            callbackFunction: _goHome,
+          ),
+        ],
+      ),
     );
   }
 }

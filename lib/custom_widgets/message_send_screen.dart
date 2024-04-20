@@ -181,20 +181,7 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
           child: Column(
             children: [
               isVisibleAnimation
-                  ? Expanded(
-                      child: Container(
-                        height: 400,
-                        width: 400,
-                        child: RiveAnimation.asset(
-                          "animations/animation_send_message.riv",
-                          artboard: 'New Artboard',
-                          controllers: [
-                            _controller
-                          ], // Provide the current controller
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    )
+                  ? _buildAnimatedContainer(_controller)
                   : Expanded(
                       child: TextField(
                         controller: _textEditingController,
@@ -250,6 +237,19 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedContainer(SimpleAnimation controller) {
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: RiveAnimation.asset(
+          'animations/animation_send_message.riv',
+          artboard: 'New Artboard',
+          controllers: [controller],
+          fit: BoxFit.fitWidth,
       ),
     );
   }
